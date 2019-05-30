@@ -1,7 +1,9 @@
-const mongoose = require("mongoose");
-const router = require("express").Router();
-const passport = require("passport");
-const User = mongoose.model("User");
+import express from 'express';
+import models from '../../models';
+
+const { User } = models;
+
+const router = express.Router();
 
 router.get("/user", function(req, res, next) {
     User.findById(req.payload.id)
@@ -84,4 +86,4 @@ router.post("/users", function(req, res, next) {
         .catch(next);
 });
 
-module.exports = router;
+export default router;
