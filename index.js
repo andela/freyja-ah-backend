@@ -1,31 +1,24 @@
-const fs = require('fs'),
-  http = require('http'),
-  path = require('path'),
-  methods = require('methods'),
-  express = require('express'),
-  bodyParser = require('body-parser'),
-  session = require('express-session'),
-  cors = require('cors'),
-  passport = require('passport'),
-  errorhandler = require('errorhandler'),
-  mongoose = require('mongoose');
+import express from "express";
+import bodyParser from "body-parser";
+import session from "express-session";
+import cors from "cors";
+import passport from "passport";
+import routes from "./routes/index";
+import errorhandler from "errorhandler";
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 // Create global app object
 const app = express();
 
 app.use(cors());
 
+
 // Normal express config defaults
 app.use(require('morgan')('dev'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.use(require('method-override')());
-
-app.use(express.static(__dirname + '/public'));
 
 app.use(
   session({
@@ -40,16 +33,7 @@ if (!isProduction) {
   app.use(errorhandler());
 }
 
-if (isProduction) {
-  mongoose.connect(process.env.MONGODB_URI);
-} else {
-  mongoose.connect('mongodb://localhost/conduit');
-  mongoose.set('debug', true);
-}
-
-require('./models/User');
-
-app.use(require('./routes'));
+app.use(routes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
