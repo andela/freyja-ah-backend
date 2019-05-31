@@ -1,4 +1,7 @@
-[![Build Status](https://travis-ci.org/andela/freyja-ah-backend.svg?branch=master)](https://travis-ci.org/andela/freyja-ah-backend)
+[![Build Status](https://travis-ci.org/andela/freyja-ah-backend.svg?branch=develop)](https://travis-ci.org/andela/freyja-ah-backend)
+[![Coverage Status](https://coveralls.io/repos/github/andela/freyja-ah-backend/badge.svg?branch=develop)](https://coveralls.io/github/andela/freyja-ah-backend?branch=develop)
+[![Maintainability](https://api.codeclimate.com/v1/badges/91acaa2e838fb3c50b39/maintainability)](https://codeclimate.com/github/andela/freyja-ah-backend/maintainability)
+
 
 Authors Haven - A Social platform for the creative at heart.
 =======
