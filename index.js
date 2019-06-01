@@ -1,12 +1,14 @@
-import express from "express";
-import bodyParser from "body-parser";
-import session from "express-session";
-import cors from "cors";
-import passport from "passport";
-import routes from "./routes/index";
-import errorhandler from "errorhandler";
+/* eslint-disable no-unused-vars */
+import express from 'express';
+import bodyParser from 'body-parser';
+import session from 'express-session';
+import morgan from 'morgan';
+import cors from 'cors';
+import passport from 'passport';
+import errorhandler from 'errorhandler';
+import routes from './routes/index';
 
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.NODE_ENV === 'production';
 
 // Create global app object
 const app = express();
@@ -15,7 +17,7 @@ app.use(cors());
 
 
 // Normal express config defaults
-app.use(require('morgan')('dev'));
+app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -75,5 +77,7 @@ app.use((err, req, res, next) => {
 
 // finally, let's start our server...
 const server = app.listen(process.env.PORT || 3000, () => {
-  console.log('Listening on port ' + server.address().port);
+  console.log(`Listening on port ${server.address().port}`);
 });
+
+export default app;
