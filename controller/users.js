@@ -42,7 +42,7 @@ class UserController {
   }
 
   /**
-     * registers a user
+     * gets a registered user
      * @param {object} req - request object
      * @param {object} res - response object
      * @param{function} next - next function
@@ -74,7 +74,7 @@ class UserController {
   }
 
   /**
-     * registers a user
+     * log's in a registered user
      * @param {object} req - request object
      * @param {object} res - response object
      * @param{function} next - next function
@@ -118,7 +118,7 @@ class UserController {
   }
 
   /**
-     * registers a user
+     * udates an exixting  user
      * @param {object} req - request object
      * @param {object} res - response object
      * @param{function} next - next function

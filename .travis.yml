@@ -5,6 +5,9 @@ node_js:
 cache:
   directories:
     - "node_modules"
+before_script:
+  - psql -c 'create database CSLC_TEST;' -U postgres
+  
 before_install:
   - "npm install"
 
