@@ -42,12 +42,9 @@
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
     "@babel/cli": "^7.2.0",
-    "@babel/core": "^7.2.0",
     "@babel/node": "^7.2.0",
     "@babel/preset-env": "^7.2.0",
-    "@babel/register": "^7.0.0",
     "babel-loader": "^8.0.5",
-    "babel-polyfill": "^6.26.0",
-    "babel-register": "^6.26.0"
+    "babel-polyfill": "^6.26.0"
   }
 }

@@ -1,17 +1,18 @@
-/* eslint-disable require-jsdoc */
 import models from '../models';
 
 const { User } = models;
-
+/**
+ * A class that handles user methods
+* */
 class UserController {
   /**
-     * @function  registerUser - gets a user
+     * registers a user
      * @param {object} req - request object
      * @param {object} res - response object
-     * @returns {object}
+     * @param{function} next - next function
+     * @returns {object} response object
      *
   */
-
   static async resgisterUser(req, res, next) {
     const {
       firstName, lastName, email, userName, password, confirmPassword, industry, age, employed,
@@ -40,6 +41,14 @@ class UserController {
     });
   }
 
+  /**
+     * registers a user
+     * @param {object} req - request object
+     * @param {object} res - response object
+     * @param{function} next - next function
+     * @returns {object} response object
+     *
+  */
   static async getUser(req, res, next) {
     const user = await User.findByPk(parseInt(req.params.id, 10)).catch(next);
     if (!user) {
@@ -64,6 +73,14 @@ class UserController {
     });
   }
 
+  /**
+     * registers a user
+     * @param {object} req - request object
+     * @param {object} res - response object
+     * @param{function} next - next function
+     * @returns {object} response object
+     *
+  */
   static async login(req, res, next) {
     if (!req.body.email) {
       return res.status(422).json({
@@ -100,6 +117,14 @@ class UserController {
     });
   }
 
+  /**
+     * registers a user
+     * @param {object} req - request object
+     * @param {object} res - response object
+     * @param{function} next - next function
+     * @returns {object} response object
+     *
+  */
   static async updateUser(req, res, next) {
     const userId = parseInt(req.params.id, 10);
     const user = await User.findByPk(userId).catch(next);
