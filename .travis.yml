@@ -11,7 +11,7 @@ services:
 
 
 before_script:
-  - psql -c 'create database CSLC_TEST;' -U postgres
+  - psql -c 'create database CSLC_TEST_DB;' -U postgres
   
   
 before_install:

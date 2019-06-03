@@ -6,7 +6,7 @@ import server from '../../index';
 use(chaihttp);
 
 describe('Post api/users', () => {
-  it('it register\'s a user', (done) => {
+  it('register a user', (done) => {
     request(server)
       .post('/api/users')
       .send({
@@ -15,17 +15,16 @@ describe('Post api/users', () => {
         userName: 'MosTed',
         email: 'ted123@mail.com',
         password: '123456',
-        confirmPassword: '123456',
-        employed: 'yes',
         age: 25,
         industry: 'Entertainment',
       })
       .end((err, res) => {
         expect(res.status).to.eql(201);
-        expect(res.body.user).to.be.an('array');
-        expect(res.body.user[0].firstName).to.eql('Ted');
-        expect(res.body.user[0].userName).to.eql('MosTed');
-        expect(res.body.user[0].email).to.eql('ted123@mail.com');
+        expect(res.body.message).to.eql('user registration was successful');
+        expect(res.body.user).to.be.an('object');
+        expect(res.body.user.firstName).to.eql('Ted');
+        expect(res.body.user.userName).to.eql('MosTed');
+        expect(res.body.user.email).to.eql('ted123@mail.com');
         done(err);
       });
   });

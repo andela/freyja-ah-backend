@@ -6,7 +6,7 @@ const { User } = models;
 * */
 class UserController {
   /**
-     * registers a user
+     * register a user
      * @param {object} req - request object
      * @param {object} res - response object
      * @param{function} next - next function
@@ -30,19 +30,19 @@ class UserController {
     }).catch(next);
     return res.status(201).json({
       status: res.statusCode,
-      message: 'user created sucessfully',
-      user: [{
+      message: 'user registration was successful',
+      user: {
         id: usersObj.id,
         firstName: usersObj.firstName,
         lastName: usersObj.lastName,
         email: usersObj.email,
         userName: usersObj.userName,
-      }]
+      },
     });
   }
 
   /**
-     * gets a registered user
+     * get a registered user
      * @param {object} req - request object
      * @param {object} res - response object
      * @param{function} next - next function
@@ -63,18 +63,18 @@ class UserController {
     return res.status(200).json({
       status: res.statusCode,
       message: 'user returned successfully',
-      user: [{
+      user: {
         id,
         firstName,
         lastName,
         userName,
         email
-      }]
+      },
     });
   }
 
   /**
-     * log's in a registered user
+     * login a registered user
      * @param {object} req - request object
      * @param {object} res - response object
      * @param{function} next - next function
@@ -82,21 +82,22 @@ class UserController {
      *
   */
   static async login(req, res, next) {
-    if (!req.body.email) {
+    const { email, password } = req.body;
+    if (!email) {
       return res.status(422).json({
         status: res.statusCode,
         errors: { email: 'please provide your email' },
       });
     }
 
-    if (!req.body.password) {
+    if (!password) {
       return res.status(422).json({
         status: res.statusCode,
         errors: { password: 'please provide your password' },
       });
     }
     const user = await User.findOne(
-      { where: { email: req.body.email, password: req.body.password } }
+      { where: { email, password } }
     ).catch(next);
     if (!user) {
       return res.status(401).json({
@@ -107,18 +108,18 @@ class UserController {
     return res.status(200).json({
       status: res.statusCode,
       message: 'login was sucessful',
-      user: [{
+      user: {
         id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
         userName: user.userName,
         email: user.email,
-      }]
+      },
     });
   }
 
   /**
-     * udates an exixting  user
+     * udate an existing  user
      * @param {object} req - request object
      * @param {object} res - response object
      * @param{function} next - next function
@@ -147,7 +148,7 @@ class UserController {
     return res.status(200).json({
       status: res.statusCode,
       message: 'update was sucessful',
-      user: [{
+      user: {
         id: updatedUser.id,
         firstName: updatedUser.firstName,
         lastName: updatedUser.lastName,
@@ -156,7 +157,7 @@ class UserController {
         industry: updatedUser.industry,
         employed: updatedUser.employed,
         age: updatedUser.age,
-      }],
+      },
     });
   }
 }

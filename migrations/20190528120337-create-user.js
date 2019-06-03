@@ -10,30 +10,35 @@ module.exports = {
       type: Sequelize.INTEGER
     },
     firstName: {
-      type: Sequelize.STRING
+      allowNull: false,
+      type: Sequelize.STRING,
     },
     lastName: {
-      type: Sequelize.STRING
+      allowNull: false,
+      type: Sequelize.STRING,
     },
     userName: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     password: {
-      type: Sequelize.STRING
+      allowNull: false,
+      type: Sequelize.STRING,
     },
-    confirmPassword: {
-      type: Sequelize.STRING
-    },
+
     email: {
-      type: Sequelize.STRING
+      allowNull: false,
+      type: Sequelize.STRING,
     },
     age: {
-      type: Sequelize.INTEGER
+      allowNull: false,
+      type: Sequelize.INTEGER,
     },
     employed: {
-      type: Sequelize.STRING
+      type: Sequelize.BOOLEAN,
+      default: false
     },
     industry: {
+      allowNull: true,
       type: Sequelize.STRING
     },
     createdAt: {
