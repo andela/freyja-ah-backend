@@ -5,6 +5,8 @@ import morgan from 'morgan';
 import cors from 'cors';
 import passport from 'passport';
 import errorhandler from 'errorhandler';
+import YAML from 'yamljs';
+import swaggerUi from 'swagger-ui-express';
 import routes from './routes/index';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -14,6 +16,14 @@ const app = express();
 
 app.use(cors());
 
+<<<<<<< HEAD:server/index.js
+=======
+// load
+const swaggerDocument = YAML.load(`${__dirname}/swagger.yaml`);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+>>>>>>> chore(api-documentation): API documentation using swagger:index.js
 // Normal express config defaults
 app.use(morgan('dev'));
 

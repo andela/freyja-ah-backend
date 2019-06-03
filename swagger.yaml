@@ -1,0 +1,237 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: Customer Service Learning Community
+  description: Create a community of like minded customer service skills enthusiast to foster inspiration and innovation by leveraging the modern web.
+  contact: {}
+host: localhost:3000
+basePath: /api
+schemes:
+- http
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /users:
+    post:
+      description: Creates a new user
+      summary: Signup
+      tags:
+      - Users
+      operationId: UsersPost
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: firstName
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: lastName
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: email
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: userName
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: industry
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: age
+        in: formData
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      - name: employed
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: password
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: confirmPassword
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        201:
+          description: ''
+          examples:
+            application/json; charset=utf-8:
+              status: 201,
+              message: user registration was successful,
+              user:
+                id: 5,
+                firstName: ochowo,
+                lastName: ikongbeh,
+                email: ochowo@gmail.com,
+                userName: ooche
+          headers: {}
+  /users/login:
+    post:
+      description: Login an existing User
+      summary: Signin
+      tags:
+      - Users
+      operationId: UsersLoginPost
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: email
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: password
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: confirmPassword
+        in: formData
+        required: true
+        type: string
+        description: ''
+      responses:
+        200:
+          description: ''
+          examples:
+            application/json; charset=utf-8:
+              status: 200,
+              message: login was sucessful,
+              user:
+                id: 5,
+                firstName: ochowo,
+                lastName: ikongbeh,
+                userName: ooche,
+                email: ochowo@gmail.com
+          headers: {}
+  /user/5:
+    get:
+      description: Get a specific user
+      summary: Get a specific user
+      tags:
+      - Users
+      operationId: User5Get
+      deprecated: false
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: ''
+          examples:
+            application/json; charset=utf-8:
+              status: 200,
+              message: user returned successfully,
+              user:
+                id: 5,
+                firstName: ochowo,
+                lastName: ikongbeh,
+                userName: ooche,
+                email: ochowo@gmail.com
+          headers: {}
+    put:
+      description: Update an existing user details
+      summary: Update a specific user information
+      tags:
+      - Users
+      operationId: User5Put
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/x-www-form-urlencoded
+      parameters:
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: firstName
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: lastName
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: email
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: userName
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: industry
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: employed
+        in: formData
+        required: true
+        type: string
+        description: ''
+      - name: age
+        in: formData
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      responses:
+        200:
+          description: ''
+          examples:
+            application/json; charset=utf-8:
+              status: 200,
+              message: update was sucessful,
+              user:
+                id: 5,
+                firstName: ochowo,
+                lastName: ikongbeh,
+                userName: ooche,
+                email: ochowo@gmail.com,
+                industry: Andela,
+                age: 30
+          headers: {}
+tags:
+- name: Users
+  description: User routes to signup, login, update and get specific User
