@@ -6,8 +6,8 @@
   "scripts": {
     "test": "npm run test:migrate && NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register --require babel-polyfill ./test/ --recursive --exit",
     "migrate": "sequelize db:migrate",
-    "undoAll:migrate": "sequelize db:migrate:undo:all",
-    "undoCurrent:migrate": "sequelize db:migrate:undo",
+    "undo-all:migrate": "sequelize db:migrate:undo:all",
+    "undo-current:migrate": "sequelize db:migrate:undo",
     "test:migrate": "NODE_ENV=test npm run undoAll:migrate && NODE_ENV=test npm run migrate ",
     "start": "babel-node ./index.js",
     "coverage": "nyc report --reporter=lcov --reporter=text-lcov | coveralls"
