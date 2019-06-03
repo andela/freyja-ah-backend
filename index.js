@@ -1,14 +1,12 @@
-const fs = require('fs'),
-  http = require('http'),
-  path = require('path'),
-  methods = require('methods'),
-  express = require('express'),
-  bodyParser = require('body-parser'),
-  session = require('express-session'),
-  cors = require('cors'),
-  passport = require('passport'),
-  errorhandler = require('errorhandler'),
-  mongoose = require('mongoose');
+/* eslint-disable no-unused-vars */
+import express from 'express';
+import bodyParser from 'body-parser';
+import session from 'express-session';
+import morgan from 'morgan';
+import cors from 'cors';
+import passport from 'passport';
+import errorhandler from 'errorhandler';
+import routes from './routes/index';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -17,15 +15,12 @@ const app = express();
 
 app.use(cors());
 
+
 // Normal express config defaults
-app.use(require('morgan')('dev'));
+app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.use(require('method-override')());
-
-app.use(express.static(__dirname + '/public'));
 
 app.use(
   session({
@@ -40,16 +35,7 @@ if (!isProduction) {
   app.use(errorhandler());
 }
 
-if (isProduction) {
-  mongoose.connect(process.env.MONGODB_URI);
-} else {
-  mongoose.connect('mongodb://localhost/conduit');
-  mongoose.set('debug', true);
-}
-
-require('./models/User');
-
-app.use(require('./routes'));
+app.use(routes);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -91,5 +77,7 @@ app.use((err, req, res, next) => {
 
 // finally, let's start our server...
 const server = app.listen(process.env.PORT || 3000, () => {
-  console.log('Listening on port ' + server.address().port);
+  console.log(`Listening on port ${server.address().port}`);
 });
+
+export default app;
