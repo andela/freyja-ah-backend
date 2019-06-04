@@ -17,7 +17,7 @@ class Authenticate {
     const token = jwt.sign({
       userId: id, email
     },
-    process.env.MY_SECRET, {
+    process.env.SECRET_KEY, {
       expiresIn: '7d'
     });
     return token;
