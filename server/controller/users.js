@@ -1,4 +1,5 @@
 import models from '../models';
+import Authenticate from '../utils/Authenticate';
 
 const { User } = models;
 /**
@@ -15,19 +16,21 @@ class UserController {
   */
   static async resgisterUser(req, res, next) {
     const {
-      firstName, lastName, email, userName, password, confirmPassword, industry, age, employed,
+      firstName, lastName, email, userName, password, industry, age, employed,
     } = req.body;
+
     const usersObj = await User.create({
       firstName,
       lastName,
       email,
       userName,
       password,
-      confirmPassword,
       age,
       industry,
       employed
     }).catch(next);
+
+    const token = Authenticate.generateToken(usersObj.id, usersObj.email);
     return res.status(201).json({
       status: res.statusCode,
       message: 'user registration was successful',
@@ -38,6 +41,7 @@ class UserController {
         email: usersObj.email,
         userName: usersObj.userName,
       },
+      token
     });
   }
 
