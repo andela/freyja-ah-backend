@@ -18,7 +18,6 @@ class UserController {
     const {
       firstName, lastName, email, userName, password, industry, age, employed,
     } = req.body;
-
     const usersObj = await User.create({
       firstName,
       lastName,
@@ -100,8 +99,9 @@ class UserController {
         errors: { password: 'please provide your password' },
       });
     }
+
     const user = await User.findOne(
-      { where: { email, password } }
+      { where: { email } }
     ).catch(next);
     if (!user) {
       return res.status(401).json({
