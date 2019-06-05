@@ -1,4 +1,8 @@
 {
+  "name": "freyja-ah-backend",
+  "scripts": {
+    "postdeploy": "heroku config:set HOST_NAME=${HEROKU_APP_NAME}.herokuapp.com --app ${HEROKU_APP_NAME} && npm run migrate"
+  },
   "addons": ["heroku-postgresql"],
   "buildpacks": [
     {
@@ -20,10 +24,6 @@
     "web": {
       "quantity": 1
     }
-  },
-  "name": "freyja-ah-backend",
-  "scripts": {
-    "postdeploy": "heroku config:set HOST_NAME=${HEROKU_APP_NAME}.herokuapp.com --app ${HEROKU_APP_NAME} && npm run migrate"
   },
   "stack": "heroku-18"
 }

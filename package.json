@@ -7,6 +7,7 @@
     "test": "npm run test:migrate && NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register --require babel-polyfill ./server/test/ --recursive --exit",
     "migrate": "sequelize db:migrate",
     "undo-all:migrate": "sequelize db:migrate:undo:all",
+    "refreshdb": "npm run undo-all:migrate && npm run migrate",
     "undo-current:migrate": "sequelize db:migrate:undo",
     "test:migrate": "NODE_ENV=test npm run undo-all:migrate && NODE_ENV=test npm run migrate ",
     "start": "node --require babel-polyfill ./build/index.js",
