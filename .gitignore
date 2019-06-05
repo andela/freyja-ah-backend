@@ -40,4 +40,5 @@ node_modules
 .coveralls.yml
 .nyc_output
 .nyc_output/processinfo/index.json
+build
 
