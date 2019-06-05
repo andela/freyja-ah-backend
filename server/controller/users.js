@@ -1,4 +1,5 @@
 import models from '../models';
+import Hash from '../utils/hash';
 
 const { User } = models;
 /**
@@ -15,15 +16,15 @@ class UserController {
   */
   static async resgisterUser(req, res, next) {
     const {
-      firstName, lastName, email, userName, password, confirmPassword, industry, age, employed,
+      firstName, lastName, email, userName, password, industry, age, employed,
     } = req.body;
+    const encrptedPassword = Hash.hashPassword(password);
     const usersObj = await User.create({
       firstName,
       lastName,
       email,
       userName,
-      password,
-      confirmPassword,
+      password: encrptedPassword,
       age,
       industry,
       employed
@@ -96,8 +97,9 @@ class UserController {
         errors: { password: 'please provide your password' },
       });
     }
+
     const user = await User.findOne(
-      { where: { email, password } }
+      { where: { email } }
     ).catch(next);
     if (!user) {
       return res.status(401).json({
