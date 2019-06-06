@@ -1,5 +1,5 @@
 import models from '../models';
-import Authenticate from '../utils/Authenticate';
+import Authenticate from '../middleware/auth/Authenticate';
 
 const { User } = models;
 /**

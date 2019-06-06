@@ -10,7 +10,7 @@
     "undo-current:migrate": "sequelize db:migrate:undo",
     "test:migrate": "NODE_ENV=test npm run undo-all:migrate && NODE_ENV=test npm run migrate ",
     "start": "babel-node ./index.js",
-    "dev-start": "nodemon --exec babel-node ./index.js",
+    "start:dev": "nodemon --exec babel-node ./index.js",
     "coverage": "nyc report --reporter=lcov --reporter=text-lcov | coveralls"
   },
   "author": "Andela Simulations Programme",
