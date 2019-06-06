@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import express from 'express';
 import bodyParser from 'body-parser';
-import session from 'express-session';
 import morgan from 'morgan';
 import cors from 'cors';
 import passport from 'passport';
@@ -15,21 +14,11 @@ const app = express();
 
 app.use(cors());
 
-
 // Normal express config defaults
 app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.use(
-  session({
-    secret: 'authorshaven',
-    cookie: { maxAge: 60000 },
-    resave: false,
-    saveUninitialized: false,
-  }),
-);
 
 if (!isProduction) {
   app.use(errorhandler());

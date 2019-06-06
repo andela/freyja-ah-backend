@@ -1,21 +1,29 @@
 {
-  "addons": [
-    "heroku-postgresql"
-  ],
+  "name": "freyja-ah-backend",
+  "scripts": {
+    "postdeploy": "heroku config:set HOST_NAME=${HEROKU_APP_NAME}.herokuapp.com --app ${HEROKU_APP_NAME} && npm run refreshdb"
+  },
+  "addons": ["heroku-postgresql"],
   "buildpacks": [
     {
       "url": "heroku/nodejs"
     }
   ],
   "env": {
+    "DATABASE_URL": {
+      "required": true
+    },
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "HEROKU_PARENT_APP_NAME": {
+      "required": true
+    }
   },
   "formation": {
     "web": {
       "quantity": 1
     }
-  },
-  "name": "freyja-ah-backend",
-  "scripts": {
   },
   "stack": "heroku-18"
 }
