@@ -1,7 +1,7 @@
 {
   "name": "freyja-ah-backend",
   "scripts": {
-    "postdeploy": "npm run migrate"
+    "postdeploy": "heroku config:set HOST_NAME=${HEROKU_APP_NAME}.herokuapp.com --app ${HEROKU_APP_NAME} && npm run refreshdb"
   },
   "addons": ["heroku-postgresql"],
   "buildpacks": [
