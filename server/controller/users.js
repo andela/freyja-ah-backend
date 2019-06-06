@@ -1,5 +1,4 @@
 import models from '../models';
-import Hash from '../utils/hash';
 
 const { User } = models;
 /**
@@ -18,13 +17,12 @@ class UserController {
     const {
       firstName, lastName, email, userName, password, industry, age, employed,
     } = req.body;
-    const encrptedPassword = Hash.hashPassword(password);
     const usersObj = await User.create({
       firstName,
       lastName,
       email,
       userName,
-      password: encrptedPassword,
+      password,
       age,
       industry,
       employed
