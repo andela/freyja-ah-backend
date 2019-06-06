@@ -25,7 +25,9 @@
   "license": "MIT",
   "dependencies": {
     "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.2.0",
     "@babel/register": "^7.4.4",
+    "babel-polyfill": "^6.26.0",
     "bcrypt": "^3.0.6",
     "body-parser": "^1.18.3",
     "chai": "^4.2.0",
@@ -47,8 +49,6 @@
     "sequelize-cli": "^5.4.0",
     "swagger-jsdoc": "^3.2.9",
     "underscore": "^1.9.1",
-    "babel-polyfill": "^6.26.0",
-    "@babel/preset-env": "^7.2.0",
     "swagger-ui-express": "^4.0.5",
     "yamljs": "^0.3.0"
   },
