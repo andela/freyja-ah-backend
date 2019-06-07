@@ -17,7 +17,6 @@ const app = express();
 
 app.use(cors());
 
-// api-docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Normal express config defaults
