@@ -5,6 +5,9 @@ import morgan from 'morgan';
 import cors from 'cors';
 import passport from 'passport';
 import errorhandler from 'errorhandler';
+import YAML from 'yamljs';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger';
 import routes from './routes/index';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -13,6 +16,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 const app = express();
 
 app.use(cors());
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Normal express config defaults
 app.use(morgan('dev'));
@@ -46,8 +51,8 @@ if (!isProduction) {
     res.json({
       errors: {
         message: err.message,
-        error: err,
-      },
+        error: err
+      }
     });
   });
 }
@@ -59,8 +64,8 @@ app.use((err, req, res, next) => {
   res.json({
     errors: {
       message: err.message,
-      error: {},
-    },
+      error: {}
+    }
   });
 });
 

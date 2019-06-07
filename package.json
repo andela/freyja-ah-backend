@@ -44,9 +44,12 @@
     "request": "^2.87.0",
     "sequelize": "^5.8.6",
     "sequelize-cli": "^5.4.0",
+    "swagger-jsdoc": "^3.2.9",
     "underscore": "^1.9.1",
     "babel-polyfill": "^6.26.0",
-    "@babel/preset-env": "^7.2.0"
+    "@babel/preset-env": "^7.2.0",
+    "swagger-ui-express": "^4.0.5",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.0",
