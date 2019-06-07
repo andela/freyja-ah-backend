@@ -11,4 +11,6 @@ router.get('/user/:id', userController.getUser);
 
 router.put('/user/:id', userController.updateUser);
 
+router.get('/user/verify/:token', userController.verifyUser);
+
 export default router;

@@ -29,6 +29,7 @@
     "@babel/register": "^7.4.4",
     "babel-polyfill": "^6.26.0",
     "bcrypt": "^3.0.6",
+    "@sendgrid/mail": "^6.4.0",
     "body-parser": "^1.18.3",
     "chai": "^4.2.0",
     "chai-http": "^4.3.0",
@@ -38,7 +39,7 @@
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "jsdoc": "^3.6.2",
-    "jsonwebtoken": "^8.3.0",
+    "jsonwebtoken": "^8.5.1",
     "mocha": "^6.1.4",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
@@ -51,8 +52,8 @@
     "sequelize-test-helpers": "^1.1.2",
     "sinon": "^7.3.2",
     "swagger-jsdoc": "^3.2.9",
-    "swagger-ui-express": "^4.0.5",
     "underscore": "^1.9.1",
+    "swagger-ui-express": "^4.0.5",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {

@@ -29,25 +29,9 @@ module.exports = {
       allowNull: false,
       type: Sequelize.STRING,
     },
-    age: {
-      allowNull: false,
-      type: Sequelize.INTEGER,
-    },
-    employed: {
+    isVerified: {
       type: Sequelize.BOOLEAN,
-      default: false
-    },
-    industry: {
-      allowNull: true,
-      type: Sequelize.STRING
-    },
-    createdAt: {
       allowNull: false,
-      type: Sequelize.DATE
-    },
-    updatedAt: {
-      allowNull: false,
-      type: Sequelize.DATE
     }
   }),
   down: (queryInterface, Sequelize) => queryInterface.dropTable('Users')
