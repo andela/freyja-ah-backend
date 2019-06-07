@@ -19,6 +19,7 @@ describe('GET /api/user/verify', () => {
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
       password: 'december',
+      confirmPassword: 'december',
       userName: 'beejay',
       gender: 'male'
     };
