@@ -4,7 +4,7 @@
   "description": "A Social platform for the creative at heart",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:migrate && NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register --require babel-polyfill ./server/test/ --recursive --exit",
+    "test": "npm run test:migrate && NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register --require babel-polyfill ./server/test/ --recursive --timeout 5000 --exit",
     "migrate": "sequelize db:migrate",
     "undo-all:migrate": "sequelize db:migrate:undo:all",
     "refreshdb": "npm run undo-all:migrate && npm run migrate",
