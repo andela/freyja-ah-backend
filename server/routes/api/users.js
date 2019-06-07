@@ -4,7 +4,7 @@ import userValidation from '../../middleware/validations/user';
 
 const router = express.Router();
 
-router.post('/users', userValidation, userController.resgisterUser);
+router.post('/users', userValidation, userController.registerUser);
 
 router.post('/users/login', userController.login);
 

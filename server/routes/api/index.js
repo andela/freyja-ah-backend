@@ -4,10 +4,11 @@ import modulesRoute from './modules';
 import facebookAuthRoute from './strategy/facebook.auth';
 import googleAuthRoute from './strategy/google.auth';
 import twitterAuthRoute from './strategy/twitter.auth';
-
+import profileRoute from './profiles';
 
 const router = express.Router();
 router.use('/', usersRoute);
+router.use('/', profileRoute);
 router.use('/', modulesRoute);
 router.use('/', usersRoute);
 router.use('/', facebookAuthRoute);

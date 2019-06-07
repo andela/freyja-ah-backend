@@ -63,11 +63,11 @@ const userModel = (sequelize, DataTypes) => {
     timestamps: false,
   });
   /**
-     * compares if the passed arguments are equal
-     * @param {string} password
-     * @param {object} user
-     * @returns {boolean} true or false
-    */
+   * compares if the passed arguments are equal
+   * @param {string} password
+   * @param {object} user
+   * @returns {boolean} true or false
+   */
   User.prototype.comparePassword = (password, user) => bcrypt.compareSync(password, user.password);
 
   /**
@@ -86,7 +86,10 @@ const userModel = (sequelize, DataTypes) => {
   });
 
   User.associate = (models) => {
-    // associations can be defined here
+    User.hasOne(models.Profile, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE'
+    });
   };
   return User;
 };

@@ -22,7 +22,7 @@ class UserController {
    * @returns {object} response object
    *
    */
-  static async resgisterUser(req, res) {
+  static async registerUser(req, res, next) {
     const {
       firstName, lastName, email, userName, password
     } = req.body;

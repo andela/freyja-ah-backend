@@ -12,16 +12,16 @@ describe('Post api/users', () => {
       .send({
         firstName: 'Ted',
         lastName: 'Mosby',
-        userName: 'MosTed',
+        userName: 'tedmosby',
         email: 'ted123@mail.com',
         password: '12345678',
+        confirmPassword: '12345678'
       })
       .end((err, res) => {
         expect(res.status).to.eql(201);
         expect(res.body.message).to.eql('user registration was successful');
         expect(res.body.user).to.be.an('object');
         expect(res.body.user.firstName).to.eql('Ted');
-        expect(res.body.user.userName).to.eql('MosTed');
         expect(res.body.user.email).to.eql('ted123@mail.com');
         expect(res.body).to.have.a.property('token');
         done(err);
@@ -36,8 +36,7 @@ describe('Post api/users', () => {
         userName: '',
         email: '',
         password: '',
-        age: '',
-        industry: '',
+        confirmPassword: ''
       })
       .end((err, res) => {
         expect(res.status).to.eql(422);

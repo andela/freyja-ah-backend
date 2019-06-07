@@ -13,7 +13,6 @@ describe('Post api/user', () => {
         expect(res.status).to.eql(200);
         expect(res.body.user).to.be.an('object');
         expect(res.body.user.firstName).to.eql('Ted');
-        expect(res.body.user.userName).to.eql('MosTed');
         expect(res.body.user.email).to.eql('ted123@mail.com');
         done(err);
       });
