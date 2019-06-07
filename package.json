@@ -53,8 +53,8 @@
     "sequelize-test-helpers": "^1.1.2",
     "sinon": "^7.3.2",
     "swagger-jsdoc": "^3.2.9",
-    "underscore": "^1.9.1",
     "swagger-ui-express": "^4.0.5",
+    "underscore": "^1.9.1",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {

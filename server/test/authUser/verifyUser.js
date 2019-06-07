@@ -5,8 +5,8 @@ import sendGridMailer from '@sendgrid/mail';
 import { use, request, expect } from 'chai';
 import chaihttp from 'chai-http';
 import server from '../../index';
-import Authenticate from '../../middleware/auth/Authenticate';
-import { getMaxListeners } from 'cluster';
+
+
 dotenv.config();
 sendGridMailer.setApiKey(process.env.SENDGRID_API_KEY);
 use(chaihttp);
