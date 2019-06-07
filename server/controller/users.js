@@ -7,7 +7,6 @@ import Authenticate from '../middleware/auth/Authenticate';
 
 dotenv.config();
 sendGridMailer.setApiKey(process.env.SENDGRID_API_KEY);
-
 const { User } = models;
 /**
  * A class that handles user methods
@@ -40,9 +39,7 @@ class UserController {
         subject: 'Welcome',
         html: `<strong>Welcome to Customer Service Learning Community <h3> copy and paste this link below in your browser to verify your account<h3/></strong> ${process.env.HOST}/api/user/verify/${token} `,
       };
-      await sendGridMailer.send(msg, (err, res) => {
-        console.log(token);
-      });
+      await sendGridMailer.send(msg);
     }
 
     return res.status(201).json({
