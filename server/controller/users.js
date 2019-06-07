@@ -28,7 +28,6 @@ class UserController {
       industry,
       employed
     }).catch(next);
-
     const token = Authenticate.generateToken(usersObj.id, usersObj.email);
     return res.status(201).json({
       status: res.statusCode,

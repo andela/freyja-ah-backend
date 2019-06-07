@@ -68,6 +68,7 @@ const userModel = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     }
   },
+
   {});
   /**
      * compares if the passed arguments are equal
