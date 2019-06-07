@@ -23,29 +23,21 @@ class UserController {
    */
   static async resgisterUser(req, res, next) {
     const {
-      firstName,
-      lastName,
-      email,
-      userName,
-      password,
-      industry,
-      age,
-      employed,
+      firstName, lastName, email, userName, password
     } = req.body;
-    const usersObj = await User.create({
+
+    const user = await User.create({
       firstName,
       lastName,
       email,
       userName,
-      password,
-      age,
-      industry,
-      employed,
+      password
     }).catch(next);
-    const token = Authenticate.generateToken(usersObj.id, usersObj.email);
-    if (usersObj.dataValues) {
+
+    const token = Authenticate.generateToken(user.id, user.email, user.userName);
+    if (user.dataValues) {
       const msg = {
-        to: usersObj.email,
+        to: user.email,
         from: 'CSLC@gmail.com',
         subject: 'Welcome',
         html: `<strong>Welcome to Customer Service Learning Community <h3> copy and paste this link below in your browser to verify your account<h3/></strong> ${
@@ -59,11 +51,11 @@ class UserController {
       status: res.statusCode,
       message: 'user registration was successful',
       user: {
-        id: usersObj.id,
-        firstName: usersObj.firstName,
-        lastName: usersObj.lastName,
-        email: usersObj.email,
-        userName: usersObj.userName,
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        userName: user.userName,
       },
       token,
     });
@@ -85,7 +77,9 @@ class UserController {
         message: 'user not registered',
       });
     }
-    const { id, firstName, lastName, userName, email } = user;
+    const {
+      id, firstName, lastName, userName, email
+    } = user;
     return res.status(200).json({
       status: res.statusCode,
       message: 'user returned successfully',
@@ -168,7 +162,9 @@ class UserController {
         error: 'Invalid email or password',
       });
     }
+
     if (user.comparePassword(password, user)) {
+      const token = Authenticate.generateToken(user.id, user.email, user.userName);
       return res.status(200).json({
         status: res.statusCode,
         message: 'login was sucessful',
@@ -179,12 +175,9 @@ class UserController {
           userName: user.userName,
           email: user.email,
         },
+        token
       });
     }
-    return res.status(401).json({
-      status: 'failed',
-      error: 'invalid email or password'
-    });
   }
 
   /**
@@ -309,7 +302,7 @@ class UserController {
         message: 'new password is not provided',
       });
     }
-    const decoded = Authenticate.verifyToken(token);
+    const decoded = Authenticate.decodeToken(token);
     if (!decoded) {
       return res.status(401).json({
         status: 'error',

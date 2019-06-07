@@ -20,6 +20,7 @@ describe('Post api/users/login', () => {
         expect(res.body.user.firstName).to.eql('Ted');
         expect(res.body.user.userName).to.eql('MosTed');
         expect(res.body.user.email).to.eql('ted123@mail.com');
+        expect(res.body).to.have.a.property('token');
         done(err);
       });
   });

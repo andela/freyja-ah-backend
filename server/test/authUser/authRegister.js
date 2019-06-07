@@ -15,8 +15,6 @@ describe('Post api/users', () => {
         userName: 'MosTed',
         email: 'ted123@mail.com',
         password: '12345678',
-        age: 25,
-        industry: 'Entertainment',
       })
       .end((err, res) => {
         expect(res.status).to.eql(201);
