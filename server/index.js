@@ -7,6 +7,7 @@ import passport from 'passport';
 import errorhandler from 'errorhandler';
 import YAML from 'yamljs';
 import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './config/swagger';
 import routes from './routes/index';
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -16,14 +17,9 @@ const app = express();
 
 app.use(cors());
 
-<<<<<<< HEAD:server/index.js
-=======
-// load
-const swaggerDocument = YAML.load(`${__dirname}/swagger.yaml`);
+// api-docs
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
->>>>>>> chore(api-documentation): API documentation using swagger:index.js
 // Normal express config defaults
 app.use(morgan('dev'));
 
@@ -56,8 +52,8 @@ if (!isProduction) {
     res.json({
       errors: {
         message: err.message,
-        error: err,
-      },
+        error: err
+      }
     });
   });
 }
@@ -69,8 +65,8 @@ app.use((err, req, res, next) => {
   res.json({
     errors: {
       message: err.message,
-      error: {},
-    },
+      error: {}
+    }
   });
 });
 
