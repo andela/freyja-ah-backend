@@ -4,10 +4,11 @@ module.exports = {
   env: {
     node: true,
     es6: true,
-    mocha: true,
+    mocha: true
   },
   parserOptions: {
     sourceType: 'module',
+    allowImportExportEverywhere: true
   },
   rules: {
     'one-var': 0,
@@ -25,8 +26,8 @@ module.exports = {
         requireReturn: true,
         requireReturnType: true,
         requireParamDescription: false,
-        requireReturnDescription: true,
-      },
+        requireReturnDescription: true
+      }
     ],
     'require-jsdoc': [
       'error',
@@ -34,9 +35,9 @@ module.exports = {
         require: {
           FunctionDeclaration: true,
           MethodDefinition: true,
-          ClassDeclaration: true,
-        },
-      },
-    ],
-  },
+          ClassDeclaration: true
+        }
+      }
+    ]
+  }
 };
