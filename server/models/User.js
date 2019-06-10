@@ -87,7 +87,7 @@ const userModel = (sequelize, DataTypes) => {
   User.prototype.encryptPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(6));
 
   User.beforeCreate((user) => {
-    user.password = user.encryptPassword(user.password);
+    user.password = user.encryptPassword('password');
   });
 
 

@@ -15,12 +15,14 @@ class Authenticate {
    */
   static generateToken(id, email) {
     const token = jwt.sign(
+
       {
         userId: id, email
       },
       process.env.SECRET_KEY, {
         expiresIn: '7d'
       }
+
     );
 
     return token;
