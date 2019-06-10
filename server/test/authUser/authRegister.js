@@ -16,7 +16,7 @@ describe('Post api/users', () => {
         email: 'ted123@mail.com',
         password: '12345678',
         age: 25,
-        industry: 'Entertainment'
+        industry: 'Entertainment',
       })
       .end((err, res) => {
         expect(res.status).to.eql(201);
@@ -39,7 +39,7 @@ describe('Post api/users', () => {
         email: '',
         password: '',
         age: '',
-        industry: ''
+        industry: '',
       })
       .end((err, res) => {
         expect(res.status).to.eql(422);
