@@ -39,6 +39,7 @@
     "express": "^4.16.3",
     "express-session": "^1.15.6",
     "faker": "^4.1.0",
+    "express-validator": "^5.3.1",
     "jsdoc": "^3.6.2",
     "jsonwebtoken": "^8.5.1",
     "mocha": "^6.1.4",
