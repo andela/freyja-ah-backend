@@ -9,7 +9,6 @@ schemes:
 paths:
   /users:
     post:
-      post:
       description: Creates a new user
       summary: Signup
       tags:
@@ -22,55 +21,48 @@ paths:
       parameters:
         - name: firstName
           in: formData
-          required: true
           type: string
           description: 'User firstname'
         - name: lastName
           in: formData
-          required: true
           type: string
           description: 'User lastname'
         - name: email
           in: formData
-          required: true
           type: string
           description: 'unique email'
         - name: userName
           in: formData
-          required: true
           type: string
           description: 'username'
         - name: industry
           in: formData
-          required: false
           type: string
           description: 'user place of work'
         - name: age
           in: formData
-          required: true
           type: integer
           format: int32
           description: 'user age'
         - name: employed
           in: formData
-          required: false
           type: boolean
           description: 'employment status'
         - name: password
           in: formData
-          required: true
           minLength: 8
           type: string
           description: 'user password'
         - name: confirmPassword
           in: formData
-          required: true
           minLength: 8
           type: string
           description: 'user password'
       responses:
         201:
-          description: 'status code'
+          description: 'user created succesfully'
+        422:
+          description: 'invalid input'
   /users/login:
     post:
       description: Login an existing User
@@ -95,7 +87,7 @@ paths:
           description: 'user password'
       responses:
         200:
-          description: 'status code'
+          description: 'login successful'
   /user/5:
     get:
       description: Get a specific user
@@ -107,7 +99,7 @@ paths:
         - application/json
       responses:
         200:
-          description: 'status code'
+          description: 'User returned successfully'
     put:
       description: Update an existing user details
       summary: Update a specific user information
@@ -158,7 +150,7 @@ paths:
 
       responses:
         200:
-          description: ''
+          description: 'user details updated successfully'
 tags:
   - name: Users
     description: User routes to signup, login, update and get specific User
