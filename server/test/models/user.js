@@ -10,18 +10,20 @@ import {
 import User from '../../models/User';
 
 
-describe('test for users model', () => {
+describe.only('test for users model', () => {
   const userModel = User(sequelize, dataTypes);
   const user = new userModel();
 
   checkModelName(userModel)('User');
 
   context('properties', () => {
-    ['firstName', 'lastName', 'email', 'encryptPassword', 'comparePassword'].forEach(
-
-      checkPropertyExists(user)
-
-    );
+    [
+      'firstName',
+      'lastName',
+      'email',
+      'encryptPassword',
+      'comparePassword'
+    ].forEach(checkPropertyExists(user));
   });
   context('hooks', () => {
     [
