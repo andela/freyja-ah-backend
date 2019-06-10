@@ -4,13 +4,12 @@ import {
   dataTypes,
   checkModelName,
   checkHookDefined,
-  checkPropertyExists
+  checkPropertyExists,
 } from 'sequelize-test-helpers';
 
 import User from '../../models/User';
 
-
-describe.only('test for users model', () => {
+describe('test for users model', () => {
   const userModel = User(sequelize, dataTypes);
   const user = new userModel();
 
@@ -22,13 +21,11 @@ describe.only('test for users model', () => {
       'lastName',
       'email',
       'encryptPassword',
-      'comparePassword'
+      'comparePassword',
     ].forEach(checkPropertyExists(user));
   });
   context('hooks', () => {
-    [
-      'beforeCreate',
-    ].forEach(checkHookDefined(user));
+    ['beforeCreate'].forEach(checkHookDefined(user));
   });
 
   it('it should test for hashed password', (done) => {

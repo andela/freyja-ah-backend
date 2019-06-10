@@ -151,9 +151,50 @@ paths:
       responses:
         200:
           description: 'user details updated successfully'
+  /users/reset:
+    post:
+      description: Reset a user's password
+      summary: Reset Password
+      tags:
+        - Users
+      operationId: ResetUserPassword
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: email
+          in: formData
+          required: true
+          type: string
+          description: 'user registered email'
+      responses:
+        202:
+          description: 'status code'
+  /users/change-password:
+    post:
+      description: Change user password
+      summary: Change Password
+      tags:
+        - Users
+      operationId: ChangePassword
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: newPassword
+          in: formData
+          required: true
+          type: string
+          description: 'user new password'
+      responses:
+        202:
+          description: 'status code'
+
 tags:
   - name: Users
-    description: User routes to signup, login, update and get specific User
+    description: User routes to signup, login, update and get specific User, reset password
 
 externalDocs:
   description: 'Find out more about Swagger'

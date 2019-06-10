@@ -1,4 +1,3 @@
-
 import sendGridMailer from '@sendgrid/mail';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -7,22 +6,31 @@ import Authenticate from '../middleware/auth/Authenticate';
 
 dotenv.config();
 sendGridMailer.setApiKey(process.env.SENDGRID_API_KEY);
+
 const { User } = models;
+
 /**
  * A class that handles user methods
-* */
+ * */
 class UserController {
   /**
-     * register a user
-     * @param {object} req - request object
-     * @param {object} res - response object
-     * @param{function} next - next function
-     * @returns {object} response object
-     *
-  */
+   * register a user
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @param{function} next - next function
+   * @returns {object} response object
+   *
+   */
   static async resgisterUser(req, res, next) {
     const {
-      firstName, lastName, email, userName, password,
+      firstName,
+      lastName,
+      email,
+      userName,
+      password,
+      industry,
+      age,
+      employed,
     } = req.body;
     const usersObj = await User.create({
       firstName,
@@ -30,6 +38,9 @@ class UserController {
       email,
       userName,
       password,
+      age,
+      industry,
+      employed,
     }).catch(next);
     const token = Authenticate.generateToken(usersObj.id, usersObj.email);
     if (usersObj.dataValues) {
@@ -37,7 +48,9 @@ class UserController {
         to: usersObj.email,
         from: 'CSLC@gmail.com',
         subject: 'Welcome',
-        html: `<strong>Welcome to Customer Service Learning Community <h3> copy and paste this link below in your browser to verify your account<h3/></strong> ${process.env.HOST}/api/user/verify/${token} `,
+        html: `<strong>Welcome to Customer Service Learning Community <h3> copy and paste this link below in your browser to verify your account<h3/></strong> ${
+          process.env.HOST
+        }/api/user/verify/${token} `,
       };
       await sendGridMailer.send(msg);
     }
@@ -52,18 +65,48 @@ class UserController {
         email: usersObj.email,
         userName: usersObj.userName,
       },
-      token
+      token,
     });
   }
 
   /**
-     * register a user
-     * @param {object} req - request object
-     * @param {object} res - response object
-     * @param{function} next - next function
-     * @returns {object} response object
-     *
-  */
+   * get a registered user
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @param{function} next - next function
+   * @returns {object} response object
+   *
+   */
+  static async getUser(req, res, next) {
+    const user = await User.findByPk(parseInt(req.params.id, 10)).catch(next);
+    if (!user) {
+      return res.status(404).json({
+        status: res.statusCode,
+        message: 'user not registered',
+      });
+    }
+    const { id, firstName, lastName, userName, email } = user;
+    return res.status(200).json({
+      status: res.statusCode,
+      message: 'user returned successfully',
+      user: {
+        id,
+        firstName,
+        lastName,
+        userName,
+        email,
+      },
+    });
+  }
+
+  /**
+   * register a user
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @param{function} next - next function
+   * @returns {object} response object
+   *
+   */
   static async verifyUser(req, res) {
     const { token } = req.params;
 
@@ -78,64 +121,31 @@ class UserController {
       }
       const updatedUser = await User.update(
         { isVerified: true },
-        { where: { id: decodedToken.userId } }
+        { where: { id: decodedToken.userId } },
       );
 
       if (updatedUser) {
         return res.status(200).json({
           status: 200,
-          message: 'user has been verified'
+          message: 'user has been verified',
         });
       }
     } catch (error) {
       return res.status(500).json({
         status: 500,
-        error
+        error,
       });
     }
   }
 
-
   /**
-     * get a registered user
-     * @param {object} req - request object
-     * @param {object} res - response object
-     * @param{function} next - next function
-     * @returns {object} response object
-     *
-  */
-  static async getUser(req, res, next) {
-    const user = await User.findByPk(parseInt(req.params.id, 10)).catch(next);
-    if (!user) {
-      return res.status(404).json({
-        status: res.statusCode,
-        message: 'user not registered',
-      });
-    }
-    const {
-      id, firstName, lastName, userName, email,
-    } = user;
-    return res.status(200).json({
-      status: res.statusCode,
-      message: 'user returned successfully',
-      user: {
-        id,
-        firstName,
-        lastName,
-        userName,
-        email
-      },
-    });
-  }
-
-  /**
-     * login a registered user
-     * @param {object} req - request object
-     * @param {object} res - response object
-     * @param{function} next - next function
-     * @returns {object} response object
-     *
-  */
+   * login a registered user
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @param{function} next - next function
+   * @returns {object} response object
+   *
+   */
   static async login(req, res, next) {
     const { email, password } = req.body;
     if (!email) {
@@ -151,37 +161,40 @@ class UserController {
         errors: { password: 'please provide your password' },
       });
     }
-
-    const user = await User.findOne(
-      { where: { email } }
-    ).catch(next);
+    const user = await User.findOne({ where: { email } }).catch(next);
     if (!user) {
       return res.status(401).json({
         status: res.statusCode,
         error: 'Invalid email or password',
       });
     }
-    return res.status(200).json({
-      status: res.statusCode,
-      message: 'login was sucessful',
-      user: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        userName: user.userName,
-        email: user.email,
-      },
+    if (user.comparePassword(password, user)) {
+      return res.status(200).json({
+        status: res.statusCode,
+        message: 'login was sucessful',
+        user: {
+          id: user.id,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          userName: user.userName,
+          email: user.email,
+        },
+      });
+    }
+    return res.status(401).json({
+      status: 'failed',
+      error: 'invalid email or password'
     });
   }
 
   /**
-     * udate an existing  user
-     * @param {object} req - request object
-     * @param {object} res - response object
-     * @param{function} next - next function
-     * @returns {object} response object
-     *
-  */
+   * udate an existing  user
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @param{function} next - next function
+   * @returns {object} response object
+   *
+   */
   static async updateUser(req, res, next) {
     const userId = parseInt(req.params.id, 10);
     const user = await User.findByPk(userId).catch(next);
@@ -215,6 +228,111 @@ class UserController {
         age: updatedUser.age,
       },
     });
+  }
+
+  /**
+   * reset user's password
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @returns {object} response object
+   *
+   */
+  static async resetPassword(req, res) {
+    const { email } = req.body;
+    try {
+      const user = await User.findOne({ where: { email } });
+      if (!user) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'Email does not exist',
+        });
+      }
+      const token = Authenticate.generateToken(user.id, user.email);
+      const resetPasswordUrl = `${
+        process.env.HOST
+      }/api/users/change-password?token=${token}`;
+      const message = {
+        to: email,
+        from: {
+          name: 'Customer Service Learning Community',
+          email: 'tundenasri@gmail.com',
+        },
+        subject: 'This is a test Email',
+        html: `<h1> Hello there ${user.dataValues.firstName}</h1>
+              <p> Please use this url to change your password ${resetPasswordUrl}</p>
+              use the url to change your password by adding your new password to the body of the request
+        `,
+      };
+      sendGridMailer
+        .send(message)
+        .then((sent) => {
+          return res.status(202).json({
+            status: 'success',
+            message:
+              'Reset password email as been sent to you, Kindly check your email for next steps to be taken to reset your password',
+          });
+        })
+        .catch((error) => {
+          return res.status(401).json({
+            status: 'error',
+            message: error,
+          });
+        });
+    } catch (error) {
+      return res.status(422).json({
+        status: 'error',
+        message: 'Unable to send reset password email, please try again',
+      });
+    }
+  }
+
+  /**
+   * change user's password
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @returns {object} response object
+   *
+   */
+  static async changePassword(req, res) {
+    const { token } = req.query;
+    const { newPassword } = req.body;
+    if (!token) {
+      return res.status(401).json({
+        status: 'error',
+        message:
+          'token not found in the request, kindly send another request to reset password',
+      });
+    }
+    if (!newPassword) {
+      return res.status(422).json({
+        status: 'error',
+        message: 'new password is not provided',
+      });
+    }
+    const decoded = Authenticate.verifyToken(token);
+    if (!decoded) {
+      return res.status(401).json({
+        status: 'error',
+        message: 'token is invalid, please send reset password request again',
+      });
+    }
+    const { email } = decoded;
+    try {
+      const foundUser = await User.findOne({ where: { email } });
+      if (!foundUser) {
+        return res.status(404).json({
+          status: 'error',
+          message: 'user not found',
+        });
+      }
+      await foundUser.update({
+        password: newPassword,
+      });
+      return res.status(202).json({
+        status: 'success',
+        message: 'password updated successfully',
+      });
+    } catch (error) {}
   }
 }
 

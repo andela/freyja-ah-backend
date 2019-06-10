@@ -14,4 +14,6 @@ router.put('/user/:id', userController.updateUser);
 
 router.get('/user/verify/:token', userController.verifyUser);
 
+router.post('/users/reset', userController.resetPassword);
+router.post('/users/change-password', userController.changePassword);
 export default router;
