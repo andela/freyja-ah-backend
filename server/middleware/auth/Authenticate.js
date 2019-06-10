@@ -15,17 +15,29 @@ class Authenticate {
    */
   static generateToken(id, email) {
     const token = jwt.sign(
-
       {
-        userId: id, email
+        userId: id,
+        email,
       },
-      process.env.SECRET_KEY, {
-        expiresIn: '7d'
-      }
-
+      process.env.SECRET_KEY,
+      {
+        expiresIn: '7d',
+      },
     );
-
     return token;
+  }
+
+  /**
+   * Generates user tokens
+   * @param {string} token
+   * @returns {object} decoded
+   */
+  static verifyToken(token) {
+    let payload = '';
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+      payload = decoded;
+    });
+    return payload;
   }
 }
 

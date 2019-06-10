@@ -11,7 +11,7 @@ describe('Post api/users/login', () => {
       .post('/api/users/login')
       .send({
         email: 'ted123@mail.com',
-        password: '12345678'
+        password: '12345678',
       })
       .end((err, res) => {
         expect(res.status).to.eql(200);
@@ -29,7 +29,7 @@ describe('Post api/users/login', () => {
       .post('/api/users/login')
       .send({
         email: '',
-        password: '123456'
+        password: '123456',
       })
       .end((err, res) => {
         expect(res.body.errors.email).to.eql('please provide your email');
@@ -43,7 +43,7 @@ describe('Post api/users/login', () => {
       .post('/api/users/login')
       .send({
         email: 'ted@mail.com',
-        password: ''
+        password: '',
       })
       .end((err, res) => {
         expect(res.body.errors.password).to.eql('please provide your password');
@@ -57,7 +57,7 @@ describe('Post api/users/login', () => {
       .post('/api/users/login')
       .send({
         email: 'prince@mail.com',
-        password: '123456'
+        password: '123456',
       })
       .end((err, res) => {
         expect(res.body.error).to.eql('Invalid email or password');
