@@ -1,6 +1,12 @@
+
+import sendGridMailer from '@sendgrid/mail';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 import models from '../models';
 import Authenticate from '../middleware/auth/Authenticate';
 
+dotenv.config();
+sendGridMailer.setApiKey(process.env.SENDGRID_API_KEY);
 const { User } = models;
 /**
  * A class that handles user methods
@@ -16,7 +22,7 @@ class UserController {
   */
   static async resgisterUser(req, res, next) {
     const {
-      firstName, lastName, email, userName, password, industry, age, employed,
+      firstName, lastName, email, userName, password,
     } = req.body;
     const usersObj = await User.create({
       firstName,
@@ -24,11 +30,18 @@ class UserController {
       email,
       userName,
       password,
-      age,
-      industry,
-      employed
     }).catch(next);
     const token = Authenticate.generateToken(usersObj.id, usersObj.email);
+    if (usersObj.dataValues) {
+      const msg = {
+        to: usersObj.email,
+        from: 'CSLC@gmail.com',
+        subject: 'Welcome',
+        html: `<strong>Welcome to Customer Service Learning Community <h3> copy and paste this link below in your browser to verify your account<h3/></strong> ${process.env.HOST}/api/user/verify/${token} `,
+      };
+      await sendGridMailer.send(msg);
+    }
+
     return res.status(201).json({
       status: res.statusCode,
       message: 'user registration was successful',
@@ -42,6 +55,46 @@ class UserController {
       token
     });
   }
+
+  /**
+     * register a user
+     * @param {object} req - request object
+     * @param {object} res - response object
+     * @param{function} next - next function
+     * @returns {object} response object
+     *
+  */
+  static async verifyUser(req, res) {
+    const { token } = req.params;
+
+    const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    try {
+      const user = await User.findByPk(decodedToken.userId);
+      if (!user) {
+        return res.status(404).json({
+          status: res.statusCode,
+          message: 'user not registered',
+        });
+      }
+      const updatedUser = await User.update(
+        { isVerified: true },
+        { where: { id: decodedToken.userId } }
+      );
+
+      if (updatedUser) {
+        return res.status(200).json({
+          status: 200,
+          message: 'user has been verified'
+        });
+      }
+    } catch (error) {
+      return res.status(500).json({
+        status: 500,
+        error
+      });
+    }
+  }
+
 
   /**
      * get a registered user

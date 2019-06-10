@@ -52,24 +52,16 @@ const userModel = (sequelize, DataTypes) => {
         },
       },
     },
-    age: {
-      type: DataTypes.INTEGER,
-      allowNull: {
-        args: false,
-        msg: 'Please enter your username',
-      },
-    },
-    employed: {
-      default: true,
+    isVerified: {
       type: DataTypes.BOOLEAN,
-    },
-    industry: {
-      allowNull: true,
-      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: false
     }
   },
 
-  {});
+  {
+    timestamps: false,
+  });
   /**
      * compares if the passed arguments are equal
      * @param {string} password
@@ -89,7 +81,6 @@ const userModel = (sequelize, DataTypes) => {
   User.beforeCreate((user) => {
     user.password = user.encryptPassword('password');
   });
-
 
   User.associate = (models) => {
     // associations can be defined here
