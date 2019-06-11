@@ -1,4 +1,4 @@
-'use strict';
+/* eslint-disable no-unused-vars */
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.createTable('Modules', {
@@ -16,7 +16,5 @@ module.exports = {
       },
     });
   },
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Modules');
-  }
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('Modules')
 };

@@ -5,8 +5,5 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     timestamps: false,
   });
-  Module.associate = (models) => {
-    // associations can be defined here
-  };
   return Module;
 };

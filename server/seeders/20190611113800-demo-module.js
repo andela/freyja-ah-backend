@@ -1,14 +1,10 @@
-'use strict';
+/* eslint-disable no-unused-vars */
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
-    return queryInterface.bulkInsert('Modules', [{
-      name: 'Obj',
-      description: 'A new obj',
-    }], {});
-  },
+  up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Modules', [{
+    name: 'Obj',
+    description: 'A new obj',
+  }], {}),
 
-  down: (queryInterface, Sequelize) => {
-    return queryInterface.bulkDelete('Modules', null, {});
-  }
+  down: (queryInterface, Sequelize) => queryInterface.bulkDelete('Modules', null, {})
 };
