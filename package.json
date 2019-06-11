@@ -9,13 +9,15 @@
     "undo-all:migrate": "sequelize db:migrate:undo:all",
     "refreshdb": "npm run undo-all:migrate && npm run migrate",
     "undo-current:migrate": "sequelize db:migrate:undo",
-    "test:migrate": "NODE_ENV=test npm run undo-all:migrate && NODE_ENV=test npm run migrate ",
+    "test:migrate": "NODE_ENV=test npm run undo-all:migrate && NODE_ENV=test npm run migrate && NODE_ENV=test npm run commit-seed",
     "start": "node --require babel-polyfill ./build/index.js",
     "start:dev": "nodemon --exec babel-node ./server/index.js",
     "clean": "rm -rf ./build && mkdir build",
     "build": "npm run clean && babel -d build ./server",
     "heroku-postbuild": "npm run build",
-    "coverage": "nyc report --reporter=lcov --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=lcov --reporter=text-lcov | coveralls",
+    "seed": "sequelize seed:generate --name demo-modules",
+    "commit-seed": "sequelize db:seed:all"
   },
   "engines": {
     "node": "10.15.3",
