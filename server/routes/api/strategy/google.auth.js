@@ -5,14 +5,14 @@ import { userSocialMediaCallback } from '../../../controller/socialMediaControll
 const router = express.Router();
 
 router.get(
-  '/auth/facebook',
-  passport.authenticate('facebook', { scope: ['email'] }),
+  '/auth/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
 router.get(
-  '/auth/facebook/callback',
-  passport.authenticate('facebook', { session: false }),
-  userSocialMediaCallback,
+  '/auth/google/callback',
+  passport.authenticate('google', { session: false }),
+  userSocialMediaCallback
 
 );
 export default router;
