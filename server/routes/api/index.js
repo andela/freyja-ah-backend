@@ -1,10 +1,13 @@
 import express from 'express';
 import usersRoute from './users';
 import modulesRoute from './modules';
+import facebookAuthRoute from './strategy/facebook.auth';
 
 const router = express.Router();
 router.use('/', usersRoute);
 router.use('/', modulesRoute);
+router.use('/', usersRoute);
+router.use('/', facebookAuthRoute);
 
 router.use((err, req, res, next) => {
   if (err.name === 'ValidationError') {
@@ -19,4 +22,4 @@ router.use((err, req, res, next) => {
   return next(err);
 });
 
-module.exports = router;
+export default router;

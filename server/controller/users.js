@@ -21,44 +21,45 @@ class UserController {
    * @returns {object} response object
    *
    */
-  static async resgisterUser(req, res, next) {
+  static async resgisterUser(req, res) {
     const {
       firstName, lastName, email, userName, password
     } = req.body;
-
-    const user = await User.create({
-      firstName,
-      lastName,
-      email,
-      userName,
-      password
-    }).catch(next);
-
-    const token = Authenticate.generateToken(user.id, user.email, user.userName);
-    if (user.dataValues) {
-      const msg = {
-        to: user.email,
-        from: 'CSLC@gmail.com',
-        subject: 'Welcome',
-        html: `<strong>Welcome to Customer Service Learning Community <h3> copy and paste this link below in your browser to verify your account<h3/></strong> ${
-          process.env.HOST
-        }/api/user/verify/${token} `,
-      };
-      await sendGridMailer.send(msg);
+    try {
+      const user = await User.create({
+        firstName,
+        lastName,
+        email,
+        userName,
+        password
+      });
+      if (user.dataValues) {
+        const token = Authenticate.generateToken(user.id, user.email, user.userName);
+        const msg = {
+          to: user.email,
+          from: 'CSLC@gmail.com',
+          subject: 'Welcome',
+          html: `<strong>Welcome to Customer Service Learning Community <h3> copy and paste this link below in your browser to verify your account<h3/></strong> ${
+            process.env.HOST
+          }/api/user/verify/${token} `,
+        };
+        await sendGridMailer.send(msg);
+        return res.status(201).json({
+          status: res.statusCode,
+          message: 'user registration was successful',
+          user: {
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            userName: user.userName,
+          },
+          token,
+        });
+      }
+    } catch (error) {
+      return error;
     }
-
-    return res.status(201).json({
-      status: res.statusCode,
-      message: 'user registration was successful',
-      user: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        userName: user.userName,
-      },
-      token,
-    });
   }
 
   /**
@@ -258,19 +259,15 @@ class UserController {
       };
       sendGridMailer
         .send(message)
-        .then((sent) => {
-          return res.status(202).json({
-            status: 'success',
-            message:
+        .then(sent => res.status(202).json({
+          status: 'success',
+          message:
               'Reset password email as been sent to you, Kindly check your email for next steps to be taken to reset your password',
-          });
-        })
-        .catch((error) => {
-          return res.status(401).json({
-            status: 'error',
-            message: error,
-          });
-        });
+        }))
+        .catch(error => res.status(401).json({
+          status: 'error',
+          message: error,
+        }));
     } catch (error) {
       return res.status(422).json({
         status: 'error',

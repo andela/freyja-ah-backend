@@ -4,11 +4,14 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
 import passport from 'passport';
+import session from 'express-session';
 import errorhandler from 'errorhandler';
 import YAML from 'yamljs';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
 import routes from './routes/index';
+import { facebookStrategy } from './socialMediaService/passport';
+
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -24,6 +27,18 @@ app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(passport.initialize());
+app.use(
+  session({
+    secret: 'authorshaven',
+    cookie: { maxAge: 60000 },
+    resave: false,
+    saveUninitialized: false
+  })
+);
+passport.use('facebook', facebookStrategy);
+
 
 if (!isProduction) {
   app.use(errorhandler());
