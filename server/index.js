@@ -10,7 +10,7 @@ import YAML from 'yamljs';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
 import routes from './routes/index';
-import { facebookStrategy, googleStrategy } from './socialMediaService/passport';
+import { facebookStrategy, googleStrategy, twitterStrategy } from './socialMediaService/passport';
 
 
 const isProduction = process.env.NODE_ENV === 'production';
@@ -39,6 +39,7 @@ app.use(
 );
 passport.use('facebook', facebookStrategy);
 passport.use('google', googleStrategy);
+passport.use('twitter', twitterStrategy);
 
 
 if (!isProduction) {

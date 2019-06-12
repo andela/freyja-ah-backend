@@ -3,6 +3,8 @@ import usersRoute from './users';
 import modulesRoute from './modules';
 import facebookAuthRoute from './strategy/facebook.auth';
 import googleAuthRoute from './strategy/google.auth';
+import twitterAuthRoute from './strategy/twitter.auth';
+
 
 const router = express.Router();
 router.use('/', usersRoute);
@@ -10,6 +12,7 @@ router.use('/', modulesRoute);
 router.use('/', usersRoute);
 router.use('/', facebookAuthRoute);
 router.use('/', googleAuthRoute);
+router.use('/', twitterAuthRoute);
 
 router.use((err, req, res, next) => {
   if (err.name === 'ValidationError') {
