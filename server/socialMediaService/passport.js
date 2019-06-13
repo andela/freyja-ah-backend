@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as TwitterStrategy } from 'passport-twitter';
-import { socialMediaCallback } from '../controller/socialMediaController';
+import { socialSignOn } from '../controller/socialRegistration';
 
 dotenv.config();
 
@@ -14,42 +14,42 @@ const {
   GOOGLE_APP_SECRET,
   TWITTER_APP_KEY,
   TWITTER_APP_SECRET,
-  API_URL,
+  HOST,
 } = process.env;
 
 const facebookConfig = {
   clientID: FACEBOOK_APP_ID,
   clientSecret: FACEBOOK_APP_SECRET,
-  callbackURL: `${API_URL}/api/auth/facebook/callback`,
+  callbackURL: `${HOST}/api/auth/facebook/callback`,
   profileFields: ['id', 'emails', 'displayName'],
 };
 
 const googleConfig = {
   clientID: GOOGLE_APP_ID,
   clientSecret: GOOGLE_APP_SECRET,
-  callbackURL: `${API_URL}/api/auth/google/callback`,
+  callbackURL: `${HOST}/api/auth/google/callback`,
 };
 
 const twitterConfig = {
   consumerKey: TWITTER_APP_KEY,
   consumerSecret: TWITTER_APP_SECRET,
-  callbackURL: `${API_URL}/api/auth/twitter/callback`,
+  callbackURL: `${HOST}/api/auth/twitter/callback`,
   includeEmail: true
 };
 
 const facebookStrategy = new FacebookStrategy(
   facebookConfig,
-  socialMediaCallback
+  socialSignOn
 );
 
 const googleStrategy = new GoogleStrategy(
   googleConfig,
-  socialMediaCallback
+  socialSignOn
 );
 
 const twitterStrategy = new TwitterStrategy(
   twitterConfig,
-  socialMediaCallback,
+  socialSignOn,
 );
 
 export { facebookStrategy, googleStrategy, twitterStrategy };

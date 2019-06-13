@@ -2,19 +2,18 @@ import Authenticate from '../middleware/auth/Authenticate';
 import models from '../models';
 
 const { User } = models;
-const socialMediaCallback = (accessToken, refreshToken, profile, done) => {
+const socialSignOn = async (accessToken, refreshToken, profile, done) => {
   try {
     const {
       id, name, emails,
     } = profile;
-
     if (!emails) {
       const noEmailError = 'No email was found in your account';
       return done(null, noEmailError);
     }
 
     const email = emails[0].value;
-    User.findOrCreate({
+    const [user, created] = await User.findOrCreate({
       where: { email },
       defaults: {
         firstName: name.givenName,
@@ -23,18 +22,17 @@ const socialMediaCallback = (accessToken, refreshToken, profile, done) => {
         email,
         isVerified: true,
       }
-    }).then(([user, created]) => {
-      const token = Authenticate.generateToken(user.id, user.email, user.userName);
-      user.isNewUser = created;
-      user.token = token;
-      return done(null, user);
     });
+    const token = Authenticate.generateToken(user.id, user.email, user.userName);
+    user.isNewUser = created;
+    user.token = token;
+    return done(null, user);
   } catch (err) {
     return err;
   }
 };
 
-const userSocialMediaCallback = (req, res) => {
+const newUserCheck = (req, res) => {
   const { isNewUser, token } = req.user;
   if (isNewUser) {
     return res.status(201).json({
@@ -51,4 +49,4 @@ const userSocialMediaCallback = (req, res) => {
   });
 };
 
-export { socialMediaCallback, userSocialMediaCallback };
+export { socialSignOn, newUserCheck };

@@ -1,11 +1,14 @@
 import { describe, it } from 'mocha';
 import {
-  expect, use, should, request
+  expect,
+  use,
+  should,
+  request
 } from 'chai';
 import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import nock from 'nock';
-import { socialMediaCallback, userSocialMediaCallback } from '../../controller/socialMediaController';
+import { socialSignOn, newUserCheck } from '../../controller/socialRegistration';
 import server from '../../index';
 import fakeUser from './fakeUser';
 import fakeReponse from './fakeResponse';
@@ -34,12 +37,12 @@ describe('passport strategy', () => {
     done();
   });
   it('should be a function', (done) => {
-    expect(socialMediaCallback).to.be.a('function');
-    expect(userSocialMediaCallback).to.be.a('function');
+    expect(socialSignOn).to.be.a('function');
+    expect(newUserCheck).to.be.a('function');
     done();
   });
   it('should return user request object when  login is successful', (done) => {
-    const user = userSocialMediaCallback(fakeUser.userRequest1, fakeReponse);
+    const user = newUserCheck(fakeUser.userRequest1, fakeReponse);
     expect(user).to.be.an('object').that.has.property('token');
     expect(user).to.be.an('object').that.has.property('message');
     expect(user.message).to.eql('Login was successful');
@@ -47,7 +50,7 @@ describe('passport strategy', () => {
   });
 
   it('should return user request object when registration is successful', (done) => {
-    const user = userSocialMediaCallback(fakeUser.userRequest2, fakeReponse);
+    const user = newUserCheck(fakeUser.userRequest2, fakeReponse);
     expect(user).to.be.an('object').that.has.property('token');
     expect(user).to.be.an('object').that.has.property('message');
     expect(user.message).to.eql('User resgistration was successful');
@@ -65,7 +68,7 @@ describe('passport strategy', () => {
     expect(response.text).to.be.deep.equal('connected to google');
   });
 
-  context('socialMediaCallback Test', async () => {
+  context('socialAuthentication Test', async () => {
     const accessToken = '';
     const refreshToken = '';
     const profile = {
@@ -80,19 +83,18 @@ describe('passport strategy', () => {
     const done = sinon.stub();
 
     const stub = sinon.spy(User, 'findOrCreate');
-    await socialMediaCallback(accessToken, refreshToken, profile, done);
-    expect(stub).to.have.been.calledWith(
-      {
-        defaults: {
-          email: 'barney@mail.com',
-          firstName: 'Barney',
-          isVerified: true,
-          lastName: 'Stinson',
-          password: '999887634'
-        },
-        where: { email: 'barney@mail.com' }
-      }
-    );
+    await socialSignOn(accessToken, refreshToken, profile, done);
+    expect(stub).to.have.been.calledWith({
+      defaults: {
+        email: 'barney@mail.com',
+        firstName: 'Barney',
+        isVerified: true,
+        lastName: 'Stinson',
+        password: '999887634'
+      },
+      where: { email: 'barney@mail.com' }
+    });
+
     stub.restore();
   });
 });

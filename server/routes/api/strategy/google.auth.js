@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { userSocialMediaCallback } from '../../../controller/socialMediaController';
+import { newUserCheck } from '../../../controller/socialRegistration';
 
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.get(
 router.get(
   '/auth/google/callback',
   passport.authenticate('google', { session: false }),
-  userSocialMediaCallback
+  newUserCheck
 
 );
 export default router;

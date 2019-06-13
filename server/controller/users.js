@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import sendGridMailer from '@sendgrid/mail';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -322,7 +323,9 @@ class UserController {
         status: 'success',
         message: 'password updated successfully',
       });
-    } catch (error) {}
+    } catch (error) {
+      return error;
+    }
   }
 }
 

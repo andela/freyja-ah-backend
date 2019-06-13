@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import express from 'express';
+import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
@@ -12,7 +13,7 @@ import swaggerSpec from './config/swagger';
 import routes from './routes/index';
 import { facebookStrategy, googleStrategy, twitterStrategy } from './socialMediaService/passport';
 
-
+dotenv.config();
 const isProduction = process.env.NODE_ENV === 'production';
 
 // Create global app object
@@ -29,14 +30,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(passport.initialize());
-app.use(
-  session({
-    secret: 'authorshaven',
-    cookie: { maxAge: 60000 },
-    resave: false,
-    saveUninitialized: false
-  })
-);
+
 passport.use('facebook', facebookStrategy);
 passport.use('google', googleStrategy);
 passport.use('twitter', twitterStrategy);
