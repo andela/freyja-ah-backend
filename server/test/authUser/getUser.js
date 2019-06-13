@@ -4,16 +4,34 @@ import chaihttp from 'chai-http';
 import server from '../../index';
 
 use(chaihttp);
-
+let userId;
 describe('Post api/user', () => {
+  before((done) => {
+    const user = {
+      firstName: 'Tom',
+      lastName: 'Cruise',
+      userName: 'cruise',
+      email: 'cruiserr@mail.com',
+      password: '12345678',
+      gender: 'male'
+    };
+    request(server)
+      .post('/api/users')
+      .send(user)
+      .end((err, res) => {
+        userId = res.body.user.id;
+        done(err);
+      });
+  });
+
   it('get a registered user', (done) => {
     request(server)
-      .get('/api/user/1')
+      .get(`/api/user/${userId}`)
       .end((err, res) => {
         expect(res.status).to.eql(200);
         expect(res.body.user).to.be.an('object');
-        expect(res.body.user.firstName).to.eql('Ted');
-        expect(res.body.user.email).to.eql('ted123@mail.com');
+        expect(res.body.user.firstName).to.eql('Tom');
+        expect(res.body.user.email).to.eql('cruiserr@mail.com');
         done(err);
       });
   });

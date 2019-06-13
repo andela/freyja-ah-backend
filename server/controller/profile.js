@@ -1,22 +1,21 @@
 import models from '../models';
 
-const { User, Profile } = models;
+const { User } = models;
 /**
  * A class that handles user profile operations
 * */
 class ProfileController {
   /**
-   * create a profile
+   * edits a profile
    * @param {object} req - request object
    * @param {object} res - response object
    * @param{function} next - next function
    * @returns {object} response object
    *
    */
-  static async createProfile(req, res, next) {
-    const { userId } = req.user;
-
+  static async editProfile(req, res, next) {
     try {
+      const { userId } = req.user;
       const user = await User.findByPk(userId);
       if (!user) {
         return res.status(404).json({
@@ -24,51 +23,38 @@ class ProfileController {
           error: 'This user does not exist',
         });
       }
-
+      const userProfile = await user.getProfile();
       const {
-        age, gender, phoneNumber, isEmployed, bio, yrsOfExperience, industry, image,
+        dateOfBirth, phoneNumber, isEmployed, bio, yrsOfExperience, industry, image,
         isEnrolled, progress, isCertified, instagram, twitter, facebook, linkedIn
       } = req.body;
 
-      const [newProfile, created] = await Profile.findOrCreate({
-        where: { userId },
-        defaults: {
-          age,
-          phoneNumber,
-          gender,
-          userId,
-          isEmployed,
-          bio,
-          yrsOfExperience,
-          industry,
-          image,
-          isEnrolled,
-          progress,
-          isCertified,
-          instagram,
-          twitter,
-          facebook,
-          linkedIn
-        }
-      });
+      const updatedValues = {
+        userId: userProfile.userId,
+        dateOfBirth: dateOfBirth || userProfile.dateOfBirth,
+        phoneNumber: phoneNumber || userProfile.phoneNumber,
+        isEmployed: isEmployed || userProfile.isEmployed,
+        bio: bio || userProfile.bio,
+        industry: industry || userProfile.industry,
+        yrsOfExperience: yrsOfExperience || userProfile.yrsOfExperience,
+        image: image || userProfile.image,
+        isEnrolled: isEnrolled || userProfile.isEnrolled,
+        progress: progress || userProfile.progress,
+        isCertified: isCertified || userProfile.isCertified,
+        instagram: instagram || userProfile.instagram,
+        twitter: twitter || userProfile.twitter,
+        facebook: facebook || userProfile.facebook,
+        linkedIn: linkedIn || userProfile.linkedIn
+      };
 
-      if (!created) {
-        return res.status(400).json({
-          status: 400,
-          error: 'This user already has a profile, please update profile instead',
-        });
-      }
-
-      return res.status(201).json({
+      const updatedProfile = await userProfile.update(updatedValues).catch(next);
+      return res.status(202).json({
         status: res.statusCode,
-        message: 'Profile was created successfully',
-        profile: newProfile.dataValues,
+        message: 'Profile was successfully edited',
+        profile: Object.assign({}, user.dataValues, updatedProfile.dataValues)
       });
     } catch (e) {
-      return res.status(500).json({
-        status: 500,
-        error: `There was an error creating your profile. ${e}`,
-      });
+      next();
     }
   }
 }

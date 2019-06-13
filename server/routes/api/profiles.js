@@ -6,8 +6,8 @@ import Authenticate from '../../middleware/auth/Authenticate';
 const router = express.Router();
 const { verifyToken } = Authenticate;
 const { newProfileValidator } = profileValidator;
-const { createProfile } = ProfileController;
+const { editProfile } = ProfileController;
 
-router.post('/profiles', verifyToken, newProfileValidator, createProfile);
+router.put('/profiles', verifyToken, newProfileValidator, editProfile);
 
 export default router;

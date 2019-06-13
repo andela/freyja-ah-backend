@@ -28,6 +28,13 @@ const userModel = (sequelize, DataTypes) => {
         msg: 'username already exists',
       },
     },
+    gender: {
+      type: DataTypes.STRING,
+      allowNull: {
+        args: false,
+        msg: 'Gender is required',
+      }
+    },
     password: {
       type: DataTypes.STRING,
       allowNull: {

@@ -17,6 +17,14 @@ const validator = [
       'lastName should not be empty, should be more than one and less than 50 character'
     )
     .trim(),
+  body('userName')
+    .not().isEmpty()
+    .withMessage('Username is required')
+    .isAlphanumeric()
+    .withMessage('Username should contain only numbers and letters')
+    .isLength({ min: 3 })
+    .withMessage('Username should be at least three characters in length')
+    .trim(),
   body('email')
     .isEmail()
     .withMessage('email should not be empty and should be a valid email')
@@ -26,14 +34,11 @@ const validator = [
     .isAlphanumeric()
     .withMessage('password should be alphanumeric')
     .isLength({ min: 8 })
-    .withMessage(
-      'password should not be empty, should be more than 8 characters'
-    )
-    .custom((value, { req }) => {
-      if (value !== req.body.confirmPassword) {
-        throw new Error('Your two passwords do not match');
-      } else return true;
-    }),
+    .withMessage('password should not be empty, should be more than 8 characters'),
+  body('gender')
+    .not().isEmpty()
+    .withMessage('Gender is required')
+    .trim(),
 
   function userInputValidation(req, res, next) {
     const errorValidation = validationResult(req);

@@ -2,40 +2,32 @@ const { check, validationResult } = require('express-validator/check');
 
 const profileValidator = {
   newProfileValidator: [
-    check('age')
-      .not().isEmpty()
-      .withMessage('Age is required')
+    check('dateOfBirth')
+      .optional()
       .trim()
-      .isNumeric()
-      .withMessage('Enter a valid age'),
-    check('gender')
-      .not().isEmpty()
-      .withMessage('Gender is required')
-      .trim()
-      .isIn(['male', 'Male', 'female', 'Female'])
-      .withMessage('Enter a valid gender'),
+      .isISO8601()
+      .withMessage('Enter a valid date of birth'),
     check('phoneNumber')
-      .not().isEmpty()
-      .withMessage('Phone number is required')
+      .optional()
       .trim()
       .isNumeric()
       .withMessage('Enter a valid phone number')
-      .isLength({ min: 11, max: 11 })
+      .isLength({ min: 6 })
       .withMessage('Phone number must be 11 digits'),
     check('isEmployed')
-      .not().isEmpty()
+      .optional()
       .withMessage('Employment status is required')
       .trim()
       .isBoolean()
       .withMessage('Enter employment status'),
     check('yrsOfExperience')
-      .not().isEmpty()
+      .optional()
       .withMessage('Years of experience is required')
       .trim()
       .isNumeric()
       .withMessage('Invalid value'),
     check('bio')
-      .not().isEmpty()
+      .optional()
       .withMessage('Please enter a bio')
       .trim()
       .isLength({ min: 10 })

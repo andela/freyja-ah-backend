@@ -9,47 +9,19 @@ module.exports = (sequelize, DataTypes) => {
       unique: {
         args: true,
         msg: 'A user exists with this phone number'
-      },
-      validate: {
-        len: {
-          args: [11],
-          msg: 'Phone number should be 11 digits'
-        }
       }
     },
-    age: {
-      type: DataTypes.INTEGER,
-      allowNull: {
-        args: false,
-        msg: 'Age is required',
-      },
-      validate: {
-        isNumeric: {
-          args: true,
-          msg: 'Please enter a valid age'
-        }
-      }
-    },
-    gender: {
-      type: DataTypes.STRING,
-      allowNull: {
-        args: false,
-        msg: 'Gender is required',
-      }
+    dateOfBirth: {
+      type: DataTypes.DATE,
+      allowNull: true,
     },
     isEmployed: {
       type: DataTypes.BOOLEAN,
-      allowNull: {
-        args: false,
-        msg: 'Employment status is required'
-      }
+      allowNull: true
     },
     yrsOfExperience: {
       type: DataTypes.INTEGER,
-      allowNull: {
-        args: false,
-        msg: 'Years of experience is required'
-      }
+      allowNull: true
     },
     industry: {
       type: DataTypes.STRING,
@@ -61,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     bio: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     isEnrolled: {
       type: DataTypes.BOOLEAN,
