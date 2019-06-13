@@ -186,10 +186,24 @@ paths:
       responses:
         202:
           description: 'status code'
-
+  /modules:
+    get:
+      description: get all modules
+      summary: get modules
+      tags: 
+        - Modules
+      operationId: GetModules
+      produces:
+        - application/json
+      responses:
+        200:
+          description: 'Modules returned successfully'
 tags:
   - name: Users
     description: User routes to signup, login, update and get specific User, reset password
+    tags:
+  - name: Modules
+    description: User routes to get all modules
 definitions:
   User:
     type: "object"
@@ -204,7 +218,16 @@ definitions:
         type: "string"
       email:
         type: "string"
-
+  Module:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      description:
+        type: "string"
+  
 externalDocs:
   description: 'Find out more about Swagger'
   url: 'http://swagger.io'
