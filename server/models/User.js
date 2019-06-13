@@ -2,73 +2,69 @@
 import bcrypt from 'bcrypt';
 
 const userModel = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    firstName: {
-      type: DataTypes.STRING,
-      allowNull: {
-        args: false,
-        msg: 'Please enter your firstname',
+  const User = sequelize.define(
+    'User',
+    {
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: {
+          args: false,
+          msg: 'Please enter your firstname'
+        }
       },
-    },
-    lastName: {
-      type: DataTypes.STRING,
-      allowNull: {
-        args: false,
-        msg: 'Please enter your lastname',
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: {
+          args: false,
+          msg: 'Please enter your lastname'
+        }
       },
-    },
-    userName: {
-      type: DataTypes.STRING,
-      allowNull: {
-        args: true,
-        msg: 'Please enter your username',
+      userName: {
+        type: DataTypes.STRING,
+        allowNull: {
+          args: false,
+          msg: 'Please enter your username'
+        },
+        unique: {
+          args: true,
+          msg: 'username already exists'
+        }
       },
-      unique: {
-        args: true,
-        msg: 'username already exists',
+      password: {
+        type: DataTypes.STRING,
+        allowNull: {
+          args: false,
+          msg: 'Please enter your password'
+        }
       },
-    },
-    gender: {
-      type: DataTypes.STRING,
-      allowNull: {
-        args: false,
-        msg: 'Gender is required',
+      email: {
+        type: DataTypes.STRING,
+        allowNull: {
+          args: false,
+          msg: 'Please enter your email address'
+        },
+        unique: {
+          args: true,
+          msg: 'Email already exists'
+        },
+        validate: {
+          isEmail: {
+            args: true,
+            msg: 'Please enter a valid email address'
+          }
+        }
+      },
+      isVerified: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
       }
     },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: {
-        args: false,
-        msg: 'Please enter your password',
-      },
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: {
-        args: false,
-        msg: 'Please enter your email address',
-      },
-      unique: {
-        args: true,
-        msg: 'Email already exists',
-      },
-      validate: {
-        isEmail: {
-          args: true,
-          msg: 'Please enter a valid email address',
-        },
-      },
-    },
-    isVerified: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false
-    }
-  },
 
-  {
-    timestamps: false,
-  });
+    {
+      timestamps: false
+    }
+  );
   /**
    * compares if the passed arguments are equal
    * @param {string} password
@@ -78,11 +74,11 @@ const userModel = (sequelize, DataTypes) => {
   User.prototype.comparePassword = (password, user) => bcrypt.compareSync(password, user.password);
 
   /**
-     * encrypt a user's password
-     * @param {string} password
-     * @returns {string} hashed password
-     *
-  */
+   * encrypt a user's password
+   * @param {string} password
+   * @returns {string} hashed password
+   *
+   */
   User.prototype.encryptPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(6));
 
   User.beforeCreate((user) => {
@@ -96,6 +92,11 @@ const userModel = (sequelize, DataTypes) => {
     User.hasOne(models.Profile, {
       foreignKey: 'userId',
       onDelete: 'CASCADE'
+    });
+    // associations can be defined here
+    User.belongsToMany(models.Test, {
+      through: 'UserTest',
+      foreignKey: 'userId'
     });
   };
   return User;

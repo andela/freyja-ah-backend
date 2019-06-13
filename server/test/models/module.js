@@ -1,10 +1,7 @@
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import {
-  sequelize,
-  dataTypes,
-  checkModelName,
-  checkPropertyExists
+  sequelize, dataTypes, checkModelName, checkPropertyExists
 } from 'sequelize-test-helpers';
 
 import ContentModel from '../../models/Contents';
