@@ -15,10 +15,10 @@ class ModulesController {
  */
   static async getAllModules(req, res) {
     try {
-      const Modules = await Module.findAll();
+      const modules = await Module.findAll();
       return res.status(200).json({
         status: 200,
-        data: Modules,
+        data: modules,
       });
     } catch (error) {
       res.status(500).json({
