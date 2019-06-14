@@ -20,7 +20,7 @@ const userModel = (sequelize, DataTypes) => {
     userName: {
       type: DataTypes.STRING,
       allowNull: {
-        args: false,
+        args: true,
         msg: 'Please enter your username',
       },
       unique: {

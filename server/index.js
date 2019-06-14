@@ -1,15 +1,19 @@
 /* eslint-disable no-unused-vars */
 import express from 'express';
+import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
 import passport from 'passport';
+import session from 'express-session';
 import errorhandler from 'errorhandler';
 import YAML from 'yamljs';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
 import routes from './routes/index';
+import { facebookStrategy, googleStrategy, twitterStrategy } from './socialMediaService/passport';
 
+dotenv.config();
 const isProduction = process.env.NODE_ENV === 'production';
 
 // Create global app object
@@ -24,6 +28,13 @@ app.use(morgan('dev'));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+app.use(passport.initialize());
+
+passport.use('facebook', facebookStrategy);
+passport.use('google', googleStrategy);
+passport.use('twitter', twitterStrategy);
+
 
 if (!isProduction) {
   app.use(errorhandler());
