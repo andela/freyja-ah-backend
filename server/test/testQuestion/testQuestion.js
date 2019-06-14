@@ -9,6 +9,7 @@ describe('GET /api/tests/:moduleId', () => {
       .end((err, res) => {
         expect(res.status).to.eql(422);
         expect(res.body).to.have.property('error');
+        expect(res.body.error).to.be.a('string');
         done();
       });
   });
