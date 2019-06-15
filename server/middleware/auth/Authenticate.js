@@ -39,7 +39,7 @@ class Authenticate {
     if (!token) {
       return res.status(401).json({
         status: 401,
-        error: 'No Authentication Token Provided.',
+        error: 'No Authentication Token Provided',
       });
     }
 
@@ -49,8 +49,8 @@ class Authenticate {
       req.user = { userId, email, userName };
       next();
     } catch (e) {
-      return res.status(400).json({
-        status: 400,
+      return res.status(500).json({
+        status: 500,
         error: `There was an error authenticating this user. ${e}`
       });
     }

@@ -22,45 +22,57 @@ class UserController {
    * @returns {object} response object
    *
    */
-  static async resgisterUser(req, res) {
+  static async registerUser(req, res, next) {
     const {
-      firstName, lastName, email, userName, password
+      firstName, lastName, email, userName, password, gender
     } = req.body;
-    try {
-      const user = await User.create({
+
+    const [user, created] = await User.findOrCreate({
+      where: { email },
+      defaults: {
         firstName,
         lastName,
         email,
         userName,
+        gender,
         password
-      });
-      if (user.dataValues) {
-        const token = Authenticate.generateToken(user.id, user.email, user.userName);
-        const msg = {
-          to: user.email,
-          from: 'CSLC@gmail.com',
-          subject: 'Welcome',
-          html: `<strong>Welcome to Customer Service Learning Community <h3> copy and paste this link below in your browser to verify your account<h3/></strong> ${
-            process.env.HOST
-          }/api/user/verify/${token} `,
-        };
-        await sendGridMailer.send(msg);
-        return res.status(201).json({
-          status: res.statusCode,
-          message: 'user registration was successful',
-          user: {
-            id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            userName: user.userName,
-          },
-          token,
-        });
       }
-    } catch (error) {
-      return error;
+    });
+
+    if (!created) {
+      return res.status(400).json({
+        status: 400,
+        error: 'This user already exists',
+      });
     }
+    user.createProfile();
+
+    const token = Authenticate.generateToken(user.id, user.email, user.userName);
+    if (user.dataValues) {
+      const msg = {
+        to: user.email,
+        from: 'CSLC@gmail.com',
+        subject: 'Welcome',
+        html: `<strong>Welcome to Customer Service Learning Community <h3> copy and paste this link below in your browser to verify your account<h3/></strong> ${
+          process.env.HOST
+        }/api/user/verify/${token} `,
+      };
+      await sendGridMailer.send(msg);
+    }
+
+    return res.status(201).json({
+      status: res.statusCode,
+      message: 'user registration was successful',
+      user: {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        userName: user.userName,
+        gender: user.gender
+      },
+      token,
+    });
   }
 
   /**

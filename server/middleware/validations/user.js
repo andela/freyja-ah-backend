@@ -7,16 +7,23 @@ const validator = [
       'firstName should not be empty, should be more than one and less than 50 character'
     )
     .isAlphanumeric()
-    .withMessage('firstName should be alpanumeric')
-
+    .withMessage('firstName should be alphanumeric')
     .trim(),
   body('lastName')
     .isAlphanumeric()
-    .withMessage('lastName should be alpanumeric')
+    .withMessage('lastName should be alphanumeric')
     .isLength({ min: 3 })
     .withMessage(
       'lastName should not be empty, should be more than one and less than 50 character'
     )
+    .trim(),
+  body('userName')
+    .not().isEmpty()
+    .withMessage('Username is required')
+    .isAlphanumeric()
+    .withMessage('Username should contain only numbers and letters')
+    .isLength({ min: 3 })
+    .withMessage('Username should be at least three characters in length')
     .trim(),
   body('email')
     .isEmail()
@@ -25,11 +32,13 @@ const validator = [
   body('password')
     .trim()
     .isAlphanumeric()
-    .withMessage('password should be alpanumeric')
+    .withMessage('password should be alphanumeric')
     .isLength({ min: 8 })
-    .withMessage(
-      'password should not be empty, should be more than 8 characters'
-    ),
+    .withMessage('password should not be empty, should be more than 8 characters'),
+  body('gender')
+    .not().isEmpty()
+    .withMessage('Gender is required')
+    .trim(),
 
   function userInputValidation(req, res, next) {
     const errorValidation = validationResult(req);
