@@ -267,7 +267,6 @@ paths:
             items:
               status: 422
               error:
-<<<<<<< HEAD
                 type: "array"
     get:
       description: Get a single User's Profile
@@ -307,9 +306,6 @@ paths:
             items:
               status: 404
               error: 'This user does not exist'
-=======
-                type: 'array'
->>>>>>> chore(user):user signin validation
   /modules:
     get:
       description: get all modules
@@ -411,10 +407,6 @@ definitions:
         type: 'integer'
       linkedIn:
         type: 'string'
-<<<<<<< HEAD
-
-=======
->>>>>>> chore(user):user signin validation
 externalDocs:
   description: 'Find out more about Swagger'
   url: 'http://swagger.io'

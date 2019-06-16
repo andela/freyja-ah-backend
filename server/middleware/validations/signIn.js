@@ -10,9 +10,7 @@ const signInValidator = [
     .isAlphanumeric()
     .withMessage('password should be alpanumeric')
     .isLength({ min: 8 })
-    .withMessage(
-      'password should not be empty and should be more than 8 characters'
-    ),
+    .withMessage('password should not be empty and should be more than 8 characters'),
   function signInValidation(req, res, next) {
     const errorValidation = validationResult(req);
     if (!errorValidation.isEmpty()) {
