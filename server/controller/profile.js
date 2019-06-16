@@ -1,6 +1,6 @@
 import models from '../models';
 
-const { User } = models;
+const { User, Profile } = models;
 /**
  * A class that handles user profile operations
 * */
@@ -54,7 +54,33 @@ class ProfileController {
         profile: Object.assign({}, user.dataValues, updatedProfile.dataValues)
       });
     } catch (e) {
-      next();
+      next(e);
+    }
+  }
+
+  /**
+   * get a user's profile
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @param{function} next - next function
+   * @returns {object} response object
+   *
+   */
+  static async getProfile(req, res, next) {
+    try {
+      const user = await User.findByPk(req.params.userId, { include: [Profile] });
+      if (!user) {
+        return res.status(404).json({
+          status: 404,
+          error: 'This user does not exist',
+        });
+      }
+      return res.status(200).json({
+        status: res.statusCode,
+        user: user.dataValues
+      });
+    } catch (e) {
+      next(e);
     }
   }
 }

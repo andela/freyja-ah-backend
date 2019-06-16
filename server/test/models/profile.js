@@ -18,12 +18,7 @@ describe('Testing the Profile model', () => {
 
   context('properties', () => {
     [
-<<<<<<< HEAD
       'dateOfBirth',
-=======
-      'age',
-      'gender',
->>>>>>> Added unit tests for createProfile endpoint [Delivers 166236256]
       'phoneNumber',
       'isEmployed',
       'yrsOfExperience',
