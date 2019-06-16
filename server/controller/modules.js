@@ -32,12 +32,12 @@ class ModulesController {
    * @param{function} next - next function
    * @returns {object} response object
    */
-  static async getSpecificModule(req, res) {
+  static async getModule(req, res) {
     try {
-      const newModule = await Module.findByPk(parseInt(req.params.id, 10), {
+      const module = await Module.findByPk(parseInt(req.params.id, 10), {
         include: [{ model: models.Content, as: 'contents' }]
       });
-      if (!newModule) {
+      if (!module) {
         return res.status(404).json({
           status: 404,
           error: 'module not found'
@@ -46,7 +46,7 @@ class ModulesController {
       return res.status(200).json({
         status: 200,
         message: 'module returned successfully',
-        data: newModule
+        data: module
       });
     } catch (error) {
       return error;

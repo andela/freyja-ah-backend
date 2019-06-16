@@ -49,7 +49,7 @@ paths:
           in: formData
           type: string
           description: 'user gender'
-          required: true      
+          required: true
       responses:
         201:
           description: 'user created succesfully'
@@ -248,26 +248,26 @@ paths:
         202:
           description: 'Operation successful'
           schema:
-            type: "object"
+            type: 'object'
             items:
               status: 202
-              message: "Profile was successfully edited"
-              $ref: "#/definitions/Profile" 
+              message: 'Profile was successfully edited'
+              $ref: '#/definitions/Profile'
         401:
           description: 'No Authentication provided'
           schema:
-            type: "object"
+            type: 'object'
             items:
               status: 401
-              error: "No Authentication Token Provided"
+              error: 'No Authentication Token Provided'
         422:
           description: 'Invalid request or missing required information'
           schema:
-            type: "object"
+            type: 'object'
             items:
               status: 422
               error:
-                type: "array"
+                type: 'array'
   /modules:
     get:
       description: get all modules
@@ -326,45 +326,40 @@ definitions:
       name:
         type: 'string'
       description:
-<<<<<<< HEAD
-        type: "string"
+        type: 'string'
   Profile:
-    type: "object"
+    type: 'object'
     properties:
       age:
-        type: "integer"
+        type: 'integer'
       phoneNumber:
-        type: "string"
-      gender:
-        type: "string"
-      yrsOfExperience:
-        type: "integer"
-      bio:
-        type: "string"
-      industry:
-        type: "string"
-      image:
-        type: "string"
-      progress:
-        type: "integer"
-      isEnrolled:
-        type: "boolean"
-      isEmployed:
-        type: "boolean"
-      isCertified:
-        type: "boolean"
-      instagram:
-        type: "string"
-      facebook:
-        type: "string"
-      twitter:
-        type: "integer"
-      linkedIn:
-        type: "string"    
-=======
         type: 'string'
-
->>>>>>> feat(module): user should be able to get a module
+      gender:
+        type: 'string'
+      yrsOfExperience:
+        type: 'integer'
+      bio:
+        type: 'string'
+      industry:
+        type: 'string'
+      image:
+        type: 'string'
+      progress:
+        type: 'integer'
+      isEnrolled:
+        type: 'boolean'
+      isEmployed:
+        type: 'boolean'
+      isCertified:
+        type: 'boolean'
+      instagram:
+        type: 'string'
+      facebook:
+        type: 'string'
+      twitter:
+        type: 'integer'
+      linkedIn:
+        type: 'string'
 externalDocs:
   description: 'Find out more about Swagger'
   url: 'http://swagger.io'

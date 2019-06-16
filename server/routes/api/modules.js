@@ -4,7 +4,6 @@ import moduleController from '../../controller/modules';
 const router = express.Router();
 
 router.get('/modules', moduleController.getAllModules);
-router.get('/modules/:id', moduleController.getSpecificModule);
-
+router.get('/modules/:id', moduleController.getModule);
 
 export default router;
