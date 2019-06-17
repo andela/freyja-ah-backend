@@ -22,12 +22,19 @@ const userModel = (sequelize, DataTypes) => {
       userName: {
         type: DataTypes.STRING,
         allowNull: {
-          args: false,
+          args: true,
           msg: 'Please enter your username'
         },
         unique: {
           args: true,
           msg: 'username already exists'
+        }
+      },
+      gender: {
+        type: DataTypes.STRING,
+        allowNull: {
+          args: false,
+          msg: 'Gender is required'
         }
       },
       password: {
