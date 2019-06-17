@@ -292,11 +292,18 @@ paths:
       tags:
         - Modules
       operationId: GetModule
+  /test/module:id:
+    get:
+      description: get module test
+      summary: get test
+      tags:
+        - Test
+      operationId: GetTest
       produces:
         - application/json
       responses:
         200:
-          description: 'Modulesreturned successfully'
+          description: 'Success'
 tags:
   - name: Users
     description: User routes to signup, login, update and get specific User, reset password
@@ -304,6 +311,8 @@ tags:
     description: For all profile operations, creating, updating and deleting user profiles.
   - name: Modules
     description: User routes to get all modules
+  - name: Test
+    description: Route to get test by module Id
 definitions:
   User:
     type: 'object'
@@ -360,6 +369,7 @@ definitions:
         type: 'integer'
       linkedIn:
         type: 'string'
+
 externalDocs:
   description: 'Find out more about Swagger'
   url: 'http://swagger.io'

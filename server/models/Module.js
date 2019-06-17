@@ -2,15 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Module = sequelize.define(
     'Module',
     {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        allowNull: false
-      },
-      name: {
-        type: DataTypes.STRING,
-        unique: true
-      },
+      name: DataTypes.STRING,
       description: DataTypes.STRING
     },
     {
@@ -18,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   Module.associate = (models) => {
-    // associations can be defined here
+    Module.hasMany(models.Test, { foreignKey: 'moduleId', as: 'tests' });
     Module.hasMany(models.Content, { foreignKey: 'moduleId', as: 'contents' });
   };
   return Module;
