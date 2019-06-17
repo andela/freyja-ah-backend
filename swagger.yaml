@@ -267,7 +267,45 @@ paths:
             items:
               status: 422
               error:
-                type: 'array'
+                type: "array"
+    get:
+      description: Get a single User's Profile
+      summary: Get a profile
+      tags:
+        - 'Profile'
+      operationId: getUserProfile
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: userId
+          in: params
+          type: integer
+          description: 'Users Id'
+          required: true
+      responses:
+        200:
+          description: 'Operation successful'
+          schema:
+            type: "object"
+            items:
+              status: 200
+              $ref: "#/definitions/Profile" 
+        401:
+          description: 'No Authentication provided'
+          schema:
+            type: "object"
+            items:
+              status: 401
+              error: "No Authentication Token Provided"
+        404:
+          description: 'User whose Id was supplied does not exist'
+          schema:
+            type: "object"
+            items:
+              status: 404
+              error: 'This user does not exist'
   /modules:
     get:
       description: get all modules

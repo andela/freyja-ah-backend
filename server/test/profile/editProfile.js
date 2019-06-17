@@ -42,6 +42,11 @@ describe('Testing Editing A User\'s Profile - PUT api/profiles', () => {
     linkedIn: 'linkedin.com/tedmosby'
   };
 
+  const profileWithUndefinedValues = Object.keys(newProfile).reduce((profile, property) => {
+    profile[property] = undefined;
+    return profile;
+  }, {});
+
   it('Edits a User\'s Profile', (done) => {
     request(server)
       .put(profileUrl)
@@ -54,6 +59,24 @@ describe('Testing Editing A User\'s Profile - PUT api/profiles', () => {
         expect(res.body.profile).to.be.an('object');
         expect(res.body.profile).to.have.property('dateOfBirth');
         expect(res.body.profile).to.have.property('phoneNumber');
+        expect(res.body.profile.phoneNumber).to.equal('08135834411');
+        done(err);
+      });
+  });
+
+  it('It should retain the data stored in the database if a particular property is undefined', (done) => {
+    request(server)
+      .put(profileUrl)
+      .set('authorization', userToken)
+      .send(profileWithUndefinedValues)
+      .end((err, res) => {
+        expect(res.status).to.eql(202);
+        expect(res.body).to.be.a('object');
+        expect(res.body.message).to.eql('Profile was successfully edited');
+        expect(res.body.profile).to.be.an('object');
+        expect(res.body.profile).to.have.property('dateOfBirth');
+        expect(res.body.profile).to.have.property('phoneNumber');
+        expect(res.body.profile.phoneNumber).to.equal('08135834411');
         done(err);
       });
   });

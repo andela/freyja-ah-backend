@@ -35,15 +35,15 @@ class Authenticate {
    * @returns {void}
    */
   static verifyToken(req, res, next) {
-    const token = req.headers.authorization;
-    if (!token) {
-      return res.status(401).json({
-        status: 401,
-        error: 'No Authentication Token Provided',
-      });
-    }
-
     try {
+      const token = req.headers.authorization;
+      if (!token) {
+        return res.status(401).json({
+          status: 401,
+          error: 'No Authentication Token Provided',
+        });
+      }
+
       const decoded = jwt.verify(token, process.env.SECRET_KEY);
       const { userId, email, userName } = decoded;
       req.user = { userId, email, userName };
