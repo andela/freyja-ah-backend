@@ -7,7 +7,7 @@
     "test": "npm run test:migrate && NODE_ENV=test nyc --reporter=html --reporter=text mocha --require @babel/register --require babel-polyfill ./server/test/ --recursive --timeout 5000 --exit",
     "migrate": "sequelize db:migrate",
     "undo-all:migrate": "sequelize db:migrate:undo:all",
-    "refreshdb": "npm run undo-all:migrate && npm run migrate",
+    "refreshdb": "npm run undo-all:migrate && npm run migrate && npm run commit-seed",
     "undo-current:migrate": "sequelize db:migrate:undo",
     "test:migrate": "NODE_ENV=test npm run undo-all:migrate && NODE_ENV=test npm run migrate && NODE_ENV=test npm run commit-seed",
     "start": "node --require babel-polyfill ./build/index.js",
@@ -16,7 +16,6 @@
     "build": "npm run clean && babel -d build ./server",
     "heroku-postbuild": "npm run build",
     "coverage": "nyc report --reporter=lcov --reporter=text-lcov | coveralls",
-    "seed": "sequelize seed:generate --name demo-modules",
     "commit-seed": "sequelize db:seed:all"
   },
   "engines": {
@@ -59,11 +58,11 @@
     "sequelize-cli": "^5.4.0",
     "sequelize-test-helpers": "^1.1.2",
     "sinon": "^7.3.2",
+    "sinon-chai": "^3.3.0",
     "swagger-jsdoc": "^3.2.9",
     "swagger-ui-express": "^4.0.5",
     "underscore": "^1.9.1",
-    "yamljs": "^0.3.0",
-    "sinon-chai": "^3.3.0"
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.0",

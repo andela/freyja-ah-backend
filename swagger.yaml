@@ -49,7 +49,7 @@ paths:
           in: formData
           type: string
           description: 'user gender'
-          required: true      
+          required: true
       responses:
         201:
           description: 'user created succesfully'
@@ -81,13 +81,13 @@ paths:
         200:
           description: 'status code'
           schema:
-            type: "object"
+            type: 'object'
             items:
               status: 200
-              message: "login was sucessful"
-              $ref: "#/definitions/User" 
-              token: 
-                type: "string" 
+              message: 'login was sucessful'
+              $ref: '#/definitions/User'
+              token:
+                type: 'string'
   /user/5:
     get:
       description: Get a specific user
@@ -248,38 +248,55 @@ paths:
         202:
           description: 'Operation successful'
           schema:
-            type: "object"
+            type: 'object'
             items:
               status: 202
-              message: "Profile was successfully edited"
-              $ref: "#/definitions/Profile" 
+              message: 'Profile was successfully edited'
+              $ref: '#/definitions/Profile'
         401:
           description: 'No Authentication provided'
           schema:
-            type: "object"
+            type: 'object'
             items:
               status: 401
-              error: "No Authentication Token Provided"
+              error: 'No Authentication Token Provided'
         422:
           description: 'Invalid request or missing required information'
           schema:
-            type: "object"
+            type: 'object'
             items:
               status: 422
               error:
-                type: "array"
+                type: 'array'
   /modules:
     get:
       description: get all modules
       summary: get modules
-      tags: 
+      tags:
         - Modules
       operationId: GetModules
       produces:
         - application/json
+      parameters:
+        - name: x-access-token
+          in: header
+          required: true
+          type: string
       responses:
         200:
           description: 'Modules returned successfully'
+  /modules/1:
+    get:
+      description: get a specific module
+      summary: get single module
+      tags:
+        - Modules
+      operationId: GetModule
+      produces:
+        - application/json
+      responses:
+        200:
+          description: 'Modulesreturned successfully'
 tags:
   - name: Users
     description: User routes to signup, login, update and get specific User, reset password
@@ -289,60 +306,60 @@ tags:
     description: User routes to get all modules
 definitions:
   User:
-    type: "object"
+    type: 'object'
     properties:
       id:
-        type: "integer"
+        type: 'integer'
       userName:
-        type: "string"
+        type: 'string'
       firstName:
-        type: "string"
+        type: 'string'
       lastName:
-        type: "string"
+        type: 'string'
       email:
-        type: "string"
+        type: 'string'
   Module:
-    type: "object"
+    type: 'object'
     properties:
       id:
-        type: "integer"
+        type: 'integer'
       name:
-        type: "string"
+        type: 'string'
       description:
-        type: "string"
+        type: 'string'
   Profile:
-    type: "object"
+    type: 'object'
     properties:
       age:
-        type: "integer"
+        type: 'integer'
       phoneNumber:
-        type: "string"
+        type: 'string'
       gender:
-        type: "string"
+        type: 'string'
       yrsOfExperience:
-        type: "integer"
+        type: 'integer'
       bio:
-        type: "string"
+        type: 'string'
       industry:
-        type: "string"
+        type: 'string'
       image:
-        type: "string"
+        type: 'string'
       progress:
-        type: "integer"
+        type: 'integer'
       isEnrolled:
-        type: "boolean"
+        type: 'boolean'
       isEmployed:
-        type: "boolean"
+        type: 'boolean'
       isCertified:
-        type: "boolean"
+        type: 'boolean'
       instagram:
-        type: "string"
+        type: 'string'
       facebook:
-        type: "string"
+        type: 'string'
       twitter:
-        type: "integer"
+        type: 'integer'
       linkedIn:
-        type: "string"    
+        type: 'string'
 externalDocs:
   description: 'Find out more about Swagger'
   url: 'http://swagger.io'
