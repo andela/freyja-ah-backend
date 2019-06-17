@@ -11,7 +11,7 @@ describe('Post api/users/login', () => {
       .post('/api/users/login')
       .send({
         email: 'ted123@mail.com',
-        password: '12345678',
+        password: '12345678'
       })
       .end((err, res) => {
         expect(res.status).to.eql(200);
@@ -23,45 +23,21 @@ describe('Post api/users/login', () => {
         done(err);
       });
   });
-
-  it('it should return Unprocessable Entity Error if email is not provided', (done) => {
+  it('should not login a user if input fields are empty', (done) => {
     request(server)
       .post('/api/users/login')
       .send({
         email: '',
-        password: '123456',
+        password: ''
       })
       .end((err, res) => {
-        expect(res.body.errors.email).to.eql('please provide your email');
         expect(res.status).to.eql(422);
-        done(err);
-      });
-  });
-
-  it('it should return Unprocessable Entity Error if password is not provided', (done) => {
-    request(server)
-      .post('/api/users/login')
-      .send({
-        email: 'ted@mail.com',
-        password: '',
-      })
-      .end((err, res) => {
-        expect(res.body.errors.password).to.eql('please provide your password');
-        expect(res.status).to.eql(422);
-        done(err);
-      });
-  });
-
-  it('it should return Unauthorized Error if user email is invalid', (done) => {
-    request(server)
-      .post('/api/users/login')
-      .send({
-        email: 'prince@mail.com',
-        password: '123456',
-      })
-      .end((err, res) => {
-        expect(res.body.error).to.eql('Invalid email or password');
-        expect(res.status).to.eql(401);
+        expect(res.body.status).to.be.a('number');
+        expect(res.body.status).to.eql(422);
+        expect(res.body.error).to.be.an('array');
+        expect(res.body).to.be.an('object');
+        expect(res.body).to.have.property('status');
+        expect(res.body).to.have.property('error');
         done(err);
       });
   });
