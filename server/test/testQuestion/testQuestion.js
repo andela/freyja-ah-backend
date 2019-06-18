@@ -84,4 +84,16 @@ describe('Post /api/tests/answer/:testId', () => {
         done();
       });
   });
+  it('should save already passed test to the database', (done) => {
+    request(server)
+      .post(`/api/tests/answer/${1}`)
+      .set('authorization', UserToken)
+      .send({ score: 70 })
+      .end((err, res) => {
+        expect(res.status).to.eql(200);
+        expect(res.body.status).to.eql('success');
+        expect(res.body).to.have.property('data');
+        done();
+      });
+  });
 });

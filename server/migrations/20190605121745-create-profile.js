@@ -38,23 +38,23 @@ module.exports = {
     },
     image: {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: true
     },
     bio: {
       type: Sequelize.STRING,
-      allowNull: true,
+      allowNull: true
     },
     isEnrolled: {
       type: Sequelize.BOOLEAN,
-      allowNull: false,
+      allowNull: false
     },
     progress: {
       type: Sequelize.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     isCertified: {
       type: Sequelize.BOOLEAN,
-      allowNull: false,
+      allowNull: false
     },
     instagram: {
       type: Sequelize.STRING,
@@ -70,6 +70,10 @@ module.exports = {
     },
     linkedIn: {
       type: Sequelize.STRING,
+      allowNull: true
+    },
+    testPassed: {
+      type: Sequelize.INTEGER,
       allowNull: true
     },
     createdAt: {

@@ -267,7 +267,7 @@ paths:
             items:
               status: 422
               error:
-                type: "array"
+                type: 'array'
     get:
       description: Get a single User's Profile
       summary: Get a profile
@@ -288,21 +288,21 @@ paths:
         200:
           description: 'Operation successful'
           schema:
-            type: "object"
+            type: 'object'
             items:
               status: 200
-              $ref: "#/definitions/Profile" 
+              $ref: '#/definitions/Profile'
         401:
           description: 'No Authentication provided'
           schema:
-            type: "object"
+            type: 'object'
             items:
               status: 401
-              error: "No Authentication Token Provided"
+              error: 'No Authentication Token Provided'
         404:
           description: 'User whose Id was supplied does not exist'
           schema:
-            type: "object"
+            type: 'object'
             items:
               status: 404
               error: 'This user does not exist'
@@ -339,6 +339,30 @@ paths:
       operationId: GetTest
       produces:
         - application/json
+      responses:
+        200:
+          description: 'Success'
+        401:
+          description: 'Invalid Test Id'
+        404:
+          description: 'Test not found'
+  /test/answer/:testId:
+    post:
+      description: score a user,
+      summary: score user,
+      tags:
+        - Test
+      operationId: ScoreTest,
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: score
+          in: formdata
+          type: integer
+          description: 'User score'
+          required: true
       responses:
         200:
           description: 'Success'
