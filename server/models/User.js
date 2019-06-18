@@ -98,12 +98,19 @@ const userModel = (sequelize, DataTypes) => {
   User.associate = (models) => {
     User.hasOne(models.Profile, {
       foreignKey: 'userId',
+      as: 'profile',
       onDelete: 'CASCADE'
     });
-    // associations can be defined here
+
     User.belongsToMany(models.Test, {
       through: 'UserTest',
       foreignKey: 'userId'
+    });
+
+    User.hasMany(models.PrivateMessage, {
+      foreignKey: 'receiverId',
+      as: 'privateMessages',
+      onDelete: 'CASCADE'
     });
   };
   return User;
