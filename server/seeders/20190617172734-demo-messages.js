@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.bulkInsert('Messages',
+  up: (queryInterface, Sequelize) => queryInterface.bulkInsert(
+    'Messages',
     [
       {
         id: 1,
@@ -22,6 +23,7 @@ module.exports = {
         updatedAt: new Date()
       },
     ],
-    {}),
+    {}
+  ),
   down: (queryInterface, Sequelize) => queryInterface.bulkDelete('Messages', null, {})
 };
