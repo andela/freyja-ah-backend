@@ -18,12 +18,13 @@ class messageController {
 
     try {
       const messages = await Messages.findAll({ where: { receiverId: userId } });
-      if (!messages) {
-        res.status(200).json({
+      if (messages.length === 0) {
+        return res.status(200).json({
           status: 200,
           message: 'no recieved messages',
         });
       }
+
       return res.status(200).json({
         status: 200,
         data: messages

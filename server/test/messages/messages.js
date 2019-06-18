@@ -1,43 +1,38 @@
 import { describe, it } from 'mocha';
 import { request, expect } from 'chai';
+import faker from 'faker';
+
 import server from '../../index';
 
 let userToken;
 
-describe('GET /api/messages', () => {
+describe('GET /api/messages', async () => {
   before((done) => {
     const user = {
-      email: 'ted123@mail.com',
-      password: '12345678',
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      email: faker.internet.email(),
+      password: 'december',
+      confirmPassword: 'december',
+      userName: 'beejay',
+      gender: 'male'
     };
     request(server)
-      .post('/api/users/login')
+      .post('/api/users')
       .send(user)
       .end((err, res) => {
         userToken = res.body.token;
         done();
       });
   });
-  it('get all received messages', (done) => {
+
+  it('get no message', (done) => {
     request(server)
       .get('/api/messages/received')
       .set('authorization', userToken)
       .end((err, res) => {
         expect(res.status).to.eql(200);
-        expect(res.body.data).to.be.an('array');
-        expect(res.body.data[0]).to.be.an('object');
-        done(err);
-      });
-  });
-
-  it('get all sent messages', (done) => {
-    request(server)
-      .get('/api/messages/sent')
-      .set('authorization', userToken)
-      .end((err, res) => {
-        expect(res.status).to.eql(200);
-        expect(res.body.data).to.be.an('array');
-        expect(res.body.data[0]).to.be.an('object');
+        expect(res.body.message).to.eql('no recieved messages');
         done(err);
       });
   });

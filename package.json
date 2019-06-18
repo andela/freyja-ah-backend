@@ -9,7 +9,7 @@
     "undo-all:migrate": "sequelize db:migrate:undo:all",
     "refreshdb": "npm run undo-all:migrate && npm run migrate && npm run commit-seed",
     "undo-current:migrate": "sequelize db:migrate:undo",
-    "test:migrate": "NODE_ENV=test npm run undo-all:migrate && NODE_ENV=test npm run migrate && NODE_ENV=test npm run commit-seed",
+    "test:migrate": "NODE_ENV=test npm run refreshdb",
     "start": "node --require babel-polyfill ./build/index.js",
     "start:dev": "nodemon --exec babel-node ./server/index.js",
     "clean": "rm -rf ./build && mkdir build",
