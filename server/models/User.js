@@ -107,9 +107,9 @@ const userModel = (sequelize, DataTypes) => {
       foreignKey: 'userId'
     });
 
-    User.hasMany(models.PrivateMessage, {
-      foreignKey: 'receiverId',
-      as: 'privateMessages',
+    User.hasMany(models.Message, {
+      foreignKey: 'senderId',
+      as: 'sentMessages',
       onDelete: 'CASCADE'
     });
   };
