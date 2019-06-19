@@ -6,8 +6,8 @@ const { verifyToken } = Auth;
 
 const router = express.Router();
 
-router.get('/messages/received', verifyToken, messageController.getAllReceievedMessages);
-router.get('/messages/sent', verifyToken, messageController.getAllSentMessages);
+router.get('/messages/received', verifyToken, messageController.getReceievedMessages);
+router.get('/messages/sent', verifyToken, messageController.getSentMessages);
 
 
 export default router;

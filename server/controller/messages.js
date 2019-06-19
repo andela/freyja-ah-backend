@@ -1,11 +1,11 @@
 import models from '../models';
 
-const { Messages } = models;
+const { Message } = models;
 
 /**
  * A class that handles messages methods
  */
-class messageController {
+class MessageController {
   /**
    * get all received messages
    * @param {object} req - request object
@@ -13,12 +13,12 @@ class messageController {
    * @param{function} next - next function
    * @returns {object} response object
    */
-  static async getAllReceievedMessages(req, res) {
+  static async getReceievedMessages(req, res, next) {
     const { userId } = req.user;
 
     try {
-      const messages = await Messages.findAll({ where: { receiverId: userId } });
-      if (messages.length === 0) {
+      const messages = await Message.findAll({ where: { receiverId: userId } });
+      if (!messages.length) {
         return res.status(200).json({
           status: 200,
           message: 'no recieved messages',
@@ -29,8 +29,8 @@ class messageController {
         status: 200,
         data: messages
       });
-    } catch (error) {
-      return error;
+    } catch (e) {
+      next(e);
     }
   }
 
@@ -41,12 +41,12 @@ class messageController {
    * @param{function} next - next function
    * @returns {object} response object
    */
-  static async getAllSentMessages(req, res) {
+  static async getSentMessages(req, res, next) {
     const { userId } = req.user;
 
     try {
-      const messages = await Messages.findAll({ where: { senderId: userId } });
-      if (!messages) {
+      const messages = await Message.findAll({ where: { senderId: userId } });
+      if (!messages.length) {
         res.status(200).json({
           status: 200,
           message: 'no sent messages',
@@ -56,10 +56,10 @@ class messageController {
         status: 200,
         data: messages
       });
-    } catch (error) {
-      return error;
+    } catch (e) {
+      next(e);
     }
   }
 }
 
-export default messageController;
+export default MessageController;
