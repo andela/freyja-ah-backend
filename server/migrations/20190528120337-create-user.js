@@ -1,6 +1,4 @@
 /* eslint-disable no-unused-vars */
-
-
 module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.createTable('Users', {
     id: {
@@ -32,6 +30,11 @@ module.exports = {
     email: {
       allowNull: false,
       type: Sequelize.STRING,
+    },
+    role: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      default: 'trainee',
     },
     isVerified: {
       type: Sequelize.BOOLEAN,

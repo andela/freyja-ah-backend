@@ -70,6 +70,7 @@ module.exports = (sequelize, DataTypes) => {
   Profile.associate = (models) => {
     Profile.belongsTo(models.User, {
       foreignKey: 'userId',
+      as: 'User',
       onDelete: 'CASCADE'
     });
   };

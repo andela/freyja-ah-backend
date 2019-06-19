@@ -26,7 +26,6 @@ class UserController {
     const {
       firstName, lastName, email, userName, password, gender
     } = req.body;
-
     const [user, created] = await User.findOrCreate({
       where: { email },
       defaults: {
@@ -275,10 +274,6 @@ class UserController {
           status: 'success',
           message:
               'Reset password email as been sent to you, Kindly check your email for next steps to be taken to reset your password',
-        }))
-        .catch(error => res.status(401).json({
-          status: 'error',
-          message: error,
         }));
     } catch (error) {
       return res.status(422).json({
@@ -292,10 +287,11 @@ class UserController {
    * change user's password
    * @param {object} req - request object
    * @param {object} res - response object
+   * @param {function} next - next function
    * @returns {object} response object
    *
    */
-  static async changePassword(req, res) {
+  static async changePassword(req, res, next) {
     const { token } = req.query;
     const { newPassword } = req.body;
     if (!token) {
@@ -335,7 +331,7 @@ class UserController {
         message: 'password updated successfully',
       });
     } catch (error) {
-      return error;
+      next(error);
     }
   }
 }

@@ -25,10 +25,9 @@ describe('Testing ErrorHandlers/Middlewares', () => {
       .set('authorization', 'invalidtokenstring')
       .end((err, res) => {
         expect(res.body).to.be.a('object');
-        expect(res.status).to.eql(500);
-        expect(res.body.status).to.eql(500);
+        expect(res.status).to.eql(401);
         expect(res.body).to.have.property('error');
-        expect(res.body.error).to.include('JsonWebTokenError: jwt malformed');
+        expect(res.body.error).to.eql('token not verified');
         done(err);
       });
   });

@@ -7,17 +7,30 @@ module.exports = {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
+    body: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     senderId: {
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
     },
     receiverId: {
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
+      allowNull: false,
     },
     parentMessageId: {
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
+      allowNull: false
     },
-    body: {
-      type: Sequelize.STRING
+    status: {
+      type: Sequelize.STRING,
+      allowNull: false
     },
     createdAt: {
       allowNull: false,
@@ -28,5 +41,5 @@ module.exports = {
       type: Sequelize.DATE
     }
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('Messages')
+  down: queryInterface => queryInterface.dropTable('Messages')
 };

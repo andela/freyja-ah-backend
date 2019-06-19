@@ -17,7 +17,8 @@ describe('Testing Editing A User\'s Profile - PUT api/profiles', () => {
       userName: 'cruise',
       email: 'cruise@mail.com',
       password: '12345678',
-      gender: 'male'
+      gender: 'male',
+      role: 'trainer',
     };
     request(server)
       .post('/api/users')
@@ -35,6 +36,7 @@ describe('Testing Editing A User\'s Profile - PUT api/profiles', () => {
     bio: 'A passionate customer relations specialist',
     yrsOfExperience: 3,
     industry: 'Marketing',
+    isCertified: true,
     image: 'tedmosbyportrait.jpg',
     instagram: 'instagram.com/tedmosby',
     twitter: 'twitter.com/tedmosby',

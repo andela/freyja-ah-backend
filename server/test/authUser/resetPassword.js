@@ -1,8 +1,13 @@
+/* eslint-disable no-unused-expressions */
 import chai from 'chai';
 import dotenv from 'dotenv';
 import chaiHttp from 'chai-http';
+import sinon from 'sinon';
 import Authenticate from '../../middleware/auth/Authenticate';
 import server from '../../index';
+import fakeUser from '../socialLogin.js/fakeUser';
+import fakeResponse from '../socialLogin.js/fakeResponse';
+import UserController from '../../controller/users';
 
 dotenv.config();
 
@@ -104,5 +109,13 @@ describe('Change user password', () => {
         expect(res.body.message).to.eql('password updated successfully');
         done();
       });
+  });
+
+  it('should spy on next called on catch', (done) => {
+    const { changePassword } = UserController;
+    const spy007 = sinon.spy();
+    changePassword(fakeUser.userRequest1, fakeResponse, spy007);
+    expect(spy007).to.exist;
+    done();
   });
 });

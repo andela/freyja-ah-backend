@@ -83,7 +83,7 @@ describe('passport strategy', () => {
     const done = sinon.stub();
 
     const stub = sinon.spy(User, 'findOrCreate');
-    await socialSignOn(accessToken, refreshToken, profile, done);
+    const result = await socialSignOn(accessToken, refreshToken, profile, done);
     expect(stub).to.have.been.calledWith({
       defaults: {
         email: 'barney@mail.com',
@@ -94,6 +94,12 @@ describe('passport strategy', () => {
       },
       where: { email: 'barney@mail.com' }
     });
+    expect(result).to.be.an('object');
+    expect(result.user).to.be.an('object');
+    const isCreated = result.created;
+    result.user.isNewUser = isCreated;
+    expect(result.user.isNewUser).to.be.a('boolean');
+    expect(result.user.isNewUser).to.be.a('true');
 
     stub.restore();
   });

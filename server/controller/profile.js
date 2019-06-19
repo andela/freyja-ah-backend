@@ -53,8 +53,8 @@ class ProfileController {
         message: 'Profile was successfully edited',
         profile: Object.assign({}, user.dataValues, updatedProfile.dataValues)
       });
-    } catch (e) {
-      next(e);
+    } catch (error) {
+      next(error);
     }
   }
 
@@ -68,7 +68,7 @@ class ProfileController {
    */
   static async getProfile(req, res, next) {
     try {
-      const user = await User.findByPk(req.params.userId, { include: [Profile] });
+      const user = await User.findByPk(req.params.userId, { include: [{ model: Profile, as: 'profile' }] });
       if (!user) {
         return res.status(404).json({
           status: 404,

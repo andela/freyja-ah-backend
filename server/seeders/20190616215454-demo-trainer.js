@@ -9,6 +9,7 @@ module.exports = {
         userName: 'chekwas',
         gender: 'male',
         password: 'onwuchekwa',
+        role: 'trainer',
         isVerified: true
       },
       {
@@ -18,6 +19,7 @@ module.exports = {
         userName: 'tyakk',
         gender: 'male',
         password: 'password',
+        role: 'trainer',
         isVerified: true
       },
       {
@@ -27,6 +29,7 @@ module.exports = {
         userName: 'chizzy',
         gender: 'male',
         password: 'chizindu',
+        role: 'trainer',
         isVerified: true
       },
     ],

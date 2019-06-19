@@ -57,10 +57,10 @@ describe('Testing getting a single profile - GET api/profiles/:userId', () => {
         expect(res.status).to.eql(200);
         expect(user).to.be.a('object');
         expect(user.firstName).to.eql('Leonardo');
-        expect(user.Profile).to.be.an('object');
-        expect(user.Profile).to.have.property('dateOfBirth');
-        expect(user.Profile).to.have.property('phoneNumber');
-        expect(user.Profile.phoneNumber).to.equal('08135834411');
+        expect(user.profile).to.be.an('object');
+        expect(user.profile).to.have.property('dateOfBirth');
+        expect(user.profile).to.have.property('phoneNumber');
+        expect(user.profile.phoneNumber).to.equal('08135834411');
         done(err);
       });
   });
