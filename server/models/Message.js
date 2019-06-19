@@ -1,5 +1,9 @@
 module.exports = (sequelize, DataTypes) => {
   const Message = sequelize.define('Message', {
+    body: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     senderId: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -8,21 +12,23 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    parentMessageId: DataTypes.INTEGER,
-    body: {
+    parentMessageId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0
+    },
+    status: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 'unread'
     }
-  }, {});
+  }, {
+    timestamps: true
+  });
   Message.associate = (models) => {
     Message.belongsTo(models.User, {
       foreignKey: 'senderId',
-      as: 'sentMessages'
-    });
-
-    Message.belongsTo(models.User, {
-      foreignKey: 'receiverId',
-      as: 'recievedMessages'
+      as: 'User',
     });
   };
   return Message;
