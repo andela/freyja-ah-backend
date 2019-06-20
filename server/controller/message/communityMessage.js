@@ -94,6 +94,57 @@ class CommunityMessageController {
       next(error);
     }
   }
+
+  /**
+   *
+   * gets all community messages
+     * @param {object} req - request object
+     * @param {object} res - response object
+     * @param{function} next - next function
+     * @returns {object} response object
+   */
+  static async deleteMessage(req, res, next) {
+    try {
+      const { userId } = req.user;
+      const user = await User.findByPk(userId);
+      const { id } = req.params;
+      const message = await CommunityMessage.findAll({
+        attributes: ['senderId'],
+        where: {
+          id,
+        }
+      });
+      if (!user) {
+        return res.status(404).json({
+          status: res.statusCode,
+          error: 'user not found',
+        });
+      }
+      if (!message.length) {
+        return res.status(404).json({
+          status: res.statusCode,
+          error: 'message not found',
+        });
+      }
+      const { senderId } = message[0];
+      if (user.role === 'trainer' || (senderId === userId)) {
+        await CommunityMessage.destroy({
+          where: {
+            id
+          }
+        });
+        return res.status(200).json({
+          status: res.statusCode,
+          message: 'Message deleted succesfully',
+        });
+      } return res.status(401).json({
+        status: res.statusCode,
+        message: 'You are not authorized to delete this community message',
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default CommunityMessageController;

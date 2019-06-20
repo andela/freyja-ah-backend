@@ -449,7 +449,23 @@ paths:
           description: 'unAuthorized'
         404:
           description: 'user not found'
-          
+  /community/messages/1:
+    delete:
+      description: deletes a community message
+      summary: deletes community message
+      tags:
+        - communityMessages
+      operationId: DeleteCommunityMessage
+      produces:
+        - application/json
+      parameters:
+        - name: x-access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        200:
+          description: 'Message deleted succesfully'
 tags:
   - name: Users
     description: User routes to signup, login, update and get specific User, reset password
