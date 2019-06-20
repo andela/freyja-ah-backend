@@ -12,13 +12,12 @@ import fakeResponse from '../socialLogin.js/fakeResponse';
 
 use(chaihttp);
 
-
+let userToken = null;
+let userToken2 = null;
 const unknownToken = Authenticate.generateToken(2000, 'unknown@mail.com', 'unknown');
 
 
 describe('Post api/community/messages', () => {
-  let userToken = null;
-  let userToken2 = null;
   before((done) => {
     request(server)
       .post('/api/users/login')
@@ -115,10 +114,7 @@ describe('Post api/community/messages', () => {
     done();
   });
 });
-
 describe('Get api/community/messages', () => {
-  let userToken = null;
-  let userToken2 = null;
   before((done) => {
     request(server)
       .post('/api/users/login')
@@ -127,7 +123,6 @@ describe('Get api/community/messages', () => {
         const { token } = res.body;
         userToken = token;
       });
-
     request(server)
       .post('/api/users/login')
       .send({ email: 'ted123@mail.com', password: '12345678', })
@@ -149,7 +144,6 @@ describe('Get api/community/messages', () => {
         done(err);
       });
   });
-
   it('it returns 401 error if user is not a trainer or certified', (done) => {
     request(server)
       .get('/api/community/messages')
@@ -161,7 +155,6 @@ describe('Get api/community/messages', () => {
         done(err);
       });
   });
-
   it('Should return a 404(Not found) error if a user does not exist', (done) => {
     request(server)
       .get('/api/community/messages')
@@ -177,6 +170,68 @@ describe('Get api/community/messages', () => {
     const { getMessage } = CommunityMessageController;
     const spy007 = sinon.spy();
     getMessage(fakeUser.userRequest1, fakeResponse, spy007);
+    expect(spy007).to.exist;
+    done();
+  });
+});
+describe('DELETE api/community/messages/:id', () => {
+  before((done) => {
+    request(server)
+      .post('/api/community/messages')
+      .set('authorization', userToken2)
+      .send({
+        body: 'cover your lids to die with the sun'
+      });
+    done();
+  });
+  it('should not delete a community message if token is not provided', (done) => {
+    request(server)
+      .delete('/api/community/messages/1')
+      .end((err, res) => {
+        expect(res.status).to.eql(401);
+        done(err);
+      });
+  });
+  it('should not delete a community message if message is not found', (done) => {
+    request(server)
+      .delete('/api/community/messages/88')
+      .set('authorization', userToken2)
+      .end((err, res) => {
+        expect(res.status).to.eql(404);
+        done(err);
+      });
+  });
+  it('should not delete a community message if the message does not belong to that particular user and the user is not a trainer', (done) => {
+    request(server)
+      .delete('/api/community/messages/1')
+      .set('authorization', userToken2)
+      .end((err, res) => {
+        expect(res.status).to.eql(401);
+        done(err);
+      });
+  });
+  it('should not delete a community message if user is not found', (done) => {
+    request(server)
+      .delete('/api/community/messages/1')
+      .set('authorization', unknownToken)
+      .end((err, res) => {
+        expect(res.status).to.eql(404);
+        done(err);
+      });
+  });
+  it('should delete a community message', (done) => {
+    request(server)
+      .delete('/api/community/messages/1')
+      .set('authorization', userToken)
+      .end((err, res) => {
+        expect(res.status).to.eql(200);
+        done(err);
+      });
+  });
+  it('should spy on next called on catch', (done) => {
+    const { deleteMessage } = CommunityMessageController;
+    const spy007 = sinon.spy();
+    deleteMessage(fakeUser.userRequest1, fakeResponse, spy007);
     expect(spy007).to.exist;
     done();
   });

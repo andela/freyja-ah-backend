@@ -9,7 +9,7 @@ let userToken;
 let receiverId;
 let messageId;
 
-describe('GET /api/messages', async () => {
+describe('GET /api/messages', () => {
   before((done) => {
     const user = {
       firstName: faker.name.firstName(),

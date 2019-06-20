@@ -13,6 +13,12 @@ const signUpValidator = [
     .isLength({ min: 3 })
     .withMessage('lastName should not be empty and should be more than three characters')
     .trim(),
+  body('gender')
+    .not().isEmpty()
+    .withMessage('please input your gender')
+    .isAlpha()
+    .withMessage('gender should be in alphabet')
+    .trim(),
   body('email')
     .isEmail()
     .withMessage('email should not be empty and should be a valid email')
