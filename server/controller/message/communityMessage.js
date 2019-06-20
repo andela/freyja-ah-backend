@@ -107,19 +107,20 @@ class CommunityMessageController {
     try {
       const { userId } = req.user;
       const user = await User.findByPk(userId);
-      const { id } = req.params;
-      const message = await CommunityMessage.findAll({
-        attributes: ['senderId'],
-        where: {
-          id,
-        }
-      });
+      const { id } = req.params;  
       if (!user) {
         return res.status(404).json({
           status: res.statusCode,
           error: 'user not found',
         });
       }
+      const message = await CommunityMessage.findAll({
+        attributes: ['senderId'],
+        where: {
+          id,
+        }
+      });
+    
       if (!message.length) {
         return res.status(404).json({
           status: res.statusCode,
