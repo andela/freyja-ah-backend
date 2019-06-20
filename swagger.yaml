@@ -330,6 +330,18 @@ paths:
       tags:
         - Modules
       operationId: GetModule
+  /modules/report/1:
+    post:
+      description: report a module
+      summary: report a module
+      tags:
+        - Modules
+      operationId: ReportModule
+      reponses:
+        200:
+          description: 'Success'
+        404:
+          description: 'Not found'
   /test/module:id:
     get:
       description: get module test
