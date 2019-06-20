@@ -53,8 +53,8 @@ class ProfileController {
         message: 'Profile was successfully edited',
         profile: Object.assign({}, user.dataValues, updatedProfile.dataValues)
       });
-    } catch (e) {
-      next(e);
+    } catch (error) {
+      next(error);
     }
   }
 

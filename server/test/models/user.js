@@ -8,6 +8,8 @@ import {
 } from 'sequelize-test-helpers';
 
 import User from '../../models/User';
+import Profile from '../../models/Profile';
+import CommunityMessage from '../../models/CommunityMessage';
 
 describe('test for users model', () => {
   const userModel = User(sequelize, dataTypes);
@@ -20,12 +22,28 @@ describe('test for users model', () => {
       'firstName',
       'lastName',
       'email',
+      'userName',
+      'role',
       'encryptPassword',
       'comparePassword',
     ].forEach(checkPropertyExists(user));
   });
   context('hooks', () => {
     ['beforeCreate'].forEach(checkHookDefined(user));
+  });
+  context('Check the User Model associations', () => {
+    before(() => {
+      userModel.associate({
+        Profile,
+        CommunityMessage,
+      });
+    });
+    it('It defined a belongsTo association with Profile', () => {
+      expect(userModel.hasOne).to.have.been.calledWith(Profile);
+    });
+    it('It defined a belongsTo association with CommunityMessage', () => {
+      expect(userModel.hasMany).to.have.been.calledWith(CommunityMessage);
+    });
   });
 
   it('it should test for hashed password', (done) => {

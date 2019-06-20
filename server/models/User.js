@@ -9,57 +9,62 @@ const userModel = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: {
           args: false,
-          msg: 'Please enter your firstname'
-        }
+          msg: 'Please enter your firstname',
+        },
       },
       lastName: {
         type: DataTypes.STRING,
         allowNull: {
           args: false,
-          msg: 'Please enter your lastname'
-        }
+          msg: 'Please enter your lastname',
+        },
       },
       userName: {
         type: DataTypes.STRING,
         allowNull: {
           args: true,
-          msg: 'Please enter your username'
+          msg: 'Please enter your username',
         },
         unique: {
           args: true,
-          msg: 'username already exists'
-        }
+          msg: 'username already exists',
+        },
       },
       gender: {
         type: DataTypes.STRING,
         allowNull: {
           args: false,
-          msg: 'Gender is required'
+          msg: 'Gender is required',
         }
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'trainee',
       },
       password: {
         type: DataTypes.STRING,
         allowNull: {
           args: false,
-          msg: 'Please enter your password'
-        }
+          msg: 'Please enter your password',
+        },
       },
       email: {
         type: DataTypes.STRING,
         allowNull: {
           args: false,
-          msg: 'Please enter your email address'
+          msg: 'Please enter your email address',
         },
         unique: {
           args: true,
-          msg: 'Email already exists'
+          msg: 'Email already exists',
         },
         validate: {
           isEmail: {
             args: true,
-            msg: 'Please enter a valid email address'
-          }
-        }
+            msg: 'Please enter a valid email address',
+          },
+        },
       },
       isVerified: {
         type: DataTypes.BOOLEAN,
@@ -69,7 +74,7 @@ const userModel = (sequelize, DataTypes) => {
     },
 
     {
-      timestamps: false
+      timestamps: false,
     }
   );
   /**
@@ -81,11 +86,11 @@ const userModel = (sequelize, DataTypes) => {
   User.prototype.comparePassword = (password, user) => bcrypt.compareSync(password, user.password);
 
   /**
-   * encrypt a user's password
-   * @param {string} password
-   * @returns {string} hashed password
-   *
-   */
+     * encrypt a user's password
+     * @param {string} password
+     * @returns {string} hashed password
+     *
+  */
   User.prototype.encryptPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(6));
 
   User.beforeCreate((user) => {
@@ -105,6 +110,10 @@ const userModel = (sequelize, DataTypes) => {
     User.belongsToMany(models.Test, {
       through: 'UserTest',
       foreignKey: 'userId'
+    });
+    User.hasMany(models.CommunityMessage, {
+      foreignKey: 'senderId',
+      onDelete: 'CASCADE',
     });
 
     User.hasMany(models.Message, {

@@ -1,7 +1,7 @@
 import express from 'express';
-import messageValidator from '../../middleware/validations/message';
-import messageController from '../../controller/messages';
-import Auth from '../../middleware/auth/Authenticate';
+import messageValidator from '../../../middleware/validations/message';
+import messageController from '../../../controller/message/messages';
+import Auth from '../../../middleware/auth/Authenticate';
 
 const { verifyToken } = Auth;
 const { sendMessage, getReceievedMessages, getSentMessages } = messageController;

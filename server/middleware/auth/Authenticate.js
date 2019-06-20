@@ -35,25 +35,24 @@ class Authenticate {
    * @returns {void}
    */
   static verifyToken(req, res, next) {
-    try {
-      const token = req.headers.authorization;
-      if (!token) {
+    const token = req.headers.authorization;
+    if (!token) {
+      return res.status(401).json({
+        status: 401,
+        error: 'No Authentication Token Provided',
+      });
+    }
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+      if (err) {
         return res.status(401).json({
-          status: 401,
-          error: 'No Authentication Token Provided',
+          status: res.statusCode,
+          error: 'token not verified',
         });
       }
-
-      const decoded = jwt.verify(token, process.env.SECRET_KEY);
       const { userId, email, userName } = decoded;
       req.user = { userId, email, userName };
       next();
-    } catch (e) {
-      return res.status(500).json({
-        status: 500,
-        error: `There was an error authenticating this user. ${e}`
-      });
-    }
+    });
   }
 
   /**
