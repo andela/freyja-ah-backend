@@ -1,6 +1,6 @@
 import models from '../models';
 
-const { Module } = models;
+const { Module, ReportedModule } = models;
 
 /**
  * A class that handles modules methods
@@ -50,6 +50,42 @@ class ModulesController {
       });
     } catch (error) {
       return error;
+    }
+  }
+
+  /**
+   * Report a module
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @param{function} next - next function
+   * @returns {object} response object
+   */
+  static async reportModule(req, res, next) {
+    const { reason, comment } = req.body;
+    const { userId } = req.user;
+    const { moduleId } = req.params;
+    try {
+      const module = await Module.findByPk(moduleId);
+      if (!module) {
+        return res.status(404).json({
+          status: 404,
+          error: 'Module not found'
+        });
+      }
+      const reported = await ReportedModule.create({
+        reason,
+        comment,
+        reporterId: userId,
+        moduleId
+      });
+      return res.status(200).json({
+        data: {
+          reported,
+          message: 'Module was reported successfully'
+        }
+      });
+    } catch (error) {
+      next(error);
     }
   }
 }
