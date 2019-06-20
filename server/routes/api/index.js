@@ -8,6 +8,7 @@ import profileRoute from './profiles';
 import testRoute from './test';
 import messageRoute from './messages/messages';
 import communityMessageRoute from './messages/communityMessage';
+import repliesRoute from './replies';
 
 const router = express.Router();
 router.use('/', usersRoute);
@@ -19,6 +20,7 @@ router.use('/', twitterAuthRoute);
 router.use('/', testRoute);
 router.use('/', messageRoute);
 router.use('/', communityMessageRoute);
+router.use('/', repliesRoute);
 
 router.use((err, req, res, next) => {
   if (err.name === 'ValidationError') {

@@ -28,6 +28,10 @@ const CommunityMessageModel = (sequelize, DataTypes) => {
       foreignKey: 'senderId',
       onDelete: 'CASCADE'
     });
+    CommunityMessage.hasMany(models.Reply, {
+      foreignKey: 'repliedMsgId',
+      as: 'replies',
+    });
   };
   return CommunityMessage;
 };
