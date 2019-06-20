@@ -366,7 +366,6 @@ paths:
       responses:
         200:
           description: 'Success'
-<<<<<<< HEAD
   /community/messages:
     post:
       description: post message to community,
@@ -397,7 +396,6 @@ paths:
       tags:
         - message
       operationId: GetCommunityMessage,
-=======
   
   /messages/sent:
     get:
@@ -442,22 +440,16 @@ paths:
       tags:
         - Messages
       operationId: GetMessage
->>>>>>> ft(get Message): user can get a message
       produces:
         - application/json
       responses:
         200:
           description: 'Success'
-<<<<<<< HEAD
         401:
           description: 'unAuthorized'
         404:
           description: 'user not found'
-
-=======
-        404:
-          description: 'Test not found'
->>>>>>> ft(get Message): user can get a message
+          
 tags:
   - name: Users
     description: User routes to signup, login, update and get specific User, reset password
