@@ -1,5 +1,6 @@
 import models from '../../models';
 import { characterLengthCheck, linkCheck } from '../../utils/messageCheck';
+import paginationUtil from '../../utils/pagination';
 
 const { User, CommunityMessage } = models;
 
@@ -59,6 +60,8 @@ class CommunityMessageController {
      *
      */
   static async getMessage(req, res, next) {
+    const { returnLimit, pageNumber } = req.query;
+    const { limit, offset } = paginationUtil.paginate(returnLimit, pageNumber);
     try {
       const { userId } = req.user;
       const user = await User.findByPk(userId);
@@ -69,7 +72,14 @@ class CommunityMessageController {
         });
       }
       const communityMessages = await CommunityMessage.findAll(
-        { where: { isApproved: true } }
+        {
+          where: { isApproved: true },
+          limit,
+          offset,
+          order: [
+            ['createdAt', 'DESC']
+          ]
+        }
       ).catch(next);
       const userProfile = await user.getProfile();
       const authorizedUser = userProfile.isCertified || user.role === 'trainer';
@@ -107,7 +117,7 @@ class CommunityMessageController {
     try {
       const { userId } = req.user;
       const user = await User.findByPk(userId);
-      const { id } = req.params;  
+      const { id } = req.params;
       if (!user) {
         return res.status(404).json({
           status: res.statusCode,
@@ -120,7 +130,6 @@ class CommunityMessageController {
           id,
         }
       });
-    
       if (!message.length) {
         return res.status(404).json({
           status: res.statusCode,

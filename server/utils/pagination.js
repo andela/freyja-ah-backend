@@ -1,11 +1,12 @@
-//import { LIMIT_DEFAULT } from '../constants';
 /**
- * @param {object} query
- * @returns {object} - object containing limit and offset
+ * @param {string} limit - limit for return
+ * @param {string} pageNumber - number of page
+ * @returns {object} - returns object of limits and pageNumber
  */
-const paginate = (query) => {
-  const limit = parseInt(query.limit, 10) || 10;
-  const offset = limit - 1;
+const paginate = (limit, pageNumber) => {
+  pageNumber = parseInt(pageNumber, 10) || 1;
+  limit = parseInt(limit, 10) || 20;
+  const offset = limit * (pageNumber - 1);
   return { limit, offset };
 };
 
