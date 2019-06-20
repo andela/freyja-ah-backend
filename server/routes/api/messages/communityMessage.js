@@ -5,9 +5,10 @@ import CommunityMessageController from '../../../controller/message/communityMes
 
 const router = express.Router();
 const { verifyToken } = Authenticate;
-const { postMessage } = CommunityMessageController;
+const { postMessage, getMessage } = CommunityMessageController;
 const { newCommunityMessageValidator } = communityMessageValidation;
 
 
 router.post('/community/messages', verifyToken, newCommunityMessageValidator, postMessage);
+router.get('/community/messages', verifyToken, getMessage);
 export default router;

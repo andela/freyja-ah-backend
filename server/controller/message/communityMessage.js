@@ -49,6 +49,51 @@ class CommunityMessageController {
       next(error);
     }
   }
+
+  /**
+     * gets all community messages
+     * @param {object} req - request object
+     * @param {object} res - response object
+     * @param{function} next - next function
+     * @returns {object} response object
+     *
+     */
+  static async getMessage(req, res, next) {
+    try {
+      const { userId } = req.user;
+      const user = await User.findByPk(userId);
+      if (!user) {
+        return res.status(404).json({
+          status: res.statusCode,
+          error: 'user not found',
+        });
+      }
+      const communityMessages = await CommunityMessage.findAll(
+        { where: { isApproved: true } }
+      ).catch(next);
+      const userProfile = await user.getProfile();
+      const authorizedUser = userProfile.isCertified || user.role === 'trainer';
+      if (!authorizedUser) {
+        return res.status(401).json({
+          status: res.statusCode,
+          error: 'You are not authorized to view community messages'
+        });
+      }
+      if (communityMessages.length) {
+        return res.status(200).json({
+          status: res.statusCode,
+          message: 'messages returned successfully',
+          data: communityMessages,
+        });
+      }
+      return res.status(404).json({
+        status: res.statusCode,
+        message: 'no community message was found',
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default CommunityMessageController;

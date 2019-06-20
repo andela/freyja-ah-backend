@@ -366,6 +366,46 @@ paths:
       responses:
         200:
           description: 'Success'
+  /community/messages:
+    post:
+      description: post message to community,
+      summary: post a message to the community forum,
+      tags:
+        - message
+      operationId: PostCommunityMessage,
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: body
+          in: formdata
+          type: string
+          description: 'community message'
+          required: true
+      responses:
+        201:
+          description: 'Success'
+        401:
+          description: 'unAuthorized'
+        404:
+          description: 'user not found'
+    get:
+      description: get all community messages,
+      summary: get all messages posted in the community,
+      tags:
+        - message
+      operationId: GetCommunityMessage,
+      produces:
+        - application/json
+      responses:
+        200:
+          description: 'Success'
+        401:
+          description: 'unAuthorized'
+        404:
+          description: 'user not found'
+
 tags:
   - name: Users
     description: User routes to signup, login, update and get specific User, reset password
