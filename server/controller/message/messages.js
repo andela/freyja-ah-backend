@@ -23,14 +23,14 @@ class MessageController {
       if (!user) {
         return res.status(404).json({
           status: 404,
-          error: 'This user does not exist',
+          error: 'This user does not exist'
         });
       }
       const recipient = await User.findByPk(receiverId);
       if (!recipient) {
         return res.status(404).json({
           status: 404,
-          error: 'The message recipient does not exist',
+          error: 'The message recipient does not exist'
         });
       }
 
@@ -44,7 +44,7 @@ class MessageController {
       const newMessage = await user.createSentMessage(message);
       return res.status(201).json({
         status: res.statusCode,
-        message: newMessage.dataValues,
+        message: newMessage.dataValues
       });
     } catch (e) {
       next(e);
@@ -66,7 +66,7 @@ class MessageController {
       if (!messages.length) {
         return res.status(200).json({
           status: 200,
-          message: 'no recieved messages',
+          message: 'no recieved messages'
         });
       }
 
@@ -94,12 +94,65 @@ class MessageController {
       if (!messages.length) {
         res.status(200).json({
           status: 200,
-          message: 'no sent messages',
+          message: 'no sent messages'
         });
       }
       return res.status(200).json({
         status: 200,
         data: messages
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  /**
+   * get all sent messages
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @param{function} next - next function
+   * @returns {object} response object
+   */
+  static async getMessage(req, res, next) {
+    const { userId } = req.user;
+    const { messageId } = req.params;
+    let message;
+
+    try {
+      const user = await User.findByPk(userId);
+      if (!user) {
+        return res.status(404).json({
+          status: 404,
+          error: 'This user does not exist'
+        });
+      }
+
+      const sentMessage = await Message.findOne({
+        where: { senderId: userId, id: messageId }
+      });
+
+      const receivedMessage = await Message.findOne({
+        where: { receiverId: userId, id: messageId }
+      });
+
+      if (!sentMessage && !receivedMessage) {
+        return res.status(404).json({
+          status: 404,
+          message: 'no messages'
+        });
+      }
+
+      if (receivedMessage) {
+        await Message.update({ status: 'read' }, { where: { id: messageId } });
+      }
+      if (sentMessage) {
+        message = sentMessage.dataValues;
+      } else {
+        message = receivedMessage.dataValues;
+      }
+      return res.status(200).json({
+        status: 200,
+        data: message
       });
     } catch (e) {
       next(e);
