@@ -366,6 +366,7 @@ paths:
       responses:
         200:
           description: 'Success'
+<<<<<<< HEAD
   /community/messages:
     post:
       description: post message to community,
@@ -396,16 +397,67 @@ paths:
       tags:
         - message
       operationId: GetCommunityMessage,
+=======
+  
+  /messages/sent:
+    get:
+      description: get all sent messages
+      summary: get sent messages
+      tags:
+        - Messages
+      operationId: GetSentMessages
+      produces:
+        - application/json
+      parameters:
+        - name: x-access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        200:
+          description: 'Sent Messages returned successfully'
+  
+  /messages/received:
+    get:
+      description: get all received messages
+      summary: get received messages
+      tags:
+        - Messages
+      operationId: GetReceivedMessages
+      produces:
+        - application/json
+      parameters:
+        - name: x-access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        200:
+          description: 'Received Messages returned successfully'
+
+  /messages/message:id:
+    get:
+      description: get a message
+      summary: get message
+      tags:
+        - Messages
+      operationId: GetMessage
+>>>>>>> ft(get Message): user can get a message
       produces:
         - application/json
       responses:
         200:
           description: 'Success'
+<<<<<<< HEAD
         401:
           description: 'unAuthorized'
         404:
           description: 'user not found'
 
+=======
+        404:
+          description: 'Test not found'
+>>>>>>> ft(get Message): user can get a message
 tags:
   - name: Users
     description: User routes to signup, login, update and get specific User, reset password
@@ -415,6 +467,8 @@ tags:
     description: User routes to get all modules
   - name: Test
     description: Route to get test by module Id
+  - name: Messages
+    description: Route to create message, get messages and get message
 definitions:
   User:
     type: 'object'

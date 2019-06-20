@@ -7,6 +7,7 @@ import server from '../../index';
 let userToken;
 
 let receiverId;
+let messageId;
 
 describe('GET /api/messages', async () => {
   before((done) => {
@@ -42,9 +43,20 @@ describe('GET /api/messages', async () => {
         done(err);
       });
   });
-  it('get received message', (done) => {
+  it('get received messages', (done) => {
     request(server)
       .get('/api/messages/received')
+      .set('authorization', userToken)
+      .end((err, res) => {
+        messageId = res.body.data[0].id;
+        expect(res.status).to.eql(200);
+        expect(res.body).to.have.property('data');
+        done(err);
+      });
+  });
+  it('get sent messages', (done) => {
+    request(server)
+      .get('/api/messages/sent')
       .set('authorization', userToken)
       .end((err, res) => {
         expect(res.status).to.eql(200);
@@ -52,13 +64,15 @@ describe('GET /api/messages', async () => {
         done(err);
       });
   });
-  it('get sent message', (done) => {
+
+  it('get message', (done) => {
     request(server)
-      .get('/api/messages/sent')
+      .get(`/api/messages/${messageId}`)
       .set('authorization', userToken)
       .end((err, res) => {
         expect(res.status).to.eql(200);
         expect(res.body).to.have.property('data');
+        expect(res.body.data).to.be.an('object');
         done(err);
       });
   });
