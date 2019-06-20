@@ -23,6 +23,10 @@ module.exports = {
         key: 'id'
       }
     },
+    score: {
+      type: Sequelize.INTEGER,
+      allowNull: false
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE

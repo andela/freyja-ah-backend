@@ -4,8 +4,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       userId: DataTypes.INTEGER,
       testId: DataTypes.INTEGER,
+      score: DataTypes.INTEGER
     },
-    {},
+    {}
   );
   UserTest.associate = (models) => {
     // associations can be defined here
