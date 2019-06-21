@@ -7,7 +7,7 @@ const { User, CommunityMessage } = models;
  */
 class ReplyController {
   /**
-   * Sends a message
+   * Posts a reply
    * @param {object} req - request object
    * @param {object} res - response object
    * @param{function} next - next function
@@ -33,19 +33,27 @@ class ReplyController {
           error: 'This message does not exist',
         });
       }
+      const userProfile = await user.getProfile();
+      if (!userProfile.dataValues.isCertified) {
+        return res.status(401).json({
+          status: 401,
+          error: 'This user is not permitted to post a reply',
+        });
+      }
 
       const reply = {
         body,
         ownerId: userId,
         repliedMsgId,
       };
-
       const newReply = await user.createReply(reply);
-      const replyOwner = await newReply.getOwner();
 
       return res.status(201).json({
         status: res.statusCode,
-        reply: { ...newReply.dataValues, owner: replyOwner.dataValues }
+        reply: {
+          ...newReply.dataValues,
+          owner: user
+        }
       });
     } catch (e) {
       next(e);

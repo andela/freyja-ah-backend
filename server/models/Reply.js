@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'ownerId',
       as: 'Owner',
     });
-    Reply.belongsTo(models.Message, {
+    Reply.belongsTo(models.CommunityMessage, {
       foreignKey: 'repliedMsgId',
       as: 'Message',
     });
