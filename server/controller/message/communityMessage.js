@@ -112,7 +112,47 @@ class CommunityMessageController {
   }
 
   /**
+   * Approve a message
+   * @param {object} req - request object
+   * @param {object} res - response object
+   * @param{function} next - next function
+   * @returns {object} response object
    *
+<<<<<<< HEAD
+=======
+   */
+  static async approveMessage(req, res, next) {
+    const { messageId } = req.params;
+    const { userId } = req.user;
+    try {
+      const trainer = await User.findByPk(userId);
+      if (trainer.role !== 'trainer') {
+        return res.status(401).json({
+          status: 401,
+          error: 'only trainers are allowed to approve a message'
+        });
+      }
+      const message = await CommunityMessage.findByPk(messageId);
+      if (!message) {
+        return res.status(404).json({
+          status: 404,
+          error: 'message not found'
+        });
+      }
+      await message.update({ isApproved: true });
+      return res.status(200).json({
+        data: {
+          message: 'message approved successfully'
+        }
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   *
+>>>>>>> feat(community): approve messages
    * deletes a community messages
      * @param {object} req - request object
      * @param {object} res - response object

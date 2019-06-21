@@ -11,9 +11,12 @@ import fakeResponse from '../socialLogin.js/fakeResponse';
 
 use(chaihttp);
 
-let userToken = null;
-let userToken2 = null;
-const unknownToken = Authenticate.generateToken(2000, 'unknown@mail.com', 'unknown');
+let userToken, userToken2, userToken3;
+const unknownToken = Authenticate.generateToken(
+  2000,
+  'unknown@mail.com',
+  'unknown'
+);
 
 describe('Post api/community/messages', () => {
   before((done) => {
@@ -23,7 +26,7 @@ describe('Post api/community/messages', () => {
       userName: 'smithyy',
       email: 'smithmorgan@mail.com',
       password: '12345678',
-      gender: 'male'
+      gender: 'male',
     };
     request(server)
       .post('/api/users')
@@ -36,7 +39,7 @@ describe('Post api/community/messages', () => {
 
   before((done) => {
     const profileUpdate = {
-      isCertified: true
+      isCertified: true,
     };
     request(server)
       .put('/api/profiles')
@@ -48,7 +51,7 @@ describe('Post api/community/messages', () => {
   before((done) => {
     request(server)
       .post('/api/users/login')
-      .send({ email: 'ted123@mail.com', password: '12345678', })
+      .send({ email: 'ted123@mail.com', password: '12345678' })
       .end((err, res) => {
         const { token } = res.body;
         userToken2 = token;
@@ -96,8 +99,20 @@ describe('Post api/community/messages', () => {
         done(err);
       });
   });
-
-  it('it reurns 401 error', (done) => {
+  it('it sends/create message', (done) => {
+    request(server)
+      .post('/api/community/messages')
+      .set('authorization', userToken)
+      .send({
+        body: 'cover your lids to die',
+      })
+      .end((err, res) => {
+        expect(res.body.message).to.eql('Message sent');
+        expect(res.status).to.eql(202);
+        done(err);
+      });
+  });
+  it('it returns 401 error', (done) => {
     request(server)
       .post('/api/community/messages')
       .set('authorization', userToken2)
@@ -105,7 +120,9 @@ describe('Post api/community/messages', () => {
         body: 'cover your lids to die with the sun www.google.com',
       })
       .end((err, res) => {
-        expect(res.body.error).to.eql('You are not authorized to post community message');
+        expect(res.body.error).to.eql(
+          'You are not authorized to post community message'
+        );
         expect(res.status).to.eql(401);
         done(err);
       });
@@ -154,7 +171,9 @@ describe('Get api/community/messages', () => {
       .set('authorization', userToken2)
       .end((err, res) => {
         expect(res.status).to.eql(401);
-        expect(res.body.error).to.eql('You are not authorized to view community messages');
+        expect(res.body.error).to.eql(
+          'You are not authorized to view community messages'
+        );
         expect(res.status).to.eql(401);
         done(err);
       });
@@ -178,13 +197,78 @@ describe('Get api/community/messages', () => {
     done();
   });
 });
+
+describe('PUT api/community/messages/approved/:messageId', () => {
+  before((done) => {
+    request(server)
+      .post('/api/users/login')
+      .send({ email: 'tyakk@gmail.com', password: 'babatunde' })
+      .end((err, res) => {
+        const { token } = res.body;
+        userToken3 = token;
+        done(err);
+      });
+    request(server)
+      .post('/api/community/messages')
+      .set('authorization', userToken)
+      .send({
+        body: 'cover your lids to die with the sun www.faf.com',
+      });
+  });
+  it('should not approve community message if token is not provided', (done) => {
+    request(server)
+      .put('/api/community/messages/approve/1')
+      .end((err, res) => {
+        expect(res.status).to.eql(401);
+        done(err);
+      });
+  });
+  it('it returns 401 error if user is not a trainer', (done) => {
+    request(server)
+      .put('/api/community/messages/approve/1')
+      .set('authorization', userToken)
+      .end((err, res) => {
+        expect(res.status).to.eql(401);
+        expect(res.status).to.eql(401);
+        done(err);
+      });
+  });
+  it('it returns 404 error if message is not found', (done) => {
+    request(server)
+      .put('/api/community/messages/approve/88')
+      .set('authorization', userToken3)
+      .end((err, res) => {
+        expect(res.status).to.eql(404);
+        expect(res.status).to.eql(404);
+        done(err);
+      });
+  });
+  it('it should update a community message', (done) => {
+    request(server)
+      .put('/api/community/messages/approve/1')
+      .set('authorization', userToken3)
+      .end((err, res) => {
+        expect(res.status).to.eql(200);
+        expect(res.status).to.eql(200);
+        done(err);
+      });
+  });
+  it('should spy on next called on catch', (done) => {
+    const { approveMessage } = CommunityMessageController;
+    const spy007 = sinon.spy();
+    approveMessage(fakeUser.userRequest1, fakeResponse, spy007);
+    expect(spy007).to.exist;
+    done();
+  });
+});
+
 describe('DELETE api/community/messages/:id', () => {
   before((done) => {
     request(server)
       .post('/api/community/messages')
       .set('authorization', userToken2)
       .send({
-        body: 'cover your lids to die with the sun'
+        body: 'cover your lids to die with the sun',
       });
     done();
   });

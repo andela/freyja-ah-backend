@@ -29,6 +29,17 @@ module.exports = {
         role: 'trainer',
         isVerified: true
       },
+      {
+        firstName: 'Ochowo',
+        lastName: 'Ikongbeh',
+        email: 'ochowoikongbeh@gmail.com',
+        userName: 'Ooche',
+        gender: 'female',
+        password: '$2b$06$JtIgZj3HGCj.V48kb2/IB.iMUl99/V6jnD3OinANgwPgi2kFgqdwq',
+        role: 'trainer',
+        isVerified: true
+      },
+
     ],
     {}
   ),
