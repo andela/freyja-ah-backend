@@ -1,5 +1,10 @@
 import { Op as Operator } from 'sequelize';
+import sendGridMailer from '@sendgrid/mail';
+import dotenv from 'dotenv';
 import models from '../models';
+
+dotenv.config();
+sendGridMailer.setApiKey(process.env.SENDGRID_API_KEY);
 
 const {
   Test, Question, UserTest, Profile
@@ -44,7 +49,7 @@ class TestController {
    */
   static async postScore(req, res, next) {
     const { testId } = req.params;
-    const { userId } = req.user;
+    const { userId, email } = req.user;
     const { score } = req.body;
     try {
       const test = await Test.findByPk(testId);
@@ -55,7 +60,7 @@ class TestController {
         });
       }
       if (score >= 70) {
-        TestController.updateTestPassed(userId, testId);
+        TestController.updateTestPassed(userId, email, testId);
       }
       const newUserTest = await UserTest.create({ userId, testId, score });
       return res.status(200).json({
@@ -70,12 +75,13 @@ class TestController {
   /**
    *update test passed
    * @param{integer} userId
+   * @param{integer} email
    * @param{integer} testId
    * @param{function} next
    * @returns {object} response
    *
    */
-  static async updateTestPassed(userId, testId, next) {
+  static async updateTestPassed(userId, email, testId, next) {
     try {
       const checkPassedTest = await UserTest.findAll({
         where: { testId, score: { [Operator.gte]: 69 } }
@@ -85,6 +91,13 @@ class TestController {
         await userProfile.update({ testPassed: userProfile.testPassed + 1 });
         if (userProfile.testPassed === 3) {
           await userProfile.update({ isCertified: true });
+          const msg = {
+            to: email,
+            from: 'CSLC@gmail.com',
+            subject: 'Welcome to CSLC',
+            html: 'Comgratulations, /n Welcome to the customer learning service community, You are now a certified customer service expert',
+          };
+          await sendGridMailer.send(msg);
         }
       }
     } catch (error) {

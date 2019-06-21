@@ -466,6 +466,8 @@ paths:
       responses:
         200:
           description: 'Message deleted succesfully'
+        404:
+          description: 'Test not found'
 tags:
   - name: Users
     description: User routes to signup, login, update and get specific User, reset password

@@ -1,4 +1,10 @@
+
+import sendGridMailer from '@sendgrid/mail';
+import dotenv from 'dotenv';
 import models from '../../models';
+
+dotenv.config();
+sendGridMailer.setApiKey(process.env.SENDGRID_API_KEY);
 
 const { User, Message } = models;
 
@@ -16,7 +22,7 @@ class MessageController {
    */
   static async sendMessage(req, res, next) {
     try {
-      const { userId } = req.user;
+      const { userId, email } = req.user;
       const { body, receiverId, parentMessageId } = req.body;
 
       const user = await User.findByPk(userId);
@@ -42,6 +48,16 @@ class MessageController {
       };
 
       const newMessage = await user.createSentMessage(message);
+      if (newMessage.dataValues) {
+        const msg = {
+          to: recipient.dataValues.email,
+          from: 'CSLC@gmail.com',
+          subject: 'New Message',
+          html: `You have a new message from ${email} `,
+        };
+        await sendGridMailer.send(msg);
+      }
+
       return res.status(201).json({
         status: res.statusCode,
         message: newMessage.dataValues
