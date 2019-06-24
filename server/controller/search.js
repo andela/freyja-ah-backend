@@ -36,7 +36,7 @@ class SearchController {
       if (!results.length) {
         return res.status(200).json({
           status: res.statusCode,
-          messagge: 'There are no results matching your search'
+          message: 'There are no results matching your search'
         });
       }
       return res.status(200).json({
@@ -69,7 +69,7 @@ class SearchController {
 
       const keywords = req.params.keywords.split(' ');
       const queryExtension = SearchController.generateQueryString('Contents', ['name', 'description'], keywords);
-      const query = `SELECT id, "Contents"."name", "Contents"."description" FROM "Contents" WHERE (${queryExtension})`;
+      const query = `SELECT id, "Contents"."name", "Contents"."description", "Contents"."link" FROM "Contents" WHERE (${queryExtension})`;
 
       const results = await models.sequelize.query(query, {
         type: models.sequelize.QueryTypes.SELECT
@@ -78,7 +78,7 @@ class SearchController {
       if (!results.length) {
         return res.status(200).json({
           status: res.statusCode,
-          messagge: 'There are no results matching your search'
+          message: 'There are no results matching your search'
         });
       }
       return res.status(200).json({
