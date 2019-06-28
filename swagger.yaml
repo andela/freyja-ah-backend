@@ -38,7 +38,7 @@ paths:
           in: formData
           type: string
           description: 'username'
-          required: true
+          required: false
         - name: password
           in: formData
           minLength: 8
@@ -95,6 +95,12 @@ paths:
       tags:
         - Users
       operationId: User5Get
+      parameters:
+        - name: userId
+          in: params
+          required: true
+          type: integer
+          description: 'the id of the user to be returned'
       produces:
         - application/json
       responses:
@@ -188,6 +194,11 @@ paths:
           required: true
           type: string
           description: 'user new password'
+        - name: token
+          in: queryParams
+          required: true
+          type: string
+          description: 'user token'
       responses:
         202:
           description: 'status code'
@@ -217,6 +228,11 @@ paths:
           in: formdata
           type: boolean
           description: 'User employment status'
+          required: true
+        - name: industry
+          in: formdata
+          type: string
+          description: 'User industry'
           required: true
         - name: bio
           in: formdata
@@ -323,29 +339,57 @@ paths:
       responses:
         200:
           description: 'Modules returned successfully'
-  /modules/1:
+  /modules/:moduleId:
     get:
       description: get a specific module
       summary: get single module
+      parameters:
+        - name: moduleId
+          in: param
+          required: true
+          type: integer
+        - name: x-access-token
+          in: header
+          required: true
+          type: string
       tags:
         - Modules
+      responses:
+        200:
+          description: 'success'
+        404:
+          description: 'Not found'
       operationId: GetModule
   /modules/report/1:
     post:
       description: report a module
       summary: report a module
+      parameters:
+        - name: moduleId
+          in: param
+          required: true
+          type: integer
+        - name: x-access-token
+          in: header
+          required: true
+          type: string
       tags:
         - Modules
       operationId: ReportModule
-      reponses:
+      responses:
         200:
           description: 'Success'
         404:
           description: 'Not found'
-  /test/module:id:
+  /test/:moduleId:
     get:
       description: get module test
       summary: get test
+      parameters:
+        - name: moduleId
+          in: param
+          required: true
+          type: integer
       tags:
         - Test
       operationId: GetTest
@@ -375,40 +419,41 @@ paths:
           type: integer
           description: 'User score'
           required: true
+        - name: x-access-token
+          in: header
+          required: true
+          type: string
       responses:
         200:
           description: 'Success'
-  /community/messages:
+  /messages:
     post:
-      description: post message to community,
-      summary: post a message to the community forum,
+      description: send message to another user
+      summary: send message
       tags:
-        - message
-      operationId: PostCommunityMessage,
+        - Messages
       produces:
         - application/json
-      consumes:
-        - application/x-www-form-urlencoded
       parameters:
         - name: body
           in: formdata
-          type: string
-          description: 'community message'
           required: true
+          type: string
+        - name: receiverId
+          in: formdata
+          required: true
+          type: integer
+        - name: x-access-token
+          in: header
+          required: true
+          type: string
       responses:
         201:
-          description: 'Success'
-        401:
-          description: 'unAuthorized'
+          description: 'Created messages successfully'
+        422:
+          description: 'body or receiver Id not provided'
         404:
-          description: 'user not found'
-    get:
-      description: get all community messages,
-      summary: get all messages posted in the community,
-      tags:
-        - message
-      operationId: GetCommunityMessage,
-  
+          description: 'message recipient does not exist'
   /messages/sent:
     get:
       description: get all sent messages
@@ -426,7 +471,6 @@ paths:
       responses:
         200:
           description: 'Sent Messages returned successfully'
-  
   /messages/received:
     get:
       description: get all received messages
@@ -449,6 +493,15 @@ paths:
     get:
       description: get a message
       summary: get message
+      parameters:
+        - name: messageId
+          in: param
+          required: true
+          type: integer
+        - name: x-access-token
+          in: header
+          required: true
+          type: string
       tags:
         - Messages
       operationId: GetMessage
@@ -461,6 +514,44 @@ paths:
           description: 'unAuthorized'
         404:
           description: 'user not found'
+  /community/messages:
+    post:
+      description: post message to community,
+      summary: post a message to the community forum,
+      tags:
+        - communityMessages
+      operationId: PostCommunityMessage,
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: body
+          in: formdata
+          type: string
+          description: 'community message'
+          required: true
+        - name: x-access-token
+          in: header
+          required: true
+          type: string
+      responses:
+        201:
+          description: 'Success'
+        401:
+          description: 'unAuthorized'
+        404:
+          description: 'user not found'
+    get:
+      description: get all community messages,
+      summary: get all messages posted in the community,
+      tags:
+        - communityMessages
+      operationId: GetCommunityMessage,
+      responses:
+        200:
+          description: 'success'
+
   /community/messages/1:
     delete:
       description: deletes a community message
@@ -505,6 +596,19 @@ definitions:
         type: 'string'
       email:
         type: 'string'
+  Message:
+    type: 'object'
+    properties:
+      id:
+        type: 'integer'
+      body:
+        type: 'string'
+      receiverId:
+        type: 'integer'
+      senderId:
+        type: 'integer'
+      parentMessageId:
+        type: 'integer'
   Module:
     type: 'object'
     properties:
