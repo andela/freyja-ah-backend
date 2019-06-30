@@ -2,9 +2,12 @@ import { describe, it } from 'mocha';
 import { use, request, expect } from 'chai';
 import chaihttp from 'chai-http';
 import server from '../../index';
+import tokenHandler from '../../middleware/auth/Authenticate';
 
 use(chaihttp);
-let userId;
+let userToken;
+const userToken2 = tokenHandler.generateToken(100, 'nouser@mail.com', 'noUser');
+
 describe('Post api/user', () => {
   before((done) => {
     const user = {
@@ -19,14 +22,15 @@ describe('Post api/user', () => {
       .post('/api/users')
       .send(user)
       .end((err, res) => {
-        userId = res.body.user.id;
+        userToken = res.body.token;
         done(err);
       });
   });
 
   it('update a registered user', (done) => {
     request(server)
-      .put(`/api/user/${userId}`)
+      .put('/api/user/')
+      .set('Authorization', userToken)
       .end((err, res) => {
         expect(res.status).to.eql(200);
         expect(res.body.user).to.be.an('object');
@@ -38,7 +42,8 @@ describe('Post api/user', () => {
 
   it('it returns a Notfound Error if the user is not registered', (done) => {
     request(server)
-      .put('/api/user/100')
+      .put('/api/user')
+      .set('Authorization', userToken2)
       .end((err, res) => {
         expect(res.status).to.eql(404);
         expect(res.body.message).to.eql('User does not exist');
