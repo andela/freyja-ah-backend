@@ -31,6 +31,7 @@ describe('Testing the Profile model', () => {
       'instagram',
       'facebook',
       'twitter',
+      'gender',
       'linkedIn'
     ].forEach(checkPropertyExists(profile));
   });

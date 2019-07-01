@@ -39,6 +39,12 @@ passport.use('facebook', facebookStrategy);
 passport.use('google', googleStrategy);
 passport.use('twitter', twitterStrategy);
 
+app.use(session({
+  secret: process.env.SECRET_KEY,
+  resave: false,
+  saveUninitialized: true,
+}));
+
 if (!isProduction) {
   app.use(errorhandler());
 }
