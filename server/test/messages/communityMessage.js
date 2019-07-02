@@ -9,24 +9,43 @@ import CommunityMessageController from '../../controller/message/communityMessag
 import fakeUser from '../socialLogin.js/fakeUser';
 import fakeResponse from '../socialLogin.js/fakeResponse';
 
-
 use(chaihttp);
 
 let userToken = null;
 let userToken2 = null;
 const unknownToken = Authenticate.generateToken(2000, 'unknown@mail.com', 'unknown');
 
-
 describe('Post api/community/messages', () => {
   before((done) => {
+    const user = {
+      firstName: 'Morgan',
+      lastName: 'Smith',
+      userName: 'smithyy',
+      email: 'smithmorgan@mail.com',
+      password: '12345678',
+      gender: 'male'
+    };
     request(server)
-      .post('/api/users/login')
-      .send({ email: 'cruise@mail.com', password: '12345678', })
+      .post('/api/users')
+      .send(user)
       .end((err, res) => {
-        const { token } = res.body;
-        userToken = token;
+        userToken = res.body.token;
+        done(err);
       });
+  });
 
+  before((done) => {
+    const profileUpdate = {
+      isCertified: true
+    };
+    request(server)
+      .put('/api/profiles')
+      .set('authorization', userToken)
+      .send(profileUpdate)
+      .end(done);
+  });
+
+  before((done) => {
     request(server)
       .post('/api/users/login')
       .send({ email: 'ted123@mail.com', password: '12345678', })
@@ -63,6 +82,7 @@ describe('Post api/community/messages', () => {
         done(err);
       });
   });
+
   it('it sends/create message', (done) => {
     request(server)
       .post('/api/community/messages')
@@ -114,24 +134,8 @@ describe('Post api/community/messages', () => {
     done();
   });
 });
+
 describe('Get api/community/messages', () => {
-  before((done) => {
-    request(server)
-      .post('/api/users/login')
-      .send({ email: 'cruise@mail.com', password: '12345678', })
-      .end((err, res) => {
-        const { token } = res.body;
-        userToken = token;
-      });
-    request(server)
-      .post('/api/users/login')
-      .send({ email: 'ted123@mail.com', password: '12345678', })
-      .end((err, res) => {
-        const { token } = res.body;
-        userToken2 = token;
-        done(err);
-      });
-  });
   it('should get all messages if user is certified or a trainer', (done) => {
     request(server)
       .get('/api/community/messages')
@@ -167,9 +171,9 @@ describe('Get api/community/messages', () => {
       });
   });
   it('should spy on next called on catch', (done) => {
-    const { getMessage } = CommunityMessageController;
+    const { getMessages } = CommunityMessageController;
     const spy007 = sinon.spy();
-    getMessage(fakeUser.userRequest1, fakeResponse, spy007);
+    getMessages(fakeUser.userRequest1, fakeResponse, spy007);
     expect(spy007).to.exist;
     done();
   });

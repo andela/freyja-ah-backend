@@ -43,7 +43,7 @@ class UserController {
         error: 'This user already exists',
       });
     }
-    user.createProfile();
+    await user.createProfile();
 
     const token = Authenticate.generateToken(user.id, user.email, user.userName);
     if (user.dataValues) {
