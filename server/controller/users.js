@@ -185,11 +185,15 @@ class UserController {
           firstName: user.firstName,
           lastName: user.lastName,
           userName: user.userName,
-          email: user.email,
+          email: user.email
         },
         token
       });
     }
+    return res.status(401).send({
+      status: res.statusCode,
+      error: 'Invalid email or password'
+    });
   }
 
   /**
