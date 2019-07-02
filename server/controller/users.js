@@ -205,12 +205,12 @@ class UserController {
    *
    */
   static async updateUser(req, res, next) {
-    const userId = parseInt(req.params.id, 10);
+    const userId = parseInt(req.user.userId, 10);
     const user = await User.findByPk(userId).catch(next);
     if (!user) {
       return res.status(404).json({
         status: res.statusCode,
-        message: 'User does not exist',
+        message: 'User does not exist'
       });
     }
     const updateValues = {
@@ -253,36 +253,32 @@ class UserController {
       if (!user) {
         return res.status(404).json({
           status: 'error',
-          message: 'Email does not exist',
+          message: 'Email does not exist'
         });
       }
       const token = Authenticate.generateToken(user.id, user.email);
-      const resetPasswordUrl = `${
-        process.env.HOST
-      }/api/users/change-password?token=${token}`;
+      const resetPasswordUrl = `${process.env.HOST}/api/users/change-password?token=${token}`;
       const message = {
         to: email,
         from: {
           name: 'Customer Service Learning Community',
-          email: 'tundenasri@gmail.com',
+          email: 'tundenasri@gmail.com'
         },
         subject: 'This is a test Email',
         html: `<h1> Hello there ${user.dataValues.firstName}</h1>
               <p> Please use this url to change your password ${resetPasswordUrl}</p>
               use the url to change your password by adding your new password to the body of the request
-        `,
+        `
       };
-      sendGridMailer
-        .send(message)
-        .then(sent => res.status(202).json({
-          status: 'success',
-          message:
-              'Reset password email as been sent to you, Kindly check your email for next steps to be taken to reset your password',
-        }));
+      sendGridMailer.send(message).then(sent => res.status(202).json({
+        status: 'success',
+        message:
+            'Reset password email as been sent to you, Kindly check your email for next steps to be taken to reset your password'
+      }));
     } catch (error) {
       return res.status(422).json({
         status: 'error',
-        message: 'Unable to send reset password email, please try again',
+        message: 'Unable to send reset password email, please try again'
       });
     }
   }
