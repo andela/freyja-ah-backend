@@ -29,8 +29,13 @@ describe('Post api/community/messages', () => {
       gender: 'male',
     };
     request(server)
+<<<<<<< HEAD
       .post('/api/users')
       .send(user)
+=======
+      .post('/api/users/login')
+      .send({ email: 'cruise@mail.com', password: '12345678' })
+>>>>>>> implement TTL feedback
       .end((err, res) => {
         userToken = res.body.token;
         done(err);
@@ -153,6 +158,26 @@ describe('Post api/community/messages', () => {
 });
 
 describe('Get api/community/messages', () => {
+<<<<<<< HEAD
+=======
+  before((done) => {
+    request(server)
+      .post('/api/users/login')
+      .send({ email: 'cruise@mail.com', password: '12345678' })
+      .end((err, res) => {
+        const { token } = res.body;
+        userToken = token;
+      });
+    request(server)
+      .post('/api/users/login')
+      .send({ email: 'ted123@mail.com', password: '12345678' })
+      .end((err, res) => {
+        const { token } = res.body;
+        userToken2 = token;
+        done(err);
+      });
+  });
+>>>>>>> implement TTL feedback
   it('should get all messages if user is certified or a trainer', (done) => {
     request(server)
       .get('/api/community/messages')
