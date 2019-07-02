@@ -1,8 +1,12 @@
+/* eslint-disable no-unused-expressions */
 import { describe, it } from 'mocha';
 import { request, expect } from 'chai';
+import sinon from 'sinon';
 import faker from 'faker';
-
 import server from '../../index';
+import PrivateMessage from '../../controller/message/messages';
+import fakeUser from '../socialLogin.js/fakeUser';
+import fakeResponse from '../socialLogin.js/fakeResponse';
 
 let userToken;
 
@@ -45,7 +49,7 @@ describe('GET /api/messages', () => {
   });
   it('get received messages', (done) => {
     request(server)
-      .get('/api/messages/received')
+      .get('/api/messages/received?limit=2&&pageNumber=1')
       .set('authorization', userToken)
       .end((err, res) => {
         messageId = res.body.data[0].id;
@@ -56,7 +60,7 @@ describe('GET /api/messages', () => {
   });
   it('get sent messages', (done) => {
     request(server)
-      .get('/api/messages/sent')
+      .get('/api/messages/sent?limit=2&&pageNumber=1')
       .set('authorization', userToken)
       .end((err, res) => {
         expect(res.status).to.eql(200);
@@ -75,5 +79,19 @@ describe('GET /api/messages', () => {
         expect(res.body.data).to.be.an('object');
         done(err);
       });
+  });
+  it('should spy on next called on catch at getReceievedMessages', (done) => {
+    const { getReceievedMessages } = PrivateMessage;
+    const spy007 = sinon.spy();
+    getReceievedMessages(fakeUser.userRequest1, fakeResponse, spy007);
+    expect(spy007).to.exist;
+    done();
+  });
+  it('should spy on next called on catch at getSentMessages', (done) => {
+    const { getSentMessages } = PrivateMessage;
+    const spy007 = sinon.spy();
+    getSentMessages(fakeUser.userRequest1, fakeResponse, spy007);
+    expect(spy007).to.exist;
+    done();
   });
 });

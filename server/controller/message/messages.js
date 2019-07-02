@@ -2,6 +2,7 @@
 import sendGridMailer from '@sendgrid/mail';
 import dotenv from 'dotenv';
 import models from '../../models';
+import paginationUtil from '../../utils/pagination';
 
 dotenv.config();
 sendGridMailer.setApiKey(process.env.SENDGRID_API_KEY);
@@ -75,10 +76,21 @@ class MessageController {
    * @returns {object} response object
    */
   static async getReceievedMessages(req, res, next) {
+    const { returnLimit, pageNumber } = req.query;
+    const { limit, offset } = paginationUtil.paginate(returnLimit, pageNumber);
     const { userId } = req.user;
 
     try {
-      const messages = await Message.findAll({ where: { receiverId: userId } });
+      const messages = await Message.findAll(
+        {
+          where: { receiverId: userId },
+          limit,
+          offset,
+          order: [
+            ['createdAt', 'DESC']
+          ]
+        }
+      );
       if (!messages.length) {
         return res.status(200).json({
           status: 200,
@@ -103,10 +115,21 @@ class MessageController {
    * @returns {object} response object
    */
   static async getSentMessages(req, res, next) {
+    const { returnLimit, pageNumber } = req.query;
+    const { limit, offset } = paginationUtil.paginate(returnLimit, pageNumber);
     const { userId } = req.user;
 
     try {
-      const messages = await Message.findAll({ where: { senderId: userId } });
+      const messages = await Message.findAll(
+        {
+          where: { senderId: userId },
+          limit,
+          offset,
+          order: [
+            ['createdAt', 'DESC']
+          ]
+        }
+      );
       if (!messages.length) {
         res.status(200).json({
           status: 200,
