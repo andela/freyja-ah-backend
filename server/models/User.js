@@ -30,13 +30,6 @@ const userModel = (sequelize, DataTypes) => {
           msg: 'username already exists',
         },
       },
-      gender: {
-        type: DataTypes.STRING,
-        allowNull: {
-          args: false,
-          msg: 'Gender is required',
-        }
-      },
       role: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -106,7 +99,6 @@ const userModel = (sequelize, DataTypes) => {
       as: 'profile',
       onDelete: 'CASCADE'
     });
-
     User.belongsToMany(models.Test, {
       through: 'UserTest',
       foreignKey: 'userId'
@@ -115,11 +107,14 @@ const userModel = (sequelize, DataTypes) => {
       foreignKey: 'senderId',
       onDelete: 'CASCADE',
     });
-
     User.hasMany(models.Message, {
       foreignKey: 'senderId',
       as: 'sentMessages',
       onDelete: 'CASCADE'
+    });
+    User.hasMany(models.Reply, {
+      foreignKey: 'ownerId',
+      as: 'replies',
     });
   };
   return User;

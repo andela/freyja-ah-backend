@@ -1,8 +1,8 @@
 import models from '../../models';
 import { characterLengthCheck, linkCheck } from '../../utils/messageCheck';
+import paginationUtil from '../../utils/pagination';
 
-const { User, CommunityMessage } = models;
-
+const { User, CommunityMessage, Reply } = models;
 
 /**
  * A class that handles user profile operations
@@ -58,8 +58,10 @@ class CommunityMessageController {
      * @returns {object} response object
      *
      */
-  static async getMessage(req, res, next) {
+  static async getMessages(req, res, next) {
     try {
+      const { returnLimit, pageNumber } = req.query;
+      const { limit, offset } = paginationUtil.paginate(returnLimit, pageNumber);
       const { userId } = req.user;
       const user = await User.findByPk(userId);
       if (!user) {
@@ -68,10 +70,9 @@ class CommunityMessageController {
           error: 'user not found',
         });
       }
-      const communityMessages = await CommunityMessage.findAll(
-        { where: { isApproved: true } }
-      ).catch(next);
+
       const userProfile = await user.getProfile();
+
       const authorizedUser = userProfile.isCertified || user.role === 'trainer';
       if (!authorizedUser) {
         return res.status(401).json({
@@ -79,6 +80,20 @@ class CommunityMessageController {
           error: 'You are not authorized to view community messages'
         });
       }
+
+      const communityMessages = await CommunityMessage.findAll({
+        where: { isApproved: true },
+        limit,
+        offset,
+        include: [
+          { model: User, as: 'owner' },
+          { model: Reply, as: 'replies' }
+        ],
+        order: [
+          ['createdAt', 'DESC']
+        ]
+      }).catch(next);
+
       if (communityMessages.length) {
         return res.status(200).json({
           status: res.statusCode,
@@ -86,6 +101,7 @@ class CommunityMessageController {
           data: communityMessages,
         });
       }
+
       return res.status(404).json({
         status: res.statusCode,
         message: 'no community message was found',
@@ -97,7 +113,7 @@ class CommunityMessageController {
 
   /**
    *
-   * gets all community messages
+   * deletes a community messages
      * @param {object} req - request object
      * @param {object} res - response object
      * @param{function} next - next function
@@ -107,7 +123,7 @@ class CommunityMessageController {
     try {
       const { userId } = req.user;
       const user = await User.findByPk(userId);
-      const { id } = req.params;  
+      const { id } = req.params;
       if (!user) {
         return res.status(404).json({
           status: res.statusCode,
@@ -120,7 +136,7 @@ class CommunityMessageController {
           id,
         }
       });
-    
+
       if (!message.length) {
         return res.status(404).json({
           status: res.statusCode,

@@ -5,6 +5,7 @@ import server from '../../index';
 
 use(chaihttp);
 let userId;
+let userToken;
 describe('Post api/user', () => {
   before((done) => {
     const user = {
@@ -20,6 +21,7 @@ describe('Post api/user', () => {
       .send(user)
       .end((err, res) => {
         userId = res.body.user.id;
+        userToken = res.body.token;
         done(err);
       });
   });
@@ -27,6 +29,7 @@ describe('Post api/user', () => {
   it('get a registered user', (done) => {
     request(server)
       .get(`/api/user/${userId}`)
+      .set('Authorization', userToken)
       .end((err, res) => {
         expect(res.status).to.eql(200);
         expect(res.body.user).to.be.an('object');
@@ -39,6 +42,7 @@ describe('Post api/user', () => {
   it('it returns a Notfound Error if the user is not registered', (done) => {
     request(server)
       .get('/api/user/100')
+      .set('Authorization', userToken)
       .end((err, res) => {
         expect(res.status).to.eql(404);
         expect(res.body.message).to.eql('user not registered');

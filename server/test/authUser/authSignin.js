@@ -23,6 +23,20 @@ describe('Post api/users/login', () => {
         done(err);
       });
   });
+  it('should return error when password is incorrect', (done) => {
+    request(server)
+      .post('/api/users/login')
+      .send({
+        email: 'ted123@mail.com',
+        password: 'wrongPassword'
+      })
+      .end((err, res) => {
+        expect(res.status).to.eql(401);
+        expect(res.body.status).to.eql(res.status);
+        expect(res.body.error).to.eql('Invalid email or password');
+        done();
+      });
+  });
   it('should not login a user if input fields are empty', (done) => {
     request(server)
       .post('/api/users/login')

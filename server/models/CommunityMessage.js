@@ -26,7 +26,12 @@ const CommunityMessageModel = (sequelize, DataTypes) => {
   CommunityMessage.associate = (models) => {
     CommunityMessage.belongsTo(models.User, {
       foreignKey: 'senderId',
+      as: 'owner',
       onDelete: 'CASCADE'
+    });
+    CommunityMessage.hasMany(models.Reply, {
+      foreignKey: 'repliedMsgId',
+      as: 'replies',
     });
   };
   return CommunityMessage;

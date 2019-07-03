@@ -26,7 +26,7 @@ class ProfileController {
       const userProfile = await user.getProfile();
       const {
         dateOfBirth, phoneNumber, isEmployed, bio, yrsOfExperience, industry, image,
-        isEnrolled, progress, isCertified, instagram, twitter, facebook, linkedIn
+        isEnrolled, progress, isCertified, gender, instagram, twitter, facebook, linkedIn,
       } = req.body;
 
       const updatedValues = {
@@ -36,6 +36,7 @@ class ProfileController {
         isEmployed: isEmployed || userProfile.isEmployed,
         bio: bio || userProfile.bio,
         industry: industry || userProfile.industry,
+        gender: gender || userProfile.gender,
         yrsOfExperience: yrsOfExperience || userProfile.yrsOfExperience,
         image: image || userProfile.image,
         isEnrolled: isEnrolled || userProfile.isEnrolled,

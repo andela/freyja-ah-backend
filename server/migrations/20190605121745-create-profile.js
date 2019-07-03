@@ -24,6 +24,10 @@ module.exports = {
       type: Sequelize.DATE,
       allowNull: true
     },
+    gender: {
+      allowNull: true,
+      type: Sequelize.STRING,
+    },
     isEmployed: {
       type: Sequelize.BOOLEAN,
       allowNull: true
