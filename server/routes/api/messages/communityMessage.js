@@ -7,7 +7,7 @@ const router = express.Router();
 const { verifyToken } = Authenticate;
 const {
   postMessage,
-  getMessages,
+  getMessage,
   deleteMessage,
   approveMessage,
 } = CommunityMessageController;
@@ -19,7 +19,7 @@ router.post(
   newCommunityMessageValidator,
   postMessage
 );
-router.get('/community/messages', verifyToken, getMessages);
+router.get('/community/messages', verifyToken, getMessage);
 router.delete('/community/messages/:id', verifyToken, deleteMessage);
 router.put(
   '/community/messages/approve/:messageId',

@@ -11,7 +11,9 @@ import fakeResponse from '../socialLogin.js/fakeResponse';
 
 use(chaihttp);
 
-let userToken, userToken2, userToken3;
+let userToken;
+let userToken2 = null;
+let userToken3 = null;
 const unknownToken = Authenticate.generateToken(
   2000,
   'unknown@mail.com',
@@ -29,13 +31,8 @@ describe('Post api/community/messages', () => {
       gender: 'male',
     };
     request(server)
-<<<<<<< HEAD
       .post('/api/users')
       .send(user)
-=======
-      .post('/api/users/login')
-      .send({ email: 'cruise@mail.com', password: '12345678' })
->>>>>>> implement TTL feedback
       .end((err, res) => {
         userToken = res.body.token;
         done(err);
@@ -158,26 +155,23 @@ describe('Post api/community/messages', () => {
 });
 
 describe('Get api/community/messages', () => {
-<<<<<<< HEAD
-=======
-  before((done) => {
-    request(server)
-      .post('/api/users/login')
-      .send({ email: 'cruise@mail.com', password: '12345678' })
-      .end((err, res) => {
-        const { token } = res.body;
-        userToken = token;
-      });
-    request(server)
-      .post('/api/users/login')
-      .send({ email: 'ted123@mail.com', password: '12345678' })
-      .end((err, res) => {
-        const { token } = res.body;
-        userToken2 = token;
-        done(err);
-      });
-  });
->>>>>>> implement TTL feedback
+  // before((done) => {
+  //   request(server)
+  //     .post('/api/users/login')
+  //     .send({ email: 'cruise@mail.com', password: '12345678' })
+  //     .end((err, res) => {
+  //       const { token } = res.body;
+  //       userToken = token;
+  //     });
+  //   request(server)
+  //     .post('/api/users/login')
+  //     .send({ email: 'ted123@mail.com', password: '12345678' })
+  //     .end((err, res) => {
+  //       const { token } = res.body;
+  //       userToken2 = token;
+  //       done(err);
+  //     });
+  // });
   it('should get all messages if user is certified or a trainer', (done) => {
     request(server)
       .get('/api/community/messages')
@@ -215,9 +209,9 @@ describe('Get api/community/messages', () => {
       });
   });
   it('should spy on next called on catch', (done) => {
-    const { getMessages } = CommunityMessageController;
+    const { getMessage } = CommunityMessageController;
     const spy007 = sinon.spy();
-    getMessages(fakeUser.userRequest1, fakeResponse, spy007);
+    getMessage(fakeUser.userRequest1, fakeResponse, spy007);
     expect(spy007).to.exist;
     done();
   });
@@ -229,8 +223,8 @@ describe('PUT api/community/messages/approved/:messageId', () => {
       .post('/api/users/login')
       .send({ email: 'tyakk@gmail.com', password: 'babatunde' })
       .end((err, res) => {
-        const { token } = res.body;
-        userToken3 = token;
+        // const { token } = res.body;
+        userToken3 = res.body.token;
         done(err);
       });
     request(server)
