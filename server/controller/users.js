@@ -24,7 +24,7 @@ class UserController {
    */
   static async registerUser(req, res, next) {
     const {
-      firstName, lastName, email, userName, password, gender
+      firstName, lastName, email, userName, password,
     } = req.body;
     const [user, created] = await User.findOrCreate({
       where: { email },
@@ -33,7 +33,6 @@ class UserController {
         lastName,
         email,
         userName,
-        gender,
         password
       }
     });
@@ -67,7 +66,6 @@ class UserController {
         lastName: user.lastName,
         email: user.email,
         userName: user.userName,
-        gender: user.gender
       },
       token,
     });

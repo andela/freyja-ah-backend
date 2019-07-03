@@ -5,19 +5,20 @@ const { User } = models;
 const socialSignOn = async (accessToken, refreshToken, profile, done) => {
   try {
     const {
-      id, name, emails,
+      id, displayName, emails,
     } = profile;
+    const [firstName, lastName] = displayName.split(' ');
+
     if (!emails) {
       const noEmailError = 'No email was found in your account';
       return done(null, noEmailError);
     }
-
     const email = emails[0].value;
     const [user, created] = await User.findOrCreate({
       where: { email },
       defaults: {
-        firstName: name.givenName,
-        lastName: name.familyName,
+        firstName,
+        lastName,
         password: id,
         email,
         isVerified: true,
@@ -33,7 +34,13 @@ const socialSignOn = async (accessToken, refreshToken, profile, done) => {
 };
 
 const newUserCheck = (req, res) => {
-  const { isNewUser, token } = req.user;
+  const { isNewUser, token, noEmailError } = req.user;
+  if (noEmailError) {
+    return res.status(401).json({
+      status: res.statusCode,
+      message: noEmailError,
+    });
+  }
   if (isNewUser) {
     return res.status(201).json({
       status: res.statusCode,

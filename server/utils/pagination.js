@@ -11,5 +11,5 @@ const paginate = (limit, pageNumber) => {
 };
 
 export default {
-  paginate
+  paginate,
 };
