@@ -6,18 +6,21 @@ import Authenticate from '../../middleware/auth/Authenticate';
 
 use(chaihttp);
 let userToken, receiverId, newMessage;
-const unknownUserToken = Authenticate.generateToken(2000, 'unknown@mail.com', 'unknown');
+const unknownUserToken = Authenticate.generateToken(
+  2000,
+  'unknown@mail.com',
+  'unknown',
+);
 const messageUrl = '/api/messages';
 
 describe('Testing Sending a Private Message - POST api/messages', () => {
-  before((done) => {
+  before(done => {
     const user = {
       firstName: 'Morgan',
       lastName: 'Freeman',
       userName: 'morgan',
       email: 'morgan@mail.com',
       password: '12345678',
-      gender: 'male'
     };
     request(server)
       .post('/api/users')
@@ -28,14 +31,14 @@ describe('Testing Sending a Private Message - POST api/messages', () => {
       });
   });
 
-  before((done) => {
+  before(done => {
     const user = {
       firstName: 'Forest',
       lastName: 'Whitaker',
       userName: 'whitty',
       email: 'forest@mail.com',
       password: '12345678',
-      gender: 'male'
+      gender: 'male',
     };
     request(server)
       .post('/api/users')
@@ -44,13 +47,13 @@ describe('Testing Sending a Private Message - POST api/messages', () => {
         receiverId = res.body.user.id;
         newMessage = {
           body: 'Hey Whitaker, how you doing',
-          receiverId
+          receiverId,
         };
         done(err);
       });
   });
 
-  it('Sends a message', (done) => {
+  it('Sends a message', done => {
     request(server)
       .post(messageUrl)
       .set('authorization', userToken)
@@ -66,7 +69,7 @@ describe('Testing Sending a Private Message - POST api/messages', () => {
       });
   });
 
-  it('It should return user does not exist if the sender does not exist', (done) => {
+  it('It should return user does not exist if the sender does not exist', done => {
     request(server)
       .post(messageUrl)
       .set('authorization', unknownUserToken)
@@ -79,9 +82,9 @@ describe('Testing Sending a Private Message - POST api/messages', () => {
       });
   });
 
-  it('It should return recipient does not exist if recipientId is wrong', (done) => {
+  it('It should return recipient does not exist if recipientId is wrong', done => {
     const invalidMsg = Object.assign({}, newMessage, {
-      receiverId: 4000
+      receiverId: 4000,
     });
 
     request(server)
@@ -96,9 +99,9 @@ describe('Testing Sending a Private Message - POST api/messages', () => {
       });
   });
 
-  it('Should return 422(Unprocessable Entity) when a user enters invalid data', (done) => {
+  it('Should return 422(Unprocessable Entity) when a user enters invalid data', done => {
     const invalidMsg = Object.assign({}, newMessage, {
-      body: ''
+      body: '',
     });
 
     request(server)

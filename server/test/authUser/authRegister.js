@@ -12,10 +12,9 @@ describe('Post api/users', () => {
     userName: 'tedmosby',
     email: 'ted123@mail.com',
     password: '12345678',
-    gender: 'male'
   };
 
-  it('register a user', (done) => {
+  it('register a user', done => {
     request(server)
       .post('/api/users')
       .send(user)
@@ -30,7 +29,7 @@ describe('Post api/users', () => {
       });
   });
 
-  it('should return 400(Bad Request) if user already exists', (done) => {
+  it('should return 400(Bad Request) if user already exists', done => {
     request(server)
       .post('/api/users')
       .send(user)
@@ -41,7 +40,7 @@ describe('Post api/users', () => {
         done(err);
       });
   });
-  it('should not register a user if input fields are empty', (done) => {
+  it('should not register a user if input fields are empty', done => {
     request(server)
       .post('/api/users')
       .send({

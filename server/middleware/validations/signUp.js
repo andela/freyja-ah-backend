@@ -3,7 +3,9 @@ const { body, validationResult } = require('express-validator/check');
 const signUpValidator = [
   body('firstName')
     .isLength({ min: 3 })
-    .withMessage('firstName should not be empty and should be more than three characters')
+    .withMessage(
+      'firstName should not be empty and should be more than three characters',
+    )
     .isAlpha()
     .withMessage('firstName should be an alpabet')
     .trim(),
@@ -11,13 +13,9 @@ const signUpValidator = [
     .isAlpha()
     .withMessage('lastName should be an alphabet')
     .isLength({ min: 3 })
-    .withMessage('lastName should not be empty and should be more than three characters')
-    .trim(),
-  body('gender')
-    .not().isEmpty()
-    .withMessage('please input your gender')
-    .isAlpha()
-    .withMessage('gender should be in alphabet')
+    .withMessage(
+      'lastName should not be empty and should be more than three characters',
+    )
     .trim(),
   body('email')
     .isEmail()
@@ -28,16 +26,18 @@ const signUpValidator = [
     .isAlphanumeric()
     .withMessage('password should be alpanumeric')
     .isLength({ min: 8 })
-    .withMessage('password should not be empty and should be more than 8 characters'),
+    .withMessage(
+      'password should not be empty and should be more than 8 characters',
+    ),
   function signUpValidation(req, res, next) {
     const errorValidation = validationResult(req);
     if (!errorValidation.isEmpty()) {
       return res.status(422).json({
         status: 422,
-        error: errorValidation.array()
+        error: errorValidation.array(),
       });
     }
     next();
-  }
+  },
 ];
 export default signUpValidator;

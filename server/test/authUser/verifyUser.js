@@ -6,14 +6,13 @@ import { use, request, expect } from 'chai';
 import chaihttp from 'chai-http';
 import server from '../../index';
 
-
 dotenv.config();
 sendGridMailer.setApiKey(process.env.SENDGRID_API_KEY);
 use(chaihttp);
 let recieverToken;
 
 describe('GET /api/user/verify', () => {
-  before((done) => {
+  before(done => {
     const user = {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -21,7 +20,6 @@ describe('GET /api/user/verify', () => {
       password: 'december',
       confirmPassword: 'december',
       userName: 'beejay',
-      gender: 'male'
     };
     request(server)
       .post('/api/users')
@@ -31,7 +29,7 @@ describe('GET /api/user/verify', () => {
         done();
       });
   });
-  it('verify a registered user', (done) => {
+  it('verify a registered user', done => {
     request(server)
       .get(`/api/user/verify/${recieverToken}`)
       .end((err, res) => {
@@ -43,14 +41,16 @@ describe('GET /api/user/verify', () => {
 });
 
 describe('SEND mail with sendgrid', () => {
-  it('should send mail', (done) => {
+  it('should send mail', done => {
     const msg = {
       to: 'mattimobolaji@gmail.com',
       from: 'CSLC@gmail.com',
       subject: 'Welcome',
-      html: `<strong>Welcome to Customer Service Learning Community <h3> copy and paste this link below in your browser to verify your account<h3/></strong> ${process.env.HOST}/api/user/verify/${recieverToken} `,
+      html: `<strong>Welcome to Customer Service Learning Community <h3> copy and paste this link below in your browser to verify your account<h3/></strong> ${
+        process.env.HOST
+      }/api/user/verify/${recieverToken} `,
     };
-    sendGridMailer.send(msg, (err) => {
+    sendGridMailer.send(msg, err => {
       expect(err).to.eql(null);
       done();
     });
