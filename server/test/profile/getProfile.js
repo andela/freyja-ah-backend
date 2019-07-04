@@ -2,12 +2,14 @@ import { describe, it } from 'mocha';
 import { use, request, expect } from 'chai';
 import chaihttp from 'chai-http';
 import server from '../../index';
+import tokenHandler from '../../middleware/auth/Authenticate';
 
 use(chaihttp);
-let userToken, userId;
+let userToken;
+const invalidUserToken = tokenHandler.generateToken(200, 'nouser@mail.com', 'NoUser');
 const profileUrl = '/api/profiles';
 
-describe('Testing getting a single profile - GET api/profiles/:userId', () => {
+describe('Testing getting a single profile - GET api/profiles/', () => {
   before((done) => {
     const user = {
       firstName: 'Leonardo',
@@ -22,7 +24,6 @@ describe('Testing getting a single profile - GET api/profiles/:userId', () => {
       .send(user)
       .end((err, res) => {
         userToken = res.body.token;
-        userId = res.body.user.id;
         done(err);
       });
   });
@@ -50,7 +51,7 @@ describe('Testing getting a single profile - GET api/profiles/:userId', () => {
 
   it('Should get a single profile', (done) => {
     request(server)
-      .get(`${profileUrl}/${userId}`)
+      .get(`${profileUrl}`)
       .set('authorization', userToken)
       .end((err, res) => {
         const { user } = res.body;
@@ -65,20 +66,9 @@ describe('Testing getting a single profile - GET api/profiles/:userId', () => {
       });
   });
 
-  it('Should return a 500 error when userId in params is not a number', (done) => {
-    request(server)
-      .get(`${profileUrl}/userIdString`)
-      .set('authorization', userToken)
-      .end((err, res) => {
-        expect(res.statusCode).to.eql(500);
-        expect(res.body.errors.message).to.include('invalid input syntax for integer');
-        done(err);
-      });
-  });
-
   it('Should return status 401(Unauthorized) when there is no Token Provided', (done) => {
     request(server)
-      .get(`${profileUrl}/${userId}`)
+      .get(`${profileUrl}`)
       .end((err, res) => {
         expect(res.status).to.eql(401);
         expect(res.body.status).to.eql(401);
@@ -90,8 +80,8 @@ describe('Testing getting a single profile - GET api/profiles/:userId', () => {
 
   it('Should return status 404(Not found) when user does not exist', (done) => {
     request(server)
-      .get(`${profileUrl}/2000`)
-      .set('authorization', userToken)
+      .get(`${profileUrl}`)
+      .set('authorization', invalidUserToken)
       .end((err, res) => {
         expect(res.status).to.eql(404);
         expect(res.body.status).to.eql(404);
