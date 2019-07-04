@@ -13,17 +13,20 @@ use(chaihttp);
 
 let userToken = null;
 let userToken2 = null;
-const unknownToken = Authenticate.generateToken(2000, 'unknown@mail.com', 'unknown');
+const unknownToken = Authenticate.generateToken(
+  2000,
+  'unknown@mail.com',
+  'unknown',
+);
 
 describe('Post api/community/messages', () => {
-  before((done) => {
+  before(done => {
     const user = {
       firstName: 'Morgan',
       lastName: 'Smith',
       userName: 'smithyy',
       email: 'smithmorgan@mail.com',
       password: '12345678',
-      gender: 'male'
     };
     request(server)
       .post('/api/users')
@@ -34,9 +37,9 @@ describe('Post api/community/messages', () => {
       });
   });
 
-  before((done) => {
+  before(done => {
     const profileUpdate = {
-      isCertified: true
+      isCertified: true,
     };
     request(server)
       .put('/api/profiles')
@@ -45,10 +48,10 @@ describe('Post api/community/messages', () => {
       .end(done);
   });
 
-  before((done) => {
+  before(done => {
     request(server)
       .post('/api/users/login')
-      .send({ email: 'ted123@mail.com', password: '12345678', })
+      .send({ email: 'ted123@mail.com', password: '12345678' })
       .end((err, res) => {
         const { token } = res.body;
         userToken2 = token;
@@ -56,7 +59,7 @@ describe('Post api/community/messages', () => {
       });
   });
 
-  it('it should return an error if token cannot be verifed', (done) => {
+  it('it should return an error if token cannot be verifed', done => {
     request(server)
       .post('/api/community/messages')
       .set('authorization', 'jxxxxxxxxxxxxnns66s')
@@ -70,7 +73,7 @@ describe('Post api/community/messages', () => {
       });
   });
 
-  it('it should return an error if token is not provided', (done) => {
+  it('it should return an error if token is not provided', done => {
     request(server)
       .post('/api/community/messages')
       .send({
@@ -83,7 +86,7 @@ describe('Post api/community/messages', () => {
       });
   });
 
-  it('it sends/create message', (done) => {
+  it('it sends/create message', done => {
     request(server)
       .post('/api/community/messages')
       .set('authorization', userToken)
@@ -97,7 +100,7 @@ describe('Post api/community/messages', () => {
       });
   });
 
-  it('it reurns 401 error', (done) => {
+  it('it reurns 401 error', done => {
     request(server)
       .post('/api/community/messages')
       .set('authorization', userToken2)
@@ -105,13 +108,15 @@ describe('Post api/community/messages', () => {
         body: 'cover your lids to die with the sun www.google.com',
       })
       .end((err, res) => {
-        expect(res.body.error).to.eql('You are not authorized to post community message');
+        expect(res.body.error).to.eql(
+          'You are not authorized to post community message',
+        );
         expect(res.status).to.eql(401);
         done(err);
       });
   });
 
-  it('Should return a 404(Not found) error if a user does not exist', (done) => {
+  it('Should return a 404(Not found) error if a user does not exist', done => {
     request(server)
       .post('/api/community/messages')
       .set('authorization', unknownToken)
@@ -126,7 +131,7 @@ describe('Post api/community/messages', () => {
       });
   });
 
-  it('should spy on next called on catch', (done) => {
+  it('should spy on next called on catch', done => {
     const { postMessage } = CommunityMessageController;
     const spy007 = sinon.spy();
     postMessage(fakeUser.userRequest1, fakeResponse, spy007);
@@ -136,7 +141,7 @@ describe('Post api/community/messages', () => {
 });
 
 describe('Get api/community/messages', () => {
-  it('should get all messages if user is certified or a trainer', (done) => {
+  it('should get all messages if user is certified or a trainer', done => {
     request(server)
       .get('/api/community/messages')
       .set('authorization', userToken)
@@ -148,18 +153,20 @@ describe('Get api/community/messages', () => {
         done(err);
       });
   });
-  it('it returns 401 error if user is not a trainer or certified', (done) => {
+  it('it returns 401 error if user is not a trainer or certified', done => {
     request(server)
       .get('/api/community/messages')
       .set('authorization', userToken2)
       .end((err, res) => {
         expect(res.status).to.eql(401);
-        expect(res.body.error).to.eql('You are not authorized to view community messages');
+        expect(res.body.error).to.eql(
+          'You are not authorized to view community messages',
+        );
         expect(res.status).to.eql(401);
         done(err);
       });
   });
-  it('Should return a 404(Not found) error if a user does not exist', (done) => {
+  it('Should return a 404(Not found) error if a user does not exist', done => {
     request(server)
       .get('/api/community/messages')
       .set('authorization', unknownToken)
@@ -170,7 +177,7 @@ describe('Get api/community/messages', () => {
         done(err);
       });
   });
-  it('should spy on next called on catch', (done) => {
+  it('should spy on next called on catch', done => {
     const { getMessages } = CommunityMessageController;
     const spy007 = sinon.spy();
     getMessages(fakeUser.userRequest1, fakeResponse, spy007);
@@ -179,16 +186,16 @@ describe('Get api/community/messages', () => {
   });
 });
 describe('DELETE api/community/messages/:id', () => {
-  before((done) => {
+  before(done => {
     request(server)
       .post('/api/community/messages')
       .set('authorization', userToken2)
       .send({
-        body: 'cover your lids to die with the sun'
+        body: 'cover your lids to die with the sun',
       });
     done();
   });
-  it('should not delete a community message if token is not provided', (done) => {
+  it('should not delete a community message if token is not provided', done => {
     request(server)
       .delete('/api/community/messages/1')
       .end((err, res) => {
@@ -196,7 +203,7 @@ describe('DELETE api/community/messages/:id', () => {
         done(err);
       });
   });
-  it('should not delete a community message if message is not found', (done) => {
+  it('should not delete a community message if message is not found', done => {
     request(server)
       .delete('/api/community/messages/88')
       .set('authorization', userToken2)
@@ -205,7 +212,7 @@ describe('DELETE api/community/messages/:id', () => {
         done(err);
       });
   });
-  it('should not delete a community message if the message does not belong to that particular user and the user is not a trainer', (done) => {
+  it('should not delete a community message if the message does not belong to that particular user and the user is not a trainer', done => {
     request(server)
       .delete('/api/community/messages/1')
       .set('authorization', userToken2)
@@ -214,7 +221,7 @@ describe('DELETE api/community/messages/:id', () => {
         done(err);
       });
   });
-  it('should not delete a community message if user is not found', (done) => {
+  it('should not delete a community message if user is not found', done => {
     request(server)
       .delete('/api/community/messages/1')
       .set('authorization', unknownToken)
@@ -223,7 +230,7 @@ describe('DELETE api/community/messages/:id', () => {
         done(err);
       });
   });
-  it('should delete a community message', (done) => {
+  it('should delete a community message', done => {
     request(server)
       .delete('/api/community/messages/1')
       .set('authorization', userToken)
@@ -232,7 +239,7 @@ describe('DELETE api/community/messages/:id', () => {
         done(err);
       });
   });
-  it('should spy on next called on catch', (done) => {
+  it('should spy on next called on catch', done => {
     const { deleteMessage } = CommunityMessageController;
     const spy007 = sinon.spy();
     deleteMessage(fakeUser.userRequest1, fakeResponse, spy007);

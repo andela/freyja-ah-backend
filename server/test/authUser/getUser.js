@@ -7,14 +7,13 @@ use(chaihttp);
 let userId;
 let userToken;
 describe('Post api/user', () => {
-  before((done) => {
+  before(done => {
     const user = {
       firstName: 'Tom',
       lastName: 'Cruise',
       userName: 'cruise',
       email: 'cruiserr@mail.com',
       password: '12345678',
-      gender: 'male'
     };
     request(server)
       .post('/api/users')
@@ -26,7 +25,7 @@ describe('Post api/user', () => {
       });
   });
 
-  it('get a registered user', (done) => {
+  it('get a registered user', done => {
     request(server)
       .get(`/api/user/${userId}`)
       .set('Authorization', userToken)
@@ -39,7 +38,7 @@ describe('Post api/user', () => {
       });
   });
 
-  it('it returns a Notfound Error if the user is not registered', (done) => {
+  it('it returns a Notfound Error if the user is not registered', done => {
     request(server)
       .get('/api/user/100')
       .set('Authorization', userToken)
