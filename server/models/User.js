@@ -62,8 +62,8 @@ const userModel = (sequelize, DataTypes) => {
       isVerified: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false
-      }
+        defaultValue: false,
+      },
     },
 
     {
@@ -76,15 +76,17 @@ const userModel = (sequelize, DataTypes) => {
    * @param {object} user
    * @returns {boolean} true or false
    */
-  User.prototype.comparePassword = (password, user) => bcrypt.compareSync(password, user.password);
+  User.prototype.comparePassword = (password, user) =>
+    bcrypt.compareSync(password, user.password);
 
   /**
-     * encrypt a user's password
-     * @param {string} password
-     * @returns {string} hashed password
-     *
-  */
-  User.prototype.encryptPassword = password => bcrypt.hashSync(password, bcrypt.genSaltSync(6));
+   * encrypt a user's password
+   * @param {string} password
+   * @returns {string} hashed password
+   *
+   */
+  User.prototype.encryptPassword = (password) =>
+    bcrypt.hashSync(password, bcrypt.genSaltSync(6));
 
   User.beforeCreate((user) => {
     user.password = user.encryptPassword(user.password);
@@ -97,11 +99,11 @@ const userModel = (sequelize, DataTypes) => {
     User.hasOne(models.Profile, {
       foreignKey: 'userId',
       as: 'profile',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
     });
     User.belongsToMany(models.Test, {
       through: 'UserTest',
-      foreignKey: 'userId'
+      foreignKey: 'userId',
     });
     User.hasMany(models.CommunityMessage, {
       foreignKey: 'senderId',
@@ -110,7 +112,7 @@ const userModel = (sequelize, DataTypes) => {
     User.hasMany(models.Message, {
       foreignKey: 'senderId',
       as: 'sentMessages',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
     });
     User.hasMany(models.Reply, {
       foreignKey: 'ownerId',
