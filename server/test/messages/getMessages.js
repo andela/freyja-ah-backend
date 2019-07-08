@@ -14,14 +14,13 @@ let receiverId;
 let messageId;
 
 describe('GET /api/messages', () => {
-  before((done) => {
+  before(done => {
     const user = {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
       password: 'december',
       userName: 'beejay',
-      gender: 'male'
     };
     request(server)
       .post('/api/users')
@@ -33,10 +32,10 @@ describe('GET /api/messages', () => {
       });
   });
 
-  it('Sends a message on get messages', (done) => {
+  it('Sends a message on get messages', done => {
     const newMessage = {
       body: 'Hey bro welcome, how you doing',
-      receiverId
+      receiverId,
     };
     request(server)
       .post('/api/messages')
@@ -47,7 +46,7 @@ describe('GET /api/messages', () => {
         done(err);
       });
   });
-  it('get received messages', (done) => {
+  it('get received messages', done => {
     request(server)
       .get('/api/messages/received?limit=2&&pageNumber=1')
       .set('authorization', userToken)
@@ -58,7 +57,7 @@ describe('GET /api/messages', () => {
         done(err);
       });
   });
-  it('get sent messages', (done) => {
+  it('get sent messages', done => {
     request(server)
       .get('/api/messages/sent?limit=2&&pageNumber=1')
       .set('authorization', userToken)
@@ -69,7 +68,7 @@ describe('GET /api/messages', () => {
       });
   });
 
-  it('get message', (done) => {
+  it('get message', done => {
     request(server)
       .get(`/api/messages/${messageId}`)
       .set('authorization', userToken)
@@ -80,14 +79,14 @@ describe('GET /api/messages', () => {
         done(err);
       });
   });
-  it('should spy on next called on catch at getReceievedMessages', (done) => {
+  it('should spy on next called on catch at getReceievedMessages', done => {
     const { getReceievedMessages } = PrivateMessage;
     const spy007 = sinon.spy();
     getReceievedMessages(fakeUser.userRequest1, fakeResponse, spy007);
     expect(spy007).to.exist;
     done();
   });
-  it('should spy on next called on catch at getSentMessages', (done) => {
+  it('should spy on next called on catch at getSentMessages', done => {
     const { getSentMessages } = PrivateMessage;
     const spy007 = sinon.spy();
     getSentMessages(fakeUser.userRequest1, fakeResponse, spy007);

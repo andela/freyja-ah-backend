@@ -9,14 +9,13 @@ let userToken;
 const userToken2 = tokenHandler.generateToken(100, 'nouser@mail.com', 'noUser');
 
 describe('Post api/user', () => {
-  before((done) => {
+  before(done => {
     const user = {
       firstName: 'Tom',
       lastName: 'Cruise',
       userName: 'cruise',
       email: 'cruising@mail.com',
       password: '12345678',
-      gender: 'male'
     };
     request(server)
       .post('/api/users')
@@ -27,7 +26,7 @@ describe('Post api/user', () => {
       });
   });
 
-  it('update a registered user', (done) => {
+  it('update a registered user', done => {
     request(server)
       .put('/api/user/')
       .set('Authorization', userToken)
@@ -40,7 +39,7 @@ describe('Post api/user', () => {
       });
   });
 
-  it('it returns a Notfound Error if the user is not registered', (done) => {
+  it('it returns a Notfound Error if the user is not registered', done => {
     request(server)
       .put('/api/user')
       .set('Authorization', userToken2)

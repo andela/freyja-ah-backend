@@ -11,13 +11,11 @@ import fakeResponse from '../socialLogin.js/fakeResponse';
 
 use(chaihttp);
 
-let userToken;
-let userToken2 = null;
-let userToken3 = null;
+let userToken, userToken2, userToken3;
 const unknownToken = Authenticate.generateToken(
   2000,
   'unknown@mail.com',
-  'unknown'
+  'unknown',
 );
 
 describe('Post api/community/messages', () => {

@@ -5,19 +5,27 @@ import server from '../../index';
 import Authenticate from '../../middleware/auth/Authenticate';
 
 use(chaihttp);
-let firstUserToken, secondUserToken, thirdUserToken, communityMessageId, reply, profileUpdate;
-const unknownUserToken = Authenticate.generateToken(2000, 'unknown@mail.com', 'unknown');
+let firstUserToken,
+  secondUserToken,
+  thirdUserToken,
+  communityMessageId,
+  reply,
+  profileUpdate;
+const unknownUserToken = Authenticate.generateToken(
+  2000,
+  'unknown@mail.com',
+  'unknown',
+);
 const replyUrl = '/api/replies';
 
 describe('Testing posting a reply to a community message - POST api/replies', () => {
-  before((done) => {
+  before(done => {
     const firstUser = {
       firstName: 'Morgan',
       lastName: 'Smith',
       userName: 'smithyy',
       email: 'smithy@mail.com',
       password: '12345678',
-      gender: 'male'
     };
 
     const secondUser = Object.assign({}, firstUser, {
@@ -32,7 +40,7 @@ describe('Testing posting a reply to a community message - POST api/replies', ()
     });
 
     profileUpdate = {
-      isCertified: true
+      isCertified: true,
     };
 
     const communityMessage = {
@@ -81,10 +89,10 @@ describe('Testing posting a reply to a community message - POST api/replies', ()
       });
   });
 
-  it('Posts a reply', (done) => {
+  it('Posts a reply', done => {
     reply = {
       body: 'Nice to meet you Morgan',
-      repliedMsgId: communityMessageId
+      repliedMsgId: communityMessageId,
     };
     request(server)
       .post(replyUrl)
@@ -99,7 +107,7 @@ describe('Testing posting a reply to a community message - POST api/replies', ()
       });
   });
 
-  it('It should return 404(not found) if the user posting the reply does not exist', (done) => {
+  it('It should return 404(not found) if the user posting the reply does not exist', done => {
     request(server)
       .post(replyUrl)
       .set('authorization', unknownUserToken)
@@ -111,9 +119,9 @@ describe('Testing posting a reply to a community message - POST api/replies', ()
       });
   });
 
-  it('It should return 404(not found) if message doesnt exist', (done) => {
+  it('It should return 404(not found) if message doesnt exist', done => {
     const invalidReply = Object.assign({}, reply, {
-      repliedMsgId: 4000
+      repliedMsgId: 4000,
     });
 
     request(server)
@@ -127,21 +135,23 @@ describe('Testing posting a reply to a community message - POST api/replies', ()
       });
   });
 
-  it('It should not allow an uncertified user post a reply', (done) => {
+  it('It should not allow an uncertified user post a reply', done => {
     request(server)
       .post(replyUrl)
       .set('authorization', thirdUserToken)
       .send(reply)
       .end((err, res) => {
         expect(res.status).to.eql(401);
-        expect(res.body.error).to.eql('This user is not permitted to post a reply');
+        expect(res.body.error).to.eql(
+          'This user is not permitted to post a reply',
+        );
         done(err);
       });
   });
 
-  it('Should return 422(Unprocessable Entity) when a user enters invalid data', (done) => {
+  it('Should return 422(Unprocessable Entity) when a user enters invalid data', done => {
     const invalidReply = Object.assign({}, reply, {
-      body: ''
+      body: '',
     });
 
     request(server)
