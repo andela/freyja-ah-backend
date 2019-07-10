@@ -9,6 +9,7 @@ import testRoute from './test';
 import messageRoute from './messages/messages';
 import communityMessageRoute from './messages/communityMessage';
 import repliesRoute from './replies';
+import imageRoute from './upload';
 
 const router = express.Router();
 router.use('/', usersRoute);
@@ -21,5 +22,6 @@ router.use('/', testRoute);
 router.use('/', messageRoute);
 router.use('/', communityMessageRoute);
 router.use('/', repliesRoute);
+router.use('/', imageRoute);
 
 export default router;
