@@ -68,11 +68,8 @@ class ProfileController {
    *
    */
   static async getProfile(req, res, next) {
-    const { userId } = req.user;
     try {
-      const user = await User.findByPk(userId, {
-        include: [{ model: Profile, as: 'profile' }],
-      });
+      const user = await User.findByPk(req.params.userId, { include: [{ model: Profile, as: 'profile' }] });
       if (!user) {
         return res.status(404).json({
           status: 404,
