@@ -153,23 +153,6 @@ describe('Post api/community/messages', () => {
 });
 
 describe('Get api/community/messages', () => {
-  // before((done) => {
-  //   request(server)
-  //     .post('/api/users/login')
-  //     .send({ email: 'cruise@mail.com', password: '12345678' })
-  //     .end((err, res) => {
-  //       const { token } = res.body;
-  //       userToken = token;
-  //     });
-  //   request(server)
-  //     .post('/api/users/login')
-  //     .send({ email: 'ted123@mail.com', password: '12345678' })
-  //     .end((err, res) => {
-  //       const { token } = res.body;
-  //       userToken2 = token;
-  //       done(err);
-  //     });
-  // });
   it('should get all messages if user is certified or a trainer', (done) => {
     request(server)
       .get('/api/community/messages')
@@ -221,7 +204,6 @@ describe('PUT api/community/messages/approved/:messageId', () => {
       .post('/api/users/login')
       .send({ email: 'tyakk@gmail.com', password: 'babatunde' })
       .end((err, res) => {
-        // const { token } = res.body;
         userToken3 = res.body.token;
         done(err);
       });

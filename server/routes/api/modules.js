@@ -5,8 +5,16 @@ import validator from '../../middleware/validations/test';
 
 const router = express.Router();
 
-router.get('/modules', moduleController.getAllModules);
-router.get('/modules/:id', moduleController.getModule);
+router.get(
+  '/modules',
+  Authenticate.verifyToken,
+  moduleController.getAllModules,
+);
+router.get(
+  '/modules/:id',
+  Authenticate.verifyToken,
+  moduleController.getModule
+);
 router.post(
   '/modules/report/:moduleId',
   Authenticate.verifyToken,
