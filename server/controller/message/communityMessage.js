@@ -59,9 +59,7 @@ class CommunityMessageController {
    */
   static async getMessage(req, res, next) {
     const { returnLimit, pageNumber } = req.query;
-    const { limit, offset } = paginationUtil.paginate(returnLimit, pageNumber);
     try {
-      const { returnLimit, pageNumber } = req.query;
       const { limit, offset } = paginationUtil.paginate(
         returnLimit,
         pageNumber
