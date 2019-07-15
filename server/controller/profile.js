@@ -16,7 +16,7 @@ class ProfileController {
   static async editProfile(req, res, next) {
     try {
       const { userId } = req.user;
-      const user = await User.findByPk(userId);
+      const user = await User.scope('withoutPassword').findByPk(userId);
       if (!user) {
         return res.status(404).json({
           status: 404,
@@ -69,7 +69,7 @@ class ProfileController {
    */
   static async getProfile(req, res, next) {
     try {
-      const user = await User.findByPk(req.params.userId, { include: [{ model: Profile, as: 'profile' }] });
+      const user = await User.scope('withoutPassword').findByPk(req.params.userId, { include: [{ model: Profile, as: 'profile' }] });
       if (!user) {
         return res.status(404).json({
           status: 404,
