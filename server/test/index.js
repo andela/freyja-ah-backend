@@ -21,7 +21,7 @@ describe('Testing ErrorHandlers/Middlewares', () => {
 
   it('Should return an error if verifyToken middleware is passed an invalid Token', (done) => {
     request(server)
-      .get('/api/profiles')
+      .get('/api/profiles/14')
       .set('authorization', 'invalidtokenstring')
       .end((err, res) => {
         expect(res.body).to.be.a('object');

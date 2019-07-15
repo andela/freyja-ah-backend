@@ -9,6 +9,6 @@ const { newProfileValidator } = profileValidator;
 const { editProfile, getProfile } = ProfileController;
 
 router.put('/profiles', verifyToken, newProfileValidator, editProfile);
-router.get('/profiles/', verifyToken, getProfile);
+router.get('/profiles/:userId', verifyToken, getProfile);
 
 export default router;
