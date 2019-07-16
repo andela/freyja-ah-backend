@@ -255,7 +255,7 @@ class UserController {
         });
       }
       const token = Authenticate.generateToken(user.id, user.email);
-      const resetPasswordUrl = `${process.env.HOST}/api/users/change-password?token=${token}`;
+      const resetPasswordUrl = `${process.env.HOST}/change-password?token=${token}`;
       const message = {
         to: email,
         from: {
