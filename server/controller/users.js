@@ -52,7 +52,7 @@ class UserController {
         subject: 'Welcome',
         html: `<strong>Welcome to Customer Service Learning Community <h3> copy and paste this link below in your browser to verify your account<h3/></strong> ${
           process.env.HOST
-        }/api/user/verify/${token} `,
+        }/verify?token=${token}`,
       };
       await sendGridMailer.send(msg);
     }
