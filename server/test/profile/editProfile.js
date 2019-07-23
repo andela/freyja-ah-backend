@@ -34,6 +34,7 @@ describe('Testing Editing A User\'s Profile - PUT api/profiles', () => {
     phoneNumber: '08135834411',
     isEmployed: true,
     bio: 'A passionate customer relations specialist',
+    username: 'johnny',
     yrsOfExperience: 3,
     industry: 'Marketing',
     isCertified: true,
