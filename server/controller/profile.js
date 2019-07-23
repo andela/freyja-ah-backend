@@ -23,6 +23,10 @@ class ProfileController {
           error: 'This user does not exist',
         });
       }
+      const { username } = req.body;
+      if (username && (user.userName !== username)) {
+        await user.update({ userName: username }).catch(next);
+      }
       const userProfile = await user.getProfile();
       const {
         dateOfBirth, phoneNumber, isEmployed, bio, yrsOfExperience, industry, image,
