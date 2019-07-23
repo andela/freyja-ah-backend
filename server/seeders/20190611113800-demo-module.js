@@ -7,17 +7,27 @@ module.exports = {
       {
         id: 1,
         name: 'Module 1',
-        description: 'Articles'
+        description: 'Getting Started'
       },
       {
         id: 2,
         name: 'Module 2',
-        description: 'Speech recognition'
+        description: 'Customer Service Techniques'
       },
       {
         id: 3,
         name: 'Module 3',
-        description: 'Role play'
+        description: 'Service Touch Points & Delivery'
+      },
+      {
+        id: 4,
+        name: 'Module 4',
+        description: 'Dealing with Different Customer Types'
+      },
+      {
+        id: 5,
+        name: 'Module 5',
+        description: 'Complaint Handling'
       }
     ],
     {}
