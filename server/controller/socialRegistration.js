@@ -1,5 +1,11 @@
+import dotenv from 'dotenv';
 import Authenticate from '../middleware/auth/Authenticate';
 import models from '../models';
+
+dotenv.config();
+
+
+const { FRONTEND_REDIRECT } = process.env;
 
 const { User } = models;
 const socialSignOn = async (accessToken, refreshToken, profile, done) => {
@@ -34,26 +40,14 @@ const socialSignOn = async (accessToken, refreshToken, profile, done) => {
 };
 
 const newUserCheck = (req, res) => {
-  const { isNewUser, token, noEmailError } = req.user;
+  const { token, noEmailError } = req.user;
   if (noEmailError) {
     return res.status(401).json({
       status: res.statusCode,
       message: noEmailError,
     });
   }
-  if (isNewUser) {
-    return res.status(201).json({
-      status: res.statusCode,
-      message: 'User resgistration was successful',
-      token,
-    });
-  }
-
-  return res.status(200).json({
-    status: res.statusCode,
-    message: 'Login was successful',
-    token,
-  });
+  res.redirect(`${FRONTEND_REDIRECT}/signup?token=${token}`);
 };
 
 export { socialSignOn, newUserCheck };
