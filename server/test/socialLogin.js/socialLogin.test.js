@@ -10,8 +10,6 @@ import sinonChai from 'sinon-chai';
 import nock from 'nock';
 import { socialSignOn, newUserCheck } from '../../controller/socialRegistration';
 import server from '../../index';
-import fakeUser from './fakeUser';
-import fakeReponse from './fakeResponse';
 import models from '../../models';
 import { facebookStrategy, googleStrategy, twitterStrategy } from '../../socialMediaService/passport';
 
@@ -39,21 +37,6 @@ describe('passport strategy', () => {
   it('should be a function', (done) => {
     expect(socialSignOn).to.be.a('function');
     expect(newUserCheck).to.be.a('function');
-    done();
-  });
-  it('should return user request object when  login is successful', (done) => {
-    const user = newUserCheck(fakeUser.userRequest1, fakeReponse);
-    expect(user).to.be.an('object').that.has.property('token');
-    expect(user).to.be.an('object').that.has.property('message');
-    expect(user.message).to.eql('Login was successful');
-    done();
-  });
-
-  it('should return user request object when registration is successful', (done) => {
-    const user = newUserCheck(fakeUser.userRequest2, fakeReponse);
-    expect(user).to.be.an('object').that.has.property('token');
-    expect(user).to.be.an('object').that.has.property('message');
-    expect(user.message).to.eql('User resgistration was successful');
     done();
   });
   it('should call facebook route', async () => {

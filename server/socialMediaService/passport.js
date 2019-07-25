@@ -7,6 +7,7 @@ import { socialSignOn } from '../controller/socialRegistration';
 
 dotenv.config();
 
+
 const {
   FACEBOOK_APP_ID,
   FACEBOOK_APP_SECRET,
@@ -14,26 +15,34 @@ const {
   GOOGLE_APP_SECRET,
   TWITTER_APP_KEY,
   TWITTER_APP_SECRET,
-  HOST,
+  DEV_HOST,
+  PROD_HOST,
 } = process.env;
+
+let host = DEV_HOST;
+
+if (process.env.NODE_ENV === 'production') {
+  host = PROD_HOST;
+}
+const baseUrl = host;
 
 const facebookConfig = {
   clientID: FACEBOOK_APP_ID,
   clientSecret: FACEBOOK_APP_SECRET,
-  callbackURL: `${HOST}/api/auth/facebook/callback`,
+  callbackURL: `${baseUrl}/api/auth/facebook/callback`,
   profileFields: ['id', 'emails', 'displayName'],
 };
 
 const googleConfig = {
   clientID: GOOGLE_APP_ID,
   clientSecret: GOOGLE_APP_SECRET,
-  callbackURL: `${HOST}/api/auth/google/callback`,
+  callbackURL: `${baseUrl}/api/auth/google/callback`,
 };
 
 const twitterConfig = {
   consumerKey: TWITTER_APP_KEY,
   consumerSecret: TWITTER_APP_SECRET,
-  callbackURL: `${HOST}/api/auth/twitter/callback`,
+  callbackURL: `${baseUrl}/api/auth/twitter/callback`,
   includeEmail: true
 };
 
