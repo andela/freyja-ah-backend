@@ -68,6 +68,11 @@ const userModel = (sequelize, DataTypes) => {
 
     {
       timestamps: false,
+      scopes: {
+        withoutPassword: {
+          attributes: { exclude: ['password'] },
+        }
+      }
     }
   );
   /**
